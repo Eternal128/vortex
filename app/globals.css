@@ -1,0 +1,212 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  /* Primary */
+  --color-primary-600: #ea5a0b;
+  --color-primary-500: #f97316;
+  --color-primary-400: #fb923c;
+  --color-primary-300: #fdba74;
+  --color-primary-200: #fed7aa;
+  --color-primary-100: #ffeee5;
+
+  /* Neutral — warm-tinted so the grays agree with the cream canvas */
+  --color-neutral-900: #1c1917;
+  --color-neutral-700: #44403c;
+  --color-neutral-500: #78716c;
+  --color-neutral-300: #d6d3d1;
+  --color-neutral-200: #e7e5e4;
+  --color-neutral-100: #f5f5f4;
+  --color-neutral-50: #fafaf9;
+
+  /* Accents used by badges and status indicators */
+  --color-lesson-bg: #eef0fe;
+  --color-lesson-fg: #4f46e5;
+  --color-success: #16a34a;
+
+  /* Surfaces */
+  --color-background: #faf7f4;
+  --color-surface: #ffffff;
+
+  /* Warm canvas used by the marketing pages (home) and its hairlines */
+  --color-canvas: #fbf8f5;
+  --color-canvas-line: #efe6de;
+
+  /* Typography */
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-playfair), ui-serif, Georgia, serif;
+
+  /* Radius */
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+
+  /* Shadows — tinted with the canvas hue rather than neutral black */
+  --shadow-sm: 0 1px 2px 0 rgba(68, 44, 28, 0.05);
+  --shadow-md: 0 4px 12px -2px rgba(68, 44, 28, 0.08);
+  --shadow-lg: 0 12px 24px -4px rgba(68, 44, 28, 0.1);
+  --shadow-xl: 0 20px 40px -8px rgba(68, 44, 28, 0.12);
+
+  /* Motion */
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/*
+ * Dark theme. Every token below is a value swap for one already declared in
+ * `@theme`, so the utilities generated from those names (`bg-canvas`,
+ * `text-neutral-900`, `shadow-md`, …) re-resolve without any component churn.
+ * The ramps keep their meaning rather than their lightness: `primary-600` is
+ * still "one step stronger than 500", which here means lighter, not darker.
+ */
+.dark {
+  color-scheme: dark;
+
+  --color-primary-600: #fdba74;
+  --color-primary-500: #fb8b3d;
+  --color-primary-400: #f97316;
+  --color-primary-300: #9a4f18;
+  --color-primary-200: #48250f;
+  --color-primary-100: #2b1a0f;
+
+  --color-neutral-900: #f5f1ed;
+  --color-neutral-700: #d4ccc5;
+  --color-neutral-500: #a39a93;
+  --color-neutral-300: #4c4440;
+  --color-neutral-200: #332c29;
+  --color-neutral-100: #241f1d;
+  --color-neutral-50: #1b1716;
+
+  --color-lesson-bg: #1e1f3d;
+  --color-lesson-fg: #a5b4fc;
+  --color-success: #4ade80;
+
+  --color-background: #121010;
+  --color-surface: #1e1a19;
+
+  --color-canvas: #171413;
+  --color-canvas-line: #2b2421;
+
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 4px 12px -2px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 12px 24px -4px rgba(0, 0, 0, 0.55);
+  --shadow-xl: 0 20px 40px -8px rgba(0, 0, 0, 0.6);
+}
+
+/* Type scale — section 03 of the design system */
+@utility text-display-1 {
+  font-family: var(--font-display);
+  font-size: 48px;
+  line-height: 56px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+@utility text-display-2 {
+  font-family: var(--font-display);
+  font-size: 36px;
+  line-height: 44px;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
+}
+
+@utility text-heading-1 {
+  font-family: var(--font-sans);
+  font-size: 28px;
+  line-height: 36px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+
+@utility text-heading-2 {
+  font-family: var(--font-sans);
+  font-size: 22px;
+  line-height: 30px;
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  text-wrap: balance;
+}
+
+@utility text-heading-3 {
+  font-family: var(--font-sans);
+  font-size: 18px;
+  line-height: 26px;
+  font-weight: 500;
+}
+
+@utility text-body-lg {
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 400;
+}
+
+@utility text-body {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 400;
+}
+
+@utility text-small {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 400;
+}
+
+/* Digits in meta rows (durations, counts) align column-to-column. */
+@utility tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+/*
+ * Film grain. Fixed and non-interactive, so it reads as a property of the
+ * screen rather than of any element that scrolls under it.
+ */
+@utility grain {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  pointer-events: none;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.dark .grain {
+  opacity: 0.05;
+}
+
+body {
+  background: var(--color-background);
+  color: var(--color-neutral-900);
+  font-family: var(--font-sans);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+::selection {
+  background: var(--color-primary-200);
+  color: var(--color-neutral-900);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

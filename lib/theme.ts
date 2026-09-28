@@ -1,0 +1,21 @@
+export type Theme = "light" | "dark" | "system";
+
+export const THEME_STORAGE_KEY = "vortex-theme";
+
+export function resolveTheme(theme: Theme): "light" | "dark" {
+  if (theme !== "system") return theme;
+  return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+}
+
+export function applyTheme(theme: Theme) {
+  document.documentElement.classList.toggle("dark", resolveTheme(theme) === "dark");
+}
+
+/**
+ * Runs before first paint so the stored theme is on `<html>` by the time the
+ * page renders — without it a dark-mode visitor gets a white flash on reload.
+ * Kept as a string because it must be inlined, not loaded as a module.
+ */
+export const themeInitScript = `(function(){try{var t=localStorage.getItem(${JSON.stringify(
+  THEME_STORAGE_KEY,
+)})||"system";var d=t==="dark"||(t==="system"&&window.matchMedia("(prefers-color-scheme: dark)").matches);document.documentElement.classList.toggle("dark",d)}catch(e){}})();`;
