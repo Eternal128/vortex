@@ -61,12 +61,14 @@ interface EmbedOptions {
   /** Second to start playback at, from the `?t=` param on the lesson URL. */
   startSeconds?: number;
   autoplay?: boolean;
+  /** YouTube only: let the provider's player report position and state through postMessage. */
+  jsApi?: boolean;
 }
 
 /** Builds the provider's own embed URL, using its own start and autoplay parameters. */
 export function videoEmbedUrl(
   { provider, id }: ParsedVideo,
-  { startSeconds = 0, autoplay = false }: EmbedOptions = {},
+  { startSeconds = 0, autoplay = false, jsApi = false }: EmbedOptions = {},
 ) {
   const start = Math.max(0, Math.floor(startSeconds));
 
@@ -74,6 +76,7 @@ export function videoEmbedUrl(
     const params = new URLSearchParams({ rel: "0", modestbranding: "1", playsinline: "1" });
     if (start) params.set("start", `${start}`);
     if (autoplay) params.set("autoplay", "1");
+    if (jsApi) params.set("enablejsapi", "1");
     return `https://www.youtube-nocookie.com/embed/${id}?${params}`;
   }
 

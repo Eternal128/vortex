@@ -24,12 +24,18 @@ const nextConfig: NextConfig = {
   // Required to support PostHog trailing slash API requests
   skipTrailingSlashRedirect: true,
   images: {
-    // Content images are served from the Sanity asset CDN. Scoped to that host only.
+    // Content images come from the Sanity asset CDN; plan lessons use YouTube's own thumbnails.
+    // Each host is scoped to its image paths only.
     remotePatterns: [
       {
         protocol: "https",
         hostname: "cdn.sanity.io",
         pathname: "/images/**",
+      },
+      {
+        protocol: "https",
+        hostname: "i.ytimg.com",
+        pathname: "/vi/**",
       },
     ],
   },

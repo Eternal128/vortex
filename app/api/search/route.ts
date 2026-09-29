@@ -1,4 +1,3 @@
-import { openai } from "@ai-sdk/openai";
 import type { MCPClient } from "@ai-sdk/mcp";
 import { auth } from "@clerk/nextjs/server";
 import { generateText, Output, stepCountIs } from "ai";
@@ -6,9 +5,17 @@ import type { NextRequest } from "next/server";
 
 import { groundHits } from "@/lib/search/ground";
 import { createSearchMcpClient, fetchInitialContext } from "@/lib/search/mcp";
+import {
+  groqSearchModels,
+  isModelCapacityError,
+  searchModel,
+  searchProvider,
+  searchProviderOptions,
+} from "@/lib/search/model";
 import { buildSystemPrompt, buildUserPrompt } from "@/lib/search/system-prompt";
 import {
   ModelAnswerSchema,
+  type ModelAnswer,
   SearchRequestSchema,
   type SearchResponse,
   type SearchSort,
@@ -35,7 +42,56 @@ export const maxDuration = 60;
  */
 const MAX_STEPS = 6;
 
-const DEFAULT_MODEL = "gpt-5";
+/**
+ * Groq's free tier caps each request at 8,000 tokens a minute, and the system prompt plus the tool
+ * definition alone are ~5k. A second tool step (with the first step's results) measured 7.9–8.6k,
+ * over the cap, so on Groq the model gets one step: it may issue several queries at once, but it
+ * cannot re-query after a miss. `SEARCH_PROVIDER=openai` keeps the full six-step loop.
+ */
+const GROQ_MAX_STEPS = 1;
+
+/** The only MCP tool the prompt uses; the others cost ~1.6k tokens a step for nothing on Groq. */
+const GROQ_TOOLS = ["groq_query"];
+
+/** Per tool result, and in total, when handing phase 1's results to phase 2. */
+const RESULT_CHARS = 4_000;
+const FINDINGS_CHARS = 8_000;
+
+function clip(value: unknown, max: number) {
+  const text = typeof value === "string" ? value : JSON.stringify(value);
+  return text.length > max ? `${text.slice(0, max)}… (truncated)` : text;
+}
+
+
+/**
+ * Phase 1's tool results as plain text for phase 2. Text rather than replayed tool messages, which
+ * some providers reject once no tools are declared — and it caps the size.
+ */
+/**
+ * Runs `call` with each model in turn until one succeeds, moving on only for capacity errors (a
+ * daily cap, an over-large request, a malformed tool call). Anything else fails the search.
+ */
+async function withFallback<M, T>(models: M[], call: (model: M) => Promise<T>): Promise<T> {
+  let lastError: unknown;
+  for (const model of models) {
+    try {
+      return await call(model);
+    } catch (error) {
+      if (!isModelCapacityError(error)) throw error;
+      lastError = error;
+    }
+  }
+  throw lastError;
+}
+
+function findingsText(results: { toolName: string; input: unknown; output: unknown }[]) {
+  const blocks = results.map((result, index) => {
+    return `Result ${index + 1} — ${result.toolName} ${JSON.stringify(result.input)}\n${clip(result.output, RESULT_CHARS)}`;
+  });
+  return blocks.join("\n\n").slice(0, FINDINGS_CHARS);
+}
+
+const answerOutput = Output.object({ schema: ModelAnswerSchema });
 
 function errorResponse(status: number, error: string) {
   return Response.json({ error }, { status });
@@ -74,18 +130,57 @@ export async function POST(request: NextRequest) {
       Object.entries(mcpTools).filter(([name]) => name !== "initial_context"),
     );
 
-    const { output } = await generateText({
-      model: openai(process.env.OPENAI_SEARCH_MODEL || DEFAULT_MODEL),
-      system: buildSystemPrompt(initialContext),
-      prompt: buildUserPrompt(query),
-      tools,
-      stopWhen: stepCountIs(MAX_STEPS),
-      output: Output.object({ schema: ModelAnswerSchema }),
-      abortSignal: request.signal,
-      // Search is latency-sensitive and the reasoning here is shallow: write one GROQ query, rank
-      // what comes back. Heavy reasoning pushed a single search past a minute.
-      providerOptions: { openai: { reasoningEffort: "low", textVerbosity: "low" } },
-    });
+    const system = buildSystemPrompt(initialContext);
+    const prompt = buildUserPrompt(query);
+    // Search is latency-sensitive and the reasoning here is shallow: write one GROQ query, rank
+    // what comes back. Heavy reasoning pushed a single search past a minute.
+    const providerOptions = searchProviderOptions();
+
+    let output: ModelAnswer;
+    if (searchProvider() === "openai") {
+      ({ output } = await generateText({
+        model: searchModel(),
+        system,
+        prompt,
+        tools,
+        stopWhen: stepCountIs(MAX_STEPS),
+        output: answerOutput,
+        abortSignal: request.signal,
+        providerOptions,
+      }));
+    } else {
+      // Groq cannot combine tool calling with structured output (400: "json mode cannot be combined
+      // with tool/function calling"), so the search runs in two phases.
+      const groqModels = groqSearchModels();
+      const groqTools = Object.fromEntries(Object.entries(tools).filter(([name]) => GROQ_TOOLS.includes(name)));
+      // Phase 1: the model writes its GROQ queries (one step; see GROQ_MAX_STEPS) and they run.
+      // One quick retry at most: a capped model will not recover in seconds, the next model might.
+      const gathered = await withFallback(groqModels.query, (model) =>
+        generateText({
+          model,
+          system,
+          prompt,
+          tools: groqTools,
+          stopWhen: stepCountIs(GROQ_MAX_STEPS),
+          maxRetries: 1,
+          abortSignal: request.signal,
+          providerOptions,
+        }),
+      );
+      const findings = findingsText(gathered.steps.flatMap((step) => step.toolResults));
+      // Phase 2: the structured answer, tool-free, from what phase 1 found.
+      ({ output } = await withFallback(groqModels.answer, (model) =>
+        generateText({
+          model,
+          system,
+          prompt: `${prompt}\n\nYour searches returned the following. Answer now, using only these results:\n\n${findings || "(no results)"}`,
+          output: answerOutput,
+          maxRetries: 1,
+          abortSignal: request.signal,
+          providerOptions,
+        }),
+      ));
+    }
 
     const results = await groundHits(output.hits, sort);
 

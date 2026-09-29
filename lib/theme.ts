@@ -2,6 +2,9 @@ export type Theme = "light" | "dark" | "system";
 
 export const THEME_STORAGE_KEY = "vortex-theme";
 
+/** A first visit gets light mode; "Match system" and dark remain one click away. */
+export const DEFAULT_THEME: Theme = "light";
+
 export function resolveTheme(theme: Theme): "light" | "dark" {
   if (theme !== "system") return theme;
   return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
@@ -18,4 +21,4 @@ export function applyTheme(theme: Theme) {
  */
 export const themeInitScript = `(function(){try{var t=localStorage.getItem(${JSON.stringify(
   THEME_STORAGE_KEY,
-)})||"system";var d=t==="dark"||(t==="system"&&window.matchMedia("(prefers-color-scheme: dark)").matches);document.documentElement.classList.toggle("dark",d)}catch(e){}})();`;
+)})||"light";var d=t==="dark"||(t==="system"&&window.matchMedia("(prefers-color-scheme: dark)").matches);document.documentElement.classList.toggle("dark",d)}catch(e){}})();`;
