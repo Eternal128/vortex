@@ -53,7 +53,7 @@ function Panel({ className, children }: { className?: string; children: ReactNod
 function PanelTitle({ number, title }: { number: string; title: string }) {
   return (
     <h2 className="mb-6 flex items-center gap-4">
-      <span className="text-body font-semibold text-primary-500">{number}</span>
+      <span className="text-body font-semibold text-primary-600">{number}</span>
       <span className="text-body font-semibold tracking-[0.12em] text-neutral-900 uppercase">
         {title}
       </span>
@@ -72,51 +72,54 @@ function Caption({ children }: { children: ReactNode }) {
 /* ------------------------------------------------------------------ data */
 
 const primaryColors = [
-  { name: "Primary 500", hex: "#F97316", className: "bg-primary-500" },
-  { name: "Primary 400", hex: "#FB923C", className: "bg-primary-400" },
-  { name: "Primary 300", hex: "#FDBA74", className: "bg-primary-300" },
-  { name: "Primary 200", hex: "#FED7AA", className: "bg-primary-200" },
-  { name: "Primary 100", hex: "#FFEEE5", className: "bg-primary-100" },
+  { name: "Callout Onyx", hex: "#15120E", className: "bg-callout" },
+  { name: "Coral 600 (text)", hex: "#BD3636", className: "bg-primary-600" },
+  { name: "Coral 500 (brand)", hex: "#F35252", className: "bg-primary-500" },
+  { name: "Coral 400", hex: "#F77A7A", className: "bg-primary-400" },
+  { name: "Coral 100", hex: "#FDECEC", className: "bg-primary-100" },
+  { name: "Coral 50", hex: "#FEF6F6", className: "bg-primary-50 border border-neutral-200" },
 ];
 
 const neutralColors = [
-  { name: "Neutral 900", hex: "#0F172A", className: "bg-neutral-900" },
-  { name: "Neutral 700", hex: "#334155", className: "bg-neutral-700" },
-  { name: "Neutral 500", hex: "#64748B", className: "bg-neutral-500" },
-  { name: "Neutral 300", hex: "#CBD5E1", className: "bg-neutral-300" },
-  { name: "Neutral 200", hex: "#E2E8F0", className: "bg-neutral-200" },
-  { name: "Neutral 100", hex: "#F1F5F9", className: "bg-neutral-100" },
-  { name: "Neutral 50", hex: "#FAFAFC", className: "bg-neutral-50 border border-neutral-200" },
+  { name: "Stone 900", hex: "#1A1714", className: "bg-neutral-900" },
+  { name: "Stone 700", hex: "#2E2924", className: "bg-neutral-700" },
+  { name: "Stone 500", hex: "#6B6258", className: "bg-neutral-500" },
+  { name: "Stone 300", hex: "#A39A8F", className: "bg-neutral-300" },
+  { name: "Stone 200", hex: "#E6DFD5", className: "bg-neutral-200" },
+  { name: "Stone 100", hex: "#F1ECE4", className: "bg-neutral-100" },
+  { name: "Ivory", hex: "#FCFAF6", className: "bg-canvas border border-neutral-200" },
   { name: "White", hex: "#FFFFFF", className: "bg-surface border border-neutral-200" },
 ];
 
 const typeScale = [
-  { style: "Display 1", font: "Playfair Display", size: "48 / 56", weight: "Bold", use: "Page titles" },
-  { style: "Display 2", font: "Playfair Display", size: "36 / 44", weight: "Bold", use: "Section titles" },
-  { style: "Heading 1", font: "Inter", size: "28 / 36", weight: "Semi Bold", use: "Card titles" },
-  { style: "Heading 2", font: "Inter", size: "22 / 30", weight: "Semi Bold", use: "Sub section" },
-  { style: "Heading 3", font: "Inter", size: "18 / 26", weight: "Medium", use: "Small titles" },
-  { style: "Body Large", font: "Inter", size: "16 / 24", weight: "Regular", use: "Body copy" },
-  { style: "Body", font: "Inter", size: "14 / 20", weight: "Regular", use: "Supporting text" },
-  { style: "Small", font: "Inter", size: "12 / 16", weight: "Regular", use: "Captions, meta" },
+  { style: "Display 1", font: "Source Sans 3", size: "40 / 48", weight: "Semi Bold", use: "Home headline" },
+  { style: "Display 2", font: "Source Sans 3", size: "28 / 32", weight: "Semi Bold", use: "Display" },
+  { style: "Heading 1", font: "Source Sans 3", size: "28 / 32", weight: "Semi Bold", use: "Page titles" },
+  { style: "Heading 2", font: "Source Sans 3", size: "20 / 28", weight: "Semi Bold", use: "Section titles" },
+  { style: "Heading 3", font: "Source Sans 3", size: "16 / 20", weight: "Semi Bold", use: "Small titles" },
+  { style: "Subtitle", font: "Source Sans 3", size: "14 / 18", weight: "Semi Bold", use: "Card titles" },
+  { style: "Body Large", font: "Source Sans 3", size: "16 / 24", weight: "Regular", use: "Reading copy" },
+  { style: "Body", font: "Source Sans 3", size: "14 / 20", weight: "Regular", use: "Supporting text" },
+  { style: "Small", font: "Source Sans 3", size: "12 / 18", weight: "Regular", use: "Captions, meta" },
+  { style: "Action", font: "Source Sans 3", size: "14 / 20", weight: "Semi Bold", use: "Buttons, chips" },
 ];
 
 const spacingScale = [4, 8, 12, 16, 24, 32, 40, 48, 64];
 
 const radii = [
-  { label: "4px", name: "(xs)", className: "rounded-xs" },
-  { label: "8px", name: "(sm)", className: "rounded-sm" },
-  { label: "12px", name: "(md)", className: "rounded-md" },
+  { label: "2px", name: "(xs)", className: "rounded-xs" },
+  { label: "4px", name: "(sm)", className: "rounded-sm" },
+  { label: "8px", name: "(md)", className: "rounded-md" },
   { label: "16px", name: "(lg)", className: "rounded-lg" },
   { label: "24px", name: "(xl)", className: "rounded-xl" },
-  { label: "Full", name: "(circle)", className: "rounded-full" },
+  { label: "Full", name: "(capsule)", className: "rounded-full" },
 ];
 
 const shadows = [
-  { name: "Sm", value: "0 1px 2px 0 rgba(15, 23, 42, 0.05)", className: "shadow-sm" },
-  { name: "Md", value: "0 4px 12px -2px rgba(15, 23, 42, 0.08)", className: "shadow-md" },
-  { name: "Lg", value: "0 12px 24px -4px rgba(15, 23, 42, 0.10)", className: "shadow-lg" },
-  { name: "Xl", value: "0 20px 40px -8px rgba(15, 23, 42, 0.12)", className: "shadow-xl" },
+  { name: "Sm", value: "0 0 4px + 0 2px 12px 2px, ink 10%", className: "shadow-sm" },
+  { name: "Md", value: "0 0 4px + 0 2px 12px 2px, ink 10%", className: "shadow-md" },
+  { name: "Lg", value: "0 0 4px + 0 4px 12px 2px, ink 10%", className: "shadow-lg" },
+  { name: "Xl", value: "0 0 4px + 0 6px 12px 2px, ink 10%", className: "shadow-xl" },
 ];
 
 const icons = [
@@ -202,21 +205,13 @@ export default function DesignSystemPage() {
         <Panel className="lg:col-span-5">
           <PanelTitle number="02" title="Typography" />
           <div className="flex items-center gap-8">
-            <span className="font-display text-[64px] leading-none font-bold text-neutral-900">
+            <span className="font-sans text-6xl leading-none font-semibold text-neutral-900">
               Ag
             </span>
             <div>
-              <p className="text-heading-2 text-neutral-900">Playfair Display</p>
-              <p className="mt-1 text-body text-neutral-500">Elegant • Readable • Timeless</p>
-            </div>
-          </div>
-          <div className="mt-8 flex items-center gap-8">
-            <span className="font-sans text-[64px] leading-none font-semibold text-neutral-900">
-              Ag
-            </span>
-            <div>
-              <p className="text-heading-2 text-neutral-900">Inter</p>
-              <p className="mt-1 text-body text-neutral-500">Clean • Modern • Highly legible</p>
+              <p className="text-heading-2 text-neutral-900">Source Sans 3</p>
+              <p className="mt-1 text-body text-neutral-500">One family for every role</p>
+              <p className="mt-1 text-body text-neutral-500">Regular 400 • Semi Bold 600 • Bold 700</p>
             </div>
           </div>
         </Panel>
@@ -292,7 +287,7 @@ export default function DesignSystemPage() {
                   className={cn("rounded-md bg-surface p-4", shadow.className)}
                 >
                   <p className="text-heading-3 text-neutral-900">{shadow.name}</p>
-                  <p className="mt-2 text-[11px] leading-4 text-neutral-500">{shadow.value}</p>
+                  <p className="mt-2 text-small text-neutral-500">{shadow.value}</p>
                 </li>
               ))}
             </ul>
@@ -387,10 +382,10 @@ export default function DesignSystemPage() {
           <div className="mt-8">
             <GroupLabel>Button Specs</GroupLabel>
             <ul className="list-disc space-y-1 pl-5 text-body text-neutral-500">
-              <li>Height: 44px (default)</li>
-              <li>Padding: 0 16px (lg), 0 12px (md)</li>
-              <li>Radius: 12px</li>
-              <li>Font: Inter Medium (14-16px)</li>
+              <li>Height: 36px (md), 44px (lg), 48px (xl)</li>
+              <li>Padding: 0 16px (md, lg), 0 24px (xl)</li>
+              <li>Radius: 8px</li>
+              <li>Font: Source Sans 3 Semi Bold 14px, +0.14px tracking</li>
             </ul>
           </div>
         </Panel>
@@ -416,11 +411,11 @@ export default function DesignSystemPage() {
           <div className="mt-8">
             <GroupLabel>Field Specs</GroupLabel>
             <ul className="list-disc space-y-1 pl-5 text-body text-neutral-500">
-              <li>Height: 44px</li>
-              <li>Radius: 12px</li>
-              <li>Border: 1px solid #E2E8F0</li>
-              <li>Padding: 0 16px</li>
-              <li>Focus: Border color #FB923C</li>
+              <li>Height: 48px (search), 44px (select)</li>
+              <li>Radius: 8px</li>
+              <li>Border: 1px solid ink #1A1714</li>
+              <li>Padding: 0 12px</li>
+              <li>Focus: 2px coral edge #F35252</li>
             </ul>
           </div>
         </Panel>
@@ -474,7 +469,7 @@ export default function DesignSystemPage() {
                 duration="18h 24m"
                 modules="12 modules"
                 logo={
-                  <span className="flex size-12 shrink-0 items-center justify-center rounded-md bg-neutral-900 font-display text-[22px] leading-none font-bold text-white">
+                  <span className="flex size-12 shrink-0 items-center justify-center rounded-md bg-callout text-heading-2 leading-none font-bold text-white">
                     N
                   </span>
                 }

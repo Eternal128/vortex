@@ -31,7 +31,7 @@ export function VideoResultCard({
       title={result.lessonTitle}
       description={result.reason}
       media={
-        <div className="relative aspect-video w-full overflow-hidden rounded-md bg-neutral-900">
+        <div className="relative aspect-video w-full overflow-hidden rounded-md bg-black">
           {result.thumbnailRef && (
             <Image
               src={urlFor(result.thumbnailRef).width(720).height(405).fit("crop").url()}
@@ -47,7 +47,7 @@ export function VideoResultCard({
             </span>
           </span>
           {duration && (
-            <span className="absolute right-2.5 bottom-2.5 rounded-xs bg-neutral-900/85 px-2 py-1 text-small font-medium text-white">
+            <span className="absolute right-2.5 bottom-2.5 rounded-xs bg-black/80 px-2 py-1 text-small font-semibold text-white">
               {duration}
             </span>
           )}

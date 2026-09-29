@@ -37,7 +37,7 @@ export function ResourceCard({
         <a
           href={href}
           aria-label={`Open ${title}`}
-          className="rounded-xs text-primary-500 hover:text-primary-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
+          className="rounded-xs text-primary-600 hover:text-primary-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
         >
           <ExternalLink className="size-5" strokeWidth={2} aria-hidden />
         </a>

@@ -5,12 +5,13 @@ import { CourseContent } from "@/components/course/course-content";
 import { CourseHero } from "@/components/course/course-hero";
 import { CourseProgressBar } from "@/components/course/course-progress-bar";
 import { LearningOutcomes } from "@/components/course/learning-outcomes";
-import { ChartDecoration } from "@/components/home/chart-decoration";
 import { PageFrame } from "@/components/layout/page-frame";
 import { SiteHeader } from "@/components/layout/site-header";
 import { Breadcrumbs } from "@/components/nav/breadcrumbs";
 import { ANALYTICS_EVENTS } from "@/lib/analytics/events";
-import { coursesHref, lessonHref } from "@/lib/routes";
+import { resumeFor } from "@/lib/progress/resume";
+import { coursesHref } from "@/lib/routes";
+import { getLearnerProgress } from "@/sanity/lib/progress";
 import { CACHE_TAGS, sanityFetch } from "@/sanity/lib/fetch";
 import { COURSE_BY_SLUG_QUERY, COURSE_SLUGS_QUERY } from "@/sanity/lib/queries";
 
@@ -53,13 +54,22 @@ export default async function CoursePage({ params }: PageProps<"/courses/[slug]"
   const modules = course.modules ?? [];
   const outcomes = course.learningOutcomes ?? [];
 
-  // Progress is not tracked yet (AGENTS.md §7), so "continue" means the first lesson.
-  const firstLessonSlug = modules.flatMap((module) => module.lessons ?? [])[0]?.slug ?? null;
-  const continueHref = firstLessonSlug ? lessonHref(firstLessonSlug) : null;
+  // Signed out, progress is null and "continue" is simply the first lesson.
+  const progress = await getLearnerProgress();
+  const resume = resumeFor(
+    modules.flatMap((module) => module.lessons ?? []),
+    progress,
+  );
+  const continueHref = resume.href;
+  // Watching a lesson counts as enrolling: the learner has clearly started the course.
+  const enrollState = !progress
+    ? "signed-out"
+    : progress.enrolled.has(course._id) || resume.started
+      ? "enrolled"
+      : "not-enrolled";
 
   return (
-    <PageFrame>
-      <SiteHeader activeHref={coursesHref} />
+    <PageFrame header={<SiteHeader activeHref={coursesHref} />}>
 
       <ViewTracker
         event={ANALYTICS_EVENTS.courseViewed}
@@ -81,7 +91,13 @@ export default async function CoursePage({ params }: PageProps<"/courses/[slug]"
         />
 
         <div className="mt-10 flex flex-col gap-14">
-          <CourseHero course={course} continueHref={continueHref} />
+          <CourseHero
+            course={course}
+            continueHref={continueHref}
+            enrollState={enrollState}
+            percentComplete={resume.percent}
+            started={resume.started}
+          />
 
           {outcomes.length > 0 && <LearningOutcomes outcomes={outcomes} />}
 
@@ -91,14 +107,13 @@ export default async function CoursePage({ params }: PageProps<"/courses/[slug]"
         </div>
 
         <CourseProgressBar
-          percentComplete={0}
+          percentComplete={resume.percent}
           continueHref={continueHref}
           courseSlug={slug}
           className="mt-14"
         />
       </main>
 
-      <ChartDecoration />
     </PageFrame>
   );
 }

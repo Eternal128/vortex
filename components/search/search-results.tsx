@@ -8,6 +8,7 @@ import { SearchEmptyState } from "@/components/search/search-empty-state";
 import { VideoResultCard } from "@/components/search/video-result-card";
 import { Button } from "@/components/ui/button";
 import { Select } from "@/components/ui/select";
+import { VortexLoader } from "@/components/ui/vortex-loader";
 import { pluralize } from "@/lib/format";
 import { searchHref } from "@/lib/routes";
 import type { SearchResponse, SearchSort } from "@/lib/search/types";
@@ -130,11 +131,7 @@ export function SearchResults({ query, sort, searchField }: SearchResultsProps) 
       <>
         <p className="mt-4 text-center text-body-lg text-neutral-500">Searching&hellip;</p>
         {searchField}
-        <div className="mt-10 flex flex-col gap-4" aria-busy>
-          {[0, 1, 2].map((index) => (
-            <ResultSkeleton key={index} />
-          ))}
-        </div>
+        <VortexLoader className="mt-16" size={56} />
       </>
     );
   }
@@ -151,7 +148,7 @@ export function SearchResults({ query, sort, searchField }: SearchResultsProps) 
       {searchField}
 
       <div className="mt-9 flex flex-wrap items-center justify-between gap-4">
-        <p className="text-[15px] leading-6 font-medium text-neutral-900">
+        <p className="text-heading-3 text-neutral-900">
           {pluralize(response.count, "result")}
         </p>
         <Select
@@ -187,17 +184,3 @@ export function SearchResults({ query, sort, searchField }: SearchResultsProps) 
   );
 }
 
-/** Matches the card silhouette so the list does not jump when results arrive. */
-function ResultSkeleton() {
-  return (
-    <div className="flex animate-pulse flex-col gap-4 rounded-lg border border-neutral-200 bg-surface p-4 shadow-sm sm:flex-row sm:gap-6">
-      <div className="aspect-video w-full shrink-0 rounded-md bg-neutral-100 sm:w-69" />
-      <div className="flex flex-1 flex-col gap-3 py-1">
-        <div className="h-5 w-40 rounded-xs bg-neutral-100" />
-        <div className="h-6 w-3/5 rounded-xs bg-neutral-100" />
-        <div className="h-4 w-full rounded-xs bg-neutral-100" />
-        <div className="mt-auto h-4 w-2/5 rounded-xs bg-neutral-100" />
-      </div>
-    </div>
-  );
-}

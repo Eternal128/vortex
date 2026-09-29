@@ -63,9 +63,9 @@ export function LessonTabs({ children, lessonSlug }: LessonTabsProps) {
               tabIndex={isActive ? 0 : -1}
               onClick={() => select(tab.id)}
               className={cn(
-                "-mb-px border-b-2 px-1 pb-3 text-[15px] leading-6 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2",
+                "-mb-px border-b-2 px-1 pb-3 text-body-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2",
                 isActive
-                  ? "border-primary-500 font-medium text-primary-500"
+                  ? "border-primary-500 font-semibold text-primary-600"
                   : "border-transparent text-neutral-500 hover:text-neutral-900",
               )}
             >
@@ -95,10 +95,10 @@ export function LessonTabs({ children, lessonSlug }: LessonTabsProps) {
       >
         <div className="flex flex-col items-center gap-3 rounded-md border border-dashed border-canvas-line px-6 py-14 text-center">
           <NotebookPen className="size-6 text-neutral-300" strokeWidth={2} aria-hidden />
-          <p className="text-[15px] leading-6 font-medium text-neutral-900">
+          <p className="text-heading-3 text-neutral-900">
             Your notes will live here
           </p>
-          <p className="max-w-80 text-[14px] leading-6 text-neutral-500">
+          <p className="max-w-80 text-body text-neutral-500">
             Note taking is not available yet. Nothing you type would be saved, so the tab stays
             read-only for now.
           </p>

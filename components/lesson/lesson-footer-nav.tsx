@@ -40,17 +40,17 @@ export function LessonFooterNav({
             direction="previous"
             className={buttonClasses({
               variant: "tertiary",
-              className: "h-12 shrink-0 border-canvas-line bg-canvas px-5 text-[15px]",
+              className: "h-12 shrink-0 border-canvas-line bg-canvas px-5",
             })}
           >
             <ArrowLeft className="size-4" strokeWidth={2} aria-hidden />
             Previous Lesson
           </LessonFooterNavLink>
           <span className="hidden min-w-0 lg:block">
-            <span className="block truncate text-[14px] leading-5 text-neutral-900">
+            <span className="block truncate text-body text-neutral-900">
               {previous.title}
             </span>
-            <span className="block text-[13px] leading-5 text-neutral-500">
+            <span className="block text-small text-neutral-500">
               {formatDuration(previous.duration)}
             </span>
           </span>
@@ -62,10 +62,10 @@ export function LessonFooterNav({
       {next?.slug && (
         <div className="flex items-center gap-5 sm:ml-auto">
           <span className="hidden min-w-0 text-right lg:block">
-            <span className="block truncate text-[14px] leading-5 text-neutral-900">
+            <span className="block truncate text-body text-neutral-900">
               {next.title}
             </span>
-            <span className="block text-[13px] leading-5 text-neutral-500">
+            <span className="block text-small text-neutral-500">
               {formatDuration(next.duration)}
             </span>
           </span>
@@ -74,7 +74,7 @@ export function LessonFooterNav({
             fromLessonSlug={currentLessonSlug}
             toLessonSlug={next.slug}
             direction="next"
-            className={buttonClasses({ className: "h-12 shrink-0 px-5 text-[15px]" })}
+            className={buttonClasses({ className: "h-12 shrink-0 px-5" })}
           >
             Next Lesson
             <ArrowRight className="size-4" strokeWidth={2} aria-hidden />

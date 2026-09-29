@@ -2,7 +2,11 @@
 
 import { useEffect, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
-import { SearchInput, type SearchInputSize } from "@/components/ui/search-input";
+import {
+  SearchInput,
+  type SearchInputSize,
+  type SearchInputVariant,
+} from "@/components/ui/search-input";
 import { searchHref } from "@/lib/routes";
 import { MAX_QUERY_LENGTH } from "@/lib/search/types";
 
@@ -13,6 +17,7 @@ interface SearchFormProps {
   placeholder?: string;
   label?: string;
   size?: SearchInputSize;
+  variant?: SearchInputVariant;
   className?: string;
 }
 
@@ -26,6 +31,7 @@ export function SearchForm({
   placeholder = "Search anything...",
   label = "Search",
   size = "md",
+  variant = "field",
   className,
 }: SearchFormProps) {
   const router = useRouter();
@@ -60,6 +66,7 @@ export function SearchForm({
         label={label}
         placeholder={placeholder}
         size={size}
+        variant={variant}
         defaultValue={defaultValue}
         maxLength={MAX_QUERY_LENGTH}
       />

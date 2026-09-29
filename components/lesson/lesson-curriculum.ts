@@ -18,6 +18,10 @@ export interface CurriculumLesson {
   label: string;
   moduleIndex: number;
   isCurrent: boolean;
+  /** From the signed-in learner's progress record; always false when signed out. */
+  isCompleted: boolean;
+  /** Best quiz grade, e.g. "67%", once the learner has taken the lesson's quiz. */
+  quizGrade: string | null;
 }
 
 export interface CurriculumModule {
@@ -42,6 +46,8 @@ export interface Curriculum {
 export function buildCurriculum(
   modules: CourseModule[] | null | undefined,
   currentLessonId: string,
+  completedLessonIds: ReadonlySet<string> = new Set(),
+  quizGrades: ReadonlyMap<string, string> = new Map(),
 ): Curriculum {
   const built: CurriculumModule[] = (modules ?? []).map((module, moduleIndex) => {
     const lessons: CurriculumLesson[] = (module.lessons ?? []).map((lesson, lessonIndex) => ({
@@ -52,6 +58,8 @@ export function buildCurriculum(
       label: `${moduleIndex + 1}.${lessonIndex + 1}`,
       moduleIndex,
       isCurrent: lesson._id === currentLessonId,
+      isCompleted: completedLessonIds.has(lesson._id),
+      quizGrade: quizGrades.get(lesson._id) ?? null,
     }));
 
     return {

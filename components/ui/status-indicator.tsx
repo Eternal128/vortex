@@ -4,9 +4,9 @@ import { cn } from "@/lib/utils";
 export type Status = "in-progress" | "completed" | "now-playing" | "locked";
 
 const config: Record<Status, { label: string; className: string }> = {
-  "in-progress": { label: "In Progress", className: "text-primary-500" },
+  "in-progress": { label: "In Progress", className: "text-primary-600" },
   completed: { label: "Completed", className: "text-success" },
-  "now-playing": { label: "Now Playing", className: "text-primary-500" },
+  "now-playing": { label: "Now Playing", className: "text-primary-600" },
   locked: { label: "Locked", className: "text-neutral-700" },
 };
 

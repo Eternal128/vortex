@@ -22,7 +22,7 @@ export function Select({ id = "select", label = "Sort by", options, className, .
       </label>
       <select
         id={id}
-        className="h-11 w-full appearance-none rounded-md border border-neutral-200 bg-surface px-4 pr-10 text-body text-neutral-900 focus:border-primary-400 focus:outline-none"
+        className="h-11 w-full appearance-none rounded-md border border-field-line bg-surface px-3 pr-10 text-body text-neutral-900 focus:border-primary-500 focus:ring-1 focus:ring-primary-500 focus:outline-none"
         {...props}
       >
         {options.map((option) => (

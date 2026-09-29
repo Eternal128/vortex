@@ -39,14 +39,14 @@ export function LessonHeader({
       {label && <Badge variant="video">Lesson {label}</Badge>}
 
       <div className="mt-5 flex items-start justify-between gap-6">
-        <h1 className="font-display text-[34px] leading-[42px] font-bold text-neutral-900 sm:text-[44px] sm:leading-[54px]">
+        <h1 className="text-heading-1 text-neutral-900">
           {title}
         </h1>
         <LessonBookmarkButton lessonSlug={lessonSlug} />
       </div>
 
       {summary && (
-        <p className="mt-4 max-w-[520px] text-[17px] leading-[30px] text-neutral-500">{summary}</p>
+        <p className="mt-4 max-w-[520px] text-body-lg text-neutral-500">{summary}</p>
       )}
 
       {meta.length > 0 && (
@@ -54,7 +54,7 @@ export function LessonHeader({
           {meta.map(({ icon: Icon, label: item }) => (
             <li
               key={item}
-              className="inline-flex items-center gap-2 text-[14px] leading-5 whitespace-nowrap text-neutral-500"
+              className="inline-flex items-center gap-2 text-body whitespace-nowrap text-neutral-500"
             >
               <Icon className="size-4 shrink-0" strokeWidth={2} aria-hidden />
               {item}

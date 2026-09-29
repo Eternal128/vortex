@@ -46,7 +46,7 @@ export function LessonResources({ resources, lessonSlug }: LessonResourcesProps)
     <section aria-labelledby="lesson-resources">
       <h2
         id="lesson-resources"
-        className="font-display text-[20px] leading-7 font-bold text-neutral-900"
+        className="text-heading-2 text-neutral-900"
       >
         Resources
       </h2>
@@ -71,16 +71,16 @@ export function LessonResources({ resources, lessonSlug }: LessonResourcesProps)
                 className="flex h-full flex-col gap-3 rounded-md border border-canvas-line bg-canvas p-5 transition-colors hover:border-primary-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
               >
                 <span className="flex items-start gap-3">
-                  <span className="flex size-8 shrink-0 items-center justify-center rounded-sm bg-primary-100 text-primary-500">
+                  <span className="flex size-8 shrink-0 items-center justify-center rounded-sm bg-primary-100 text-primary-600">
                     <Icon className="size-4" strokeWidth={2} aria-hidden />
                   </span>
-                  <span className="min-w-0 text-[14px] leading-5 font-medium text-neutral-900">
+                  <span className="min-w-0 text-subtitle text-neutral-900">
                     {resource.title}
                   </span>
                 </span>
 
                 <span className="flex items-end justify-between gap-3">
-                  <span className="min-w-0 text-[13px] leading-5 text-neutral-500">
+                  <span className="min-w-0 text-body text-neutral-500">
                     {resource.description}
                   </span>
                   <ExternalLink

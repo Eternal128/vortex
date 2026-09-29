@@ -34,7 +34,7 @@ function pageItems(currentPage: number, totalPages: number): Array<number | "ell
 }
 
 const cell =
-  "inline-flex size-9 items-center justify-center rounded-sm text-body transition-colors " +
+  "inline-flex size-9 items-center justify-center rounded-md text-body transition-colors " +
   "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2";
 
 export function Pagination({ currentPage, totalPages, buildHref, className }: PaginationProps) {
@@ -71,7 +71,7 @@ export function Pagination({ currentPage, totalPages, buildHref, className }: Pa
             className={cn(
               cell,
               item === currentPage
-                ? "border border-primary-500 font-medium text-primary-500"
+                ? "border border-primary-500 font-semibold text-primary-600"
                 : "text-neutral-700 hover:bg-neutral-100",
             )}
           >

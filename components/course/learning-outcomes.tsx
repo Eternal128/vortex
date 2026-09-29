@@ -39,7 +39,7 @@ export function LearningOutcomes({ outcomes }: LearningOutcomesProps) {
     >
       <h2
         id="what-youll-learn"
-        className="font-display text-[24px] leading-8 font-bold text-neutral-900"
+        className="text-heading-2 text-neutral-900"
       >
         What you&rsquo;ll learn
       </h2>
@@ -55,11 +55,11 @@ export function LearningOutcomes({ outcomes }: LearningOutcomesProps) {
             >
               <Icon className="size-12 shrink-0 text-primary-400" strokeWidth={1.5} aria-hidden />
               <div className="min-w-0">
-                <h3 className="font-display text-[19px] leading-6 font-medium text-neutral-900">
+                <h3 className="text-heading-3 text-neutral-900">
                   {outcome.title}
                 </h3>
                 {outcome.description && (
-                  <p className="mt-3 text-[15px] leading-[28px] text-neutral-500">
+                  <p className="mt-2 text-body text-neutral-500">
                     {outcome.description}
                   </p>
                 )}

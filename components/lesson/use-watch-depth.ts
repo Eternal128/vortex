@@ -9,6 +9,7 @@ import {
   WATCH_DEPTH_MEASUREMENT,
   WATCH_DEPTH_MILESTONES,
 } from "@/lib/analytics/events";
+import { LESSON_COMPLETE_EVENT, sendProgress } from "@/lib/progress/client";
 
 /**
  * How far into the lesson a learner got, estimated from wall-clock time.
@@ -25,9 +26,16 @@ import {
 /** Depth is only ever checked on a tick, so this also bounds how late a milestone can be. */
 const TICK_MS = 5_000;
 
+/** The resume position is saved every this many ticks (30s), and once more on page exit. */
+const SAVE_EVERY_TICKS = 6;
+
 interface WatchDepthOptions {
   /** Depth is only measured while this is true. */
   isPlaying: boolean;
+  /** Sanity id of the lesson, for the learner's progress record. */
+  lessonId: string;
+  /** Save resume position and completion. Only when signed in — the route rejects anyone else. */
+  saveProgress: boolean;
   lessonSlug: string;
   courseSlug: string | null;
   lessonLabel: string | null;
@@ -40,6 +48,8 @@ interface WatchDepthOptions {
 
 export function useWatchDepth({
   isPlaying,
+  lessonId,
+  saveProgress,
   lessonSlug,
   courseSlug,
   lessonLabel,
@@ -55,10 +65,10 @@ export function useWatchDepth({
   // Read inside the interval rather than listed as dependencies, so re-renders never restart the
   // timer and lose accumulated time. Synced in its own effect, declared first so the values have
   // landed before the timer below can read them.
-  const context = useRef({ lessonSlug, courseSlug, lessonLabel, provider, startSeconds });
+  const context = useRef({ lessonId, saveProgress, lessonSlug, courseSlug, lessonLabel, provider, startSeconds });
 
   useEffect(() => {
-    context.current = { lessonSlug, courseSlug, lessonLabel, provider, startSeconds };
+    context.current = { lessonId, saveProgress, lessonSlug, courseSlug, lessonLabel, provider, startSeconds };
   });
 
   useEffect(() => {
@@ -83,9 +93,29 @@ export function useWatchDepth({
       }
     }
 
+    let ticks = 0;
+
+    function currentPosition() {
+      const elapsedMs = watchedMs + (segmentStartedAt === null ? 0 : Date.now() - segmentStartedAt);
+      return Math.min(totalSeconds, context.current.startSeconds + Math.round(elapsedMs / 1000));
+    }
+
+    function savePosition(beacon = false) {
+      const { lessonId, saveProgress } = context.current;
+      if (saveProgress) sendProgress({ type: "position", lessonId, seconds: currentPosition() }, { beacon });
+    }
+
+    function onPageHide() {
+      savePosition(true);
+    }
+
     function tick() {
       const elapsedMs = watchedMs + (segmentStartedAt === null ? 0 : Date.now() - segmentStartedAt);
-      const { lessonSlug, courseSlug, lessonLabel, provider, startSeconds } = context.current;
+      const { lessonId, saveProgress, lessonSlug, courseSlug, lessonLabel, provider, startSeconds } =
+        context.current;
+
+      ticks += 1;
+      if (ticks % SAVE_EVERY_TICKS === 0) savePosition();
 
       const watchedSeconds = Math.round(elapsedMs / 1000);
       // Where playback is, for reporting: the deep-link offset counts here.
@@ -110,10 +140,13 @@ export function useWatchDepth({
         });
       }
 
-      // The stand-in for completion until a progress record exists (AGENTS.md §7): there is no
-      // stored completion to report, so watching essentially all of it is what we have.
+      // The iframe cannot tell us the video ended, so watching essentially all of it is what
+      // counts as finishing: it is saved to the learner's record and unlocks the quiz prompt.
       if (percentWatched >= COMPLETION_MILESTONE && !completionReported.current) {
         completionReported.current = true;
+
+        if (saveProgress) sendProgress({ type: "complete", lessonId });
+        window.dispatchEvent(new CustomEvent(LESSON_COMPLETE_EVENT, { detail: { lessonId } }));
 
         posthog.capture(ANALYTICS_EVENTS.lessonCompleted, {
           lesson_slug: lessonSlug,
@@ -128,10 +161,14 @@ export function useWatchDepth({
 
     const interval = window.setInterval(tick, TICK_MS);
     document.addEventListener("visibilitychange", onVisibilityChange);
+    window.addEventListener("pagehide", onPageHide);
 
     return () => {
       window.clearInterval(interval);
       document.removeEventListener("visibilitychange", onVisibilityChange);
+      window.removeEventListener("pagehide", onPageHide);
+      // Leaving the lesson client-side (next lesson, back to course) is an exit too.
+      savePosition();
     };
   }, [isPlaying, durationSeconds]);
 }

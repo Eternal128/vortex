@@ -22,7 +22,7 @@ export function LessonCard({ title, description, moduleLabel, href, className }:
         <span className="text-small text-neutral-500">{moduleLabel}</span>
         <a
           href={href}
-          className="inline-flex shrink-0 items-center gap-2 rounded-xs text-small font-medium text-primary-500 hover:text-primary-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
+          className="inline-flex shrink-0 items-center gap-2 rounded-xs text-action text-primary-600 underline-offset-4 hover:text-primary-600 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
         >
           View lesson
           <ExternalLink className="size-4" strokeWidth={2} aria-hidden />

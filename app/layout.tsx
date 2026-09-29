@@ -1,24 +1,19 @@
 import { ClerkProvider } from "@clerk/nextjs";
 import type { Metadata } from "next";
-import { Inter, Playfair_Display } from "next/font/google";
+import { Source_Sans_3 } from "next/font/google";
 import { PostHogUserIdentifier } from "@/components/posthog/posthog-user-identifier";
 import { themeInitScript } from "@/lib/theme";
 import "./globals.css";
 
-const inter = Inter({
-  variable: "--font-inter",
-  subsets: ["latin"],
-});
-
-const playfair = Playfair_Display({
-  variable: "--font-playfair",
+const sourceSans = Source_Sans_3({
+  variable: "--font-source-sans",
   subsets: ["latin"],
 });
 
 export const metadata: Metadata = {
   title: "Vortex",
   description:
-    "A unified design language for Vortex learning platform. Clean, modern and focused on clarity, consistency and intuitive learning experiences.",
+    "Vortex turns YouTube's best lessons into structured courses: curated playlists with transcripts, chapters, notes, quizzes and search that finds the exact second a topic is taught.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
@@ -26,7 +21,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${inter.variable} ${playfair.variable} h-full antialiased`}
+      className={`${sourceSans.variable} h-full antialiased`}
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
@@ -42,7 +37,6 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           <PostHogUserIdentifier />
           {children}
         </ClerkProvider>
-        <div className="grain" aria-hidden />
       </body>
     </html>
   );
