@@ -268,3 +268,31 @@ export const IDEAS_BOARD_QUERY = defineQuery(`
     "hasVoted": $userId != "" && count(*[_type == "ideaVote" && idea._ref == ^._id && voterId == $userId]) > 0
   }
 `);
+
+/**
+ * The roadmap: every category that has courses, each with its courses and their modules in order.
+ * Lesson counts are derived; module numbers come from array order, as everywhere else.
+ */
+export const ROADMAP_QUERY = defineQuery(`
+  *[_type == "category" && defined(slug.current) && count(*[_type == "course" && references(^._id)]) > 0]
+  | order(title asc) {
+    _id,
+    title,
+    "slug": slug.current,
+    description,
+    "courses": *[_type == "course" && category._ref == ^._id && defined(slug.current)] | order(title asc) {
+      _id,
+      title,
+      "slug": slug.current,
+      accent,
+      level,
+      "lessonCount": count(modules[].lessons[]),
+      "modules": modules[]{
+        _key,
+        title,
+        "lessonCount": count(lessons),
+        "firstLessonSlug": lessons[0]->slug.current
+      }
+    }
+  }
+`);

@@ -83,7 +83,7 @@ export function Quiz() {
           </div>
         </div>
         <div style={{ marginTop: 24, height: 14, borderRadius: 99, background: color.line }}>
-          <div style={{ width: `${played * 100}%`, height: "100%", borderRadius: 99, background: color.coral }} />
+          <div style={{ width: `${played * 100}%`, height: "100%", borderRadius: 99, background: color.accent }} />
         </div>
       </div>
 
@@ -207,8 +207,8 @@ export function Quiz() {
                             padding: "14px 20px",
                             borderRadius: 14,
                             fontSize: 26,
-                            border: `2px solid ${showRight ? color.success : showWrong ? color.error : selected ? color.coral : color.line}`,
-                            background: showRight ? color.successSoft : showWrong ? color.errorSoft : selected ? color.coral50 : color.surface,
+                            border: `2px solid ${showRight ? color.success : showWrong ? color.error : selected ? color.accent : color.line}`,
+                            background: showRight ? color.successSoft : showWrong ? color.errorSoft : selected ? color.accent50 : color.surface,
                           }}
                         >
                           <span
@@ -216,9 +216,9 @@ export function Quiz() {
                               width: 24,
                               height: 24,
                               borderRadius: "50%",
-                              border: `2px solid ${selected ? color.coral : color.faint}`,
+                              border: `2px solid ${selected ? color.accent : color.faint}`,
                               boxShadow: selected ? `inset 0 0 0 5px white` : undefined,
-                              background: selected ? color.coral : "white",
+                              background: selected ? color.accent : "white",
                               flexShrink: 0,
                             }}
                           />

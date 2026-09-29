@@ -79,7 +79,7 @@ export function Enroll() {
             <span style={{ fontWeight: 600 }}>1.1 Tokens and context windows</span>
           </div>
           <div style={{ marginTop: 10, width: 520, height: 12, borderRadius: 99, background: color.line }}>
-            <div style={{ width: `${(SAVED / LENGTH) * 100 * resume}%`, height: "100%", borderRadius: 99, background: color.coral }} />
+            <div style={{ width: `${(SAVED / LENGTH) * 100 * resume}%`, height: "100%", borderRadius: 99, background: color.accent }} />
           </div>
         </div>
       </div>
@@ -125,7 +125,7 @@ export function Enroll() {
                 width: 120,
                 height: 120,
                 borderRadius: "50%",
-                background: color.coral,
+                background: color.accent,
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
@@ -138,7 +138,7 @@ export function Enroll() {
 
         {/* The progress bar, with the saved second pinned on it. */}
         <div style={{ marginTop: 26, position: "relative", height: 14, borderRadius: 99, background: color.line }}>
-          <div style={{ width: `${(position / LENGTH) * 100}%`, height: "100%", borderRadius: 99, background: color.coral }} />
+          <div style={{ width: `${(position / LENGTH) * 100}%`, height: "100%", borderRadius: 99, background: color.accent }} />
           <div
             style={{
               position: "absolute",
@@ -154,7 +154,7 @@ export function Enroll() {
           >
             <div style={{ width: 22, height: 22, borderRadius: "50%", background: color.ink, border: "4px solid white", marginTop: -11 }} />
             <div style={{ width: 3, height: 22, background: color.ink }} />
-            <Pill background={color.ink} foreground="white" size={28} icon={<MapPin size={28} color={color.coral} strokeWidth={2.6} />}>
+            <Pill background={color.ink} foreground="white" size={28} icon={<MapPin size={28} color={color.accent} strokeWidth={2.6} />}>
               Saved at {formatTime(SAVED)}
             </Pill>
           </div>

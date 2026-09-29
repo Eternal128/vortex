@@ -1,44 +1,57 @@
-import { loadFont } from "@remotion/google-fonts/SourceSans3";
+import { loadFont } from "@remotion/fonts";
+import { staticFile } from "remotion";
 import { Easing, interpolate, spring } from "remotion";
 
-/** Vortex's tokens (app/globals.css), plus the idea colors the video uses for meaning. */
+/**
+ * Vortex's tokens (app/globals.css, the fanout system): off-white canvas, charcoal ink, and amber as
+ * the one accent for "you are here", live and new. The windmill adds ocean and mint.
+ */
 export const color = {
-  canvas: "#fafafa",
+  canvas: "#f7f7f7",
   surface: "#ffffff",
-  line: "#e4e4e7",
-  ink: "#18181b",
-  ink2: "#3f3f46",
-  muted: "#52525b",
-  faint: "#a1a1aa",
-  deep: "#121215",
-  coral: "#f35252",
-  coral600: "#bd3636",
-  coral100: "#fdecec",
-  coral50: "#fef6f6",
-  success: "#16a34a",
-  successSoft: "#dcfce7",
-  error: "#dc2626",
-  errorSoft: "#fee2e2",
+  line: "#e9e9e9",
+  ink: "#1f1f1f",
+  ink2: "#4a4a4a",
+  muted: "#6e6e6e",
+  faint: "#b5b5b5",
+  deep: "#141414",
+  accent: "#f5a524",
+  accent600: "#8a5a00",
+  accent100: "#fdf1dc",
+  accent50: "#fef8ec",
+  ocean: "#2d6a9d",
+  mint: "#14b894",
+  success: "#1f7a4d",
+  successSoft: "#e3f5ec",
+  error: "#c8102e",
+  errorSoft: "#fdecee",
 };
 
-/** One hue per category, so a color always means the same subject. */
+/** One hue per category, from the course path palette, so a color always means the same subject. */
 export const category = {
-  "AI Engineering": "#8b5cf6",
-  "Web Development": "#0ea5e9",
-  Data: "#14b8a6",
-  Security: "#f43f5e",
-  "Backend & Infrastructure": "#f59e0b",
-  Languages: "#84cc16",
+  "AI Engineering": "#14b894",
+  "Web Development": "#2d6a9d",
+  Data: "#e8812f",
+  Security: "#d9485f",
+  "Backend & Infrastructure": "#7c5ce6",
+  Languages: "#2f6fed",
 } as const;
 
 export const hues = Object.values(category);
 
-export const { fontFamily } = loadFont("normal", { weights: ["400", "600", "700"], subsets: ["latin"] });
+/*
+ * Geist and Geist Mono (SIL OFL, public/fonts/OFL.txt), bundled as variable fonts rather than
+ * fetched from Google Fonts, so a render needs no network and always matches the site's type.
+ */
+export const fontFamily = "Geist";
+export const monoFamily = "Geist Mono";
+loadFont({ family: fontFamily, url: staticFile("fonts/Geist-Variable.woff2"), weight: "100 900" });
+loadFont({ family: monoFamily, url: staticFile("fonts/GeistMono-Variable.woff2"), weight: "100 900" });
 
 export const FPS = 30;
 /** Seconds of picture before the voice starts, and after it ends, in each scene. */
-export const LEAD = 0.5;
-export const TAIL = 0.8;
+export const LEAD = 0.35;
+export const TAIL = 0.5;
 
 const outSoft = Easing.bezier(0.16, 1, 0.3, 1);
 

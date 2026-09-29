@@ -36,12 +36,12 @@ export const TOTAL_FRAMES = timeline.reduce((sum, scene) => sum + scene.frames, 
 /** Frames of the wipe on each side of a cut. */
 const WIPE = 9;
 const BANDS = [
-  { color: "#8b5cf6", width: 260, lag: 0 },
-  { color: "#f59e0b", width: 260, lag: 2 },
-  { color: color.coral, width: 2500, lag: 4 },
+  { color: color.ocean, width: 260, lag: 0 },
+  { color: color.mint, width: 260, lag: 2 },
+  { color: color.ink, width: 2500, lag: 4 },
 ];
 
-/** A cut hidden under three skewed bands of color sweeping across, violet and amber leading coral. */
+/** A cut hidden under three skewed bands of color sweeping across, ocean and mint (two windmill sails) leading ink. */
 function Wipe() {
   const frame = useCurrentFrame();
   return (

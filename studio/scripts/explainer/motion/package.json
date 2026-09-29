@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "@remotion/cli": "4.0.530",
-    "@remotion/google-fonts": "4.0.530",
+    "@remotion/fonts": "^4.0.530",
     "lucide-react": "^1.31.0",
     "react": "19.2.8",
     "react-dom": "19.2.8",

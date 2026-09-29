@@ -987,6 +987,39 @@ export type IDEAS_BOARD_QUERY_RESULT = Array<{
   hasVoted: boolean;
 }>;
 
+// Source: ../sanity/lib/queries.ts
+// Variable: ROADMAP_QUERY
+// Query: *[_type == "category" && defined(slug.current) && count(*[_type == "course" && references(^._id)]) > 0]  | order(title asc) {    _id,    title,    "slug": slug.current,    description,    "courses": *[_type == "course" && category._ref == ^._id && defined(slug.current)] | order(title asc) {      _id,      title,      "slug": slug.current,      accent,      level,      "lessonCount": count(modules[].lessons[]),      "modules": modules[]{        _key,        title,        "lessonCount": count(lessons),        "firstLessonSlug": lessons[0]->slug.current      }    }  }
+export type ROADMAP_QUERY_RESULT = Array<{
+  _id: string;
+  title: string | null;
+  slug: string | null;
+  description: string | null;
+  courses: Array<{
+    _id: string;
+    title: string | null;
+    slug: string | null;
+    accent:
+      | "blue"
+      | "forest"
+      | "ink"
+      | "lilac"
+      | "mint"
+      | "navy"
+      | "sand"
+      | "sky"
+      | null;
+    level: "advanced" | "beginner" | "intermediate" | null;
+    lessonCount: number | null;
+    modules: Array<{
+      _key: string;
+      title: string | null;
+      lessonCount: number | null;
+      firstLessonSlug: string | null;
+    }> | null;
+  }>;
+}>;
+
 // Query TypeMap
 import "@sanity/client";
 declare module "@sanity/client" {
@@ -1006,5 +1039,6 @@ declare module "@sanity/client" {
     '\n  *[_type == "post" && defined(slug.current) && publishedAt <= now()]{"slug": slug.current}\n': POST_SLUGS_QUERY_RESULT;
     '\n  *[_type == "post" && slug.current == $slug && publishedAt <= now()][0]{\n    \n  _id,\n  title,\n  "slug": slug.current,\n  excerpt,\n  publishedAt,\n  "topic": topic->{title, "slug": slug.current},\n  authorName,\n  "wordCount": count(string::split(pt::text(body), " "))\n,\n    body,\n    "related": *[\n      _type == "post" && defined(slug.current) && publishedAt <= now()\n      && topic._ref == ^.topic._ref && _id != ^._id\n    ] | order(publishedAt desc)[0...3]{\n      _id,\n      title,\n      "slug": slug.current,\n      "topic": topic->{title}\n    },\n    "relatedCourse": relatedCourse->{\n      title,\n      "slug": slug.current,\n      summary,\n      "category": category->{title}\n    }\n  }\n': POST_BY_SLUG_QUERY_RESULT;
     '\n  *[\n    _type == "idea" && status != "declined"\n    && (moderation == "approved" || ($userId != "" && moderation == "pending" && authorId == $userId))\n  ]{\n    _id,\n    title,\n    description,\n    kind,\n    status,\n    origin,\n    moderation,\n    authorName,\n    createdAt,\n    "votes": count(*[_type == "ideaVote" && idea._ref == ^._id]),\n    "hasVoted": $userId != "" && count(*[_type == "ideaVote" && idea._ref == ^._id && voterId == $userId]) > 0\n  }\n': IDEAS_BOARD_QUERY_RESULT;
+    '\n  *[_type == "category" && defined(slug.current) && count(*[_type == "course" && references(^._id)]) > 0]\n  | order(title asc) {\n    _id,\n    title,\n    "slug": slug.current,\n    description,\n    "courses": *[_type == "course" && category._ref == ^._id && defined(slug.current)] | order(title asc) {\n      _id,\n      title,\n      "slug": slug.current,\n      accent,\n      level,\n      "lessonCount": count(modules[].lessons[]),\n      "modules": modules[]{\n        _key,\n        title,\n        "lessonCount": count(lessons),\n        "firstLessonSlug": lessons[0]->slug.current\n      }\n    }\n  }\n': ROADMAP_QUERY_RESULT;
   }
 }

@@ -82,7 +82,7 @@ export function Motive() {
           transform: `translateY(${(1 - ease(t, -0.2, 0.8)) * 30 - (1 - first) * 40}px)`,
         }}
       >
-        YouTube holds some of the <span style={{ color: color.coral }}>best teaching</span> in the world.
+        YouTube holds some of the <span style={{ color: color.accent }}>best teaching</span> in the world.
       </div>
 
       <div
@@ -106,7 +106,7 @@ export function Motive() {
             key={word}
             style={{
               display: "inline-block",
-              color: i === 2 ? color.coral : "white",
+              color: i === 2 ? color.accent : "white",
               transform: `translateY(${(1 - second) * 50 + Math.sin(t * 7 + i * 2) * scatter * 5}px) rotate(${(i - 1) * 3 * second + Math.sin(t * 5 + i) * scatter * 2}deg)`,
             }}
           >

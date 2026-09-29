@@ -4,7 +4,7 @@ import { AbsoluteFill } from "remotion";
 import { color, fontFamily } from "./theme";
 
 export function Stage({ background = color.canvas, children }: { background?: string; children: ReactNode }) {
-  return <AbsoluteFill style={{ background, fontFamily, color: color.ink, overflow: "hidden" }}>{children}</AbsoluteFill>;
+  return <AbsoluteFill style={{ background, fontFamily, color: color.ink, letterSpacing: "-0.02em", overflow: "hidden" }}>{children}</AbsoluteFill>;
 }
 
 /** Shade a hex color toward black (negative) or white (positive) by `amount` in [-1, 1]. */
@@ -86,9 +86,9 @@ export function Tile({
 }
 
 const SAILS = [
-  { d: "M24 24 L24 2 L40 11 Z", fill: color.coral600 },
-  { d: "M24 24 L46 24 L37 40 Z", fill: color.coral },
-  { d: "M24 24 L24 46 L8 37 Z", fill: "#f77a7a" },
+  { d: "M24 24 L24 2 L40 11 Z", fill: color.ocean },
+  { d: "M24 24 L46 24 L37 40 Z", fill: color.mint },
+  { d: "M24 24 L24 46 L8 37 Z", fill: color.accent },
   { d: "M24 24 L2 24 L11 8 Z", fill: color.ink },
 ];
 
@@ -111,7 +111,7 @@ export function Windmill({ size, rotate = 0, spread = 0 }: { size: number; rotat
           opacity={1 - spread * 0.8}
         />
       ))}
-      <circle cx="24" cy="24" r="3" fill="white" stroke={color.coral600} strokeWidth="1.5" opacity={1 - spread} />
+      <circle cx="24" cy="24" r="3" fill="white" stroke={color.ink} strokeWidth="1.5" opacity={1 - spread} />
     </svg>
   );
 }
@@ -167,7 +167,7 @@ export function Button({
   style?: CSSProperties;
 }) {
   const look: Record<string, CSSProperties> = {
-    primary: { background: color.coral, color: color.ink },
+    primary: { background: color.ink, color: "white" },
     success: { background: color.success, color: "white" },
     tertiary: { background: color.surface, color: color.ink, boxShadow: `inset 0 0 0 2px ${color.line}` },
     dark: { background: color.ink, color: "white" },
@@ -210,7 +210,7 @@ export function Card({ children, style }: { children: ReactNode; style?: CSSProp
   );
 }
 
-/** A soft pointer: coral-tinted dot with a white ring, shrinking while pressed. */
+/** A soft pointer: amber-tinted dot with a white ring, shrinking while pressed. */
 export function Cursor({ x, y, press = 0, opacity = 1 }: { x: number; y: number; press?: number; opacity?: number }) {
   return (
     <div
@@ -232,7 +232,7 @@ export function Cursor({ x, y, press = 0, opacity = 1 }: { x: number; y: number;
 }
 
 /** A ring that fills clockwise, with the percentage in the middle. */
-export function Ring({ size, value, stroke = 14, hue = color.coral, label }: { size: number; value: number; stroke?: number; hue?: string; label?: string }) {
+export function Ring({ size, value, stroke = 14, hue = color.accent, label }: { size: number; value: number; stroke?: number; hue?: string; label?: string }) {
   const r = (size - stroke) / 2;
   const c = 2 * Math.PI * r;
   return (
