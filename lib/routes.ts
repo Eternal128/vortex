@@ -63,3 +63,13 @@ export function postHref(slug: string) {
 }
 
 export const ideasHref = "/ideas";
+
+export const toolsHref = "/tools";
+export const roadmapHref = "/roadmap";
+export const ROADMAP_CATEGORY_PARAM = "path";
+
+/** `/roadmap?path=web-development`. Omitted for the first category, so the default is the bare URL. */
+export function roadmapCategoryHref(categorySlug?: string | null) {
+  if (!categorySlug) return roadmapHref;
+  return `${roadmapHref}?${ROADMAP_CATEGORY_PARAM}=${encodeURIComponent(categorySlug)}`;
+}

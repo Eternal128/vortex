@@ -66,7 +66,7 @@ export function Close() {
                 height: 10,
                 width: `${underline * 100}%`,
                 borderRadius: 99,
-                background: color.coral,
+                background: color.accent,
               }}
             />
           </span>{" "}

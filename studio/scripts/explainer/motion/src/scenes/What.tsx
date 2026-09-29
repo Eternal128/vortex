@@ -39,7 +39,7 @@ export function What() {
           transform: `translateY(${(1 - ease(t, 0, 0.6)) * 24}px)`,
         }}
       >
-        Vortex turns videos into <span style={{ color: color.coral600 }}>real courses</span>
+        Vortex turns videos into <span style={{ color: color.accent600 }}>real courses</span>
       </div>
 
       {/* The vortex: tiles spiral in toward the windmill. */}
@@ -135,7 +135,7 @@ export function What() {
                       width: 64,
                       height: 64,
                       borderRadius: "50%",
-                      background: color.coral,
+                      background: color.accent,
                       color: color.ink,
                       display: "flex",
                       alignItems: "center",
@@ -162,10 +162,10 @@ export function What() {
                         opacity: credit,
                         padding: "2px 10px",
                         borderRadius: 8,
-                        background: `linear-gradient(90deg, ${color.coral100} ${credit * 100}%, transparent ${credit * 100}%)`,
+                        background: `linear-gradient(90deg, ${color.accent100} ${credit * 100}%, transparent ${credit * 100}%)`,
                       }}
                     >
-                      <Play size={18} fill={color.coral600} color={color.coral600} />
+                      <Play size={18} fill={color.accent600} color={color.accent600} />
                       by {lesson.channel}
                     </div>
                   </div>

@@ -29,7 +29,7 @@ export function Plan() {
   const rise = ease(t, 5.4, 0.6);
 
   return (
-    <Stage background={`linear-gradient(180deg, ${color.coral50} 0%, ${color.canvas} 55%)`}>
+    <Stage background={`linear-gradient(180deg, ${color.accent50} 0%, ${color.canvas} 55%)`}>
       {/* The catalog, and the goal it doesn't cover. */}
       <div style={{ position: "absolute", inset: 0, opacity: 1 - gridOut, transform: `translateY(${gridOut * -80}px)` }}>
         <div style={{ position: "absolute", top: 90, left: 0, right: 0, textAlign: "center", fontSize: 60, fontWeight: 700, letterSpacing: "-0.02em", opacity: ease(t, -0.2, 0.5) }}>
@@ -52,15 +52,15 @@ export function Plan() {
               style={{
                 height: 230,
                 borderRadius: 24,
-                border: `4px dashed ${color.coral}`,
-                background: color.coral50,
+                border: `4px dashed ${color.accent}`,
+                background: color.accent50,
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
                 gap: 20,
                 fontSize: 44,
                 fontWeight: 700,
-                color: color.coral600,
+                color: color.accent600,
               }}
             >
               <CircleQuestionMark size={52} strokeWidth={2.4} />
@@ -90,7 +90,7 @@ export function Plan() {
                 flex: 1,
                 height: 84,
                 borderRadius: 14,
-                border: `3px solid ${typed ? color.coral : color.ink}`,
+                border: `3px solid ${typed ? color.accent : color.ink}`,
                 display: "flex",
                 alignItems: "center",
                 padding: "0 26px",
@@ -130,7 +130,7 @@ export function Plan() {
       {/* The plan, building. */}
       <div style={{ position: "absolute", left: 250, top: 300, width: 1420, opacity: ease(t, 5.4, 0.4) }}>
         <div style={{ display: "flex", alignItems: "center", gap: 18 }}>
-          <Pill background={color.coral} foreground={color.ink} size={24} icon={<Sparkles size={24} strokeWidth={2.4} />}>
+          <Pill background={color.accent} foreground={color.ink} size={24} icon={<Sparkles size={24} strokeWidth={2.4} />}>
             Your plan
           </Pill>
           <span style={{ fontSize: 44, fontWeight: 700 }}>Bake Sourdough Bread at Home</span>

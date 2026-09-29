@@ -58,7 +58,7 @@ export function Search() {
           opacity: ease(t, -0.1, 0.5) * (1 - zoom),
         }}
       >
-        Ask in <span style={{ color: color.coral600 }}>plain English</span>
+        Ask in <span style={{ color: color.accent600 }}>plain English</span>
       </div>
 
       <div
@@ -70,7 +70,7 @@ export function Search() {
           height: 104,
           borderRadius: 999,
           background: color.surface,
-          border: `3px solid ${t > 2 ? color.coral : color.ink}`,
+          border: `3px solid ${t > 2 ? color.accent : color.ink}`,
           boxShadow: t > 2 ? "0 0 0 8px rgba(243,82,82,.14)" : "none",
           display: "flex",
           alignItems: "center",
@@ -83,7 +83,7 @@ export function Search() {
       >
         <SearchIcon size={44} color={color.muted} strokeWidth={2.4} />
         <span style={{ color: typed ? color.ink : color.faint }}>{typed ? QUERY.slice(0, typed) : "Search anything..."}</span>
-        {caret && t > 1.6 && t < 4.2 && <span style={{ width: 3, height: 50, background: color.coral, marginLeft: -18 }} />}
+        {caret && t > 1.6 && t < 4.2 && <span style={{ width: 3, height: 50, background: color.accent, marginLeft: -18 }} />}
       </div>
 
       <div
@@ -99,7 +99,7 @@ export function Search() {
         }}
       >
         <span style={{ fontSize: 28, fontWeight: 600, color: color.muted }}>Lessons, ranked by relevance</span>
-        <Pill background={color.coral100} foreground={color.coral600} size={22}>
+        <Pill background={color.accent100} foreground={color.accent600} size={22}>
           Most relevant
         </Pill>
       </div>
@@ -128,7 +128,7 @@ export function Search() {
                 display: "flex",
                 alignItems: "center",
                 gap: 28,
-                border: top ? `3px solid ${color.coral}` : `1px solid ${color.line}`,
+                border: top ? `3px solid ${color.accent}` : `1px solid ${color.line}`,
                 boxShadow: top ? `0 ${20 + lift * 20}px 60px -18px rgba(243,82,82,.45)` : undefined,
               }}
             >
@@ -137,7 +137,7 @@ export function Search() {
                   width: 62,
                   height: 62,
                   borderRadius: "50%",
-                  background: top ? color.coral : color.line,
+                  background: top ? color.accent : color.line,
                   color: color.ink,
                   fontSize: 30,
                   fontWeight: 700,
@@ -165,7 +165,7 @@ export function Search() {
                 </div>
               </div>
               {top && (
-                <div style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 26, fontWeight: 600, color: color.coral600 }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 26, fontWeight: 600, color: color.accent600 }}>
                   View lesson <ArrowRight size={26} strokeWidth={2.6} />
                 </div>
               )}
