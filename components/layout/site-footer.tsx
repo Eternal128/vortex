@@ -1,70 +1,41 @@
+import { ArrowRight } from "lucide-react";
 import Link from "next/link";
-import { toHomeCourses } from "@/components/home/home-course";
-import { catalogHref, coursesHref } from "@/lib/routes";
-import { CACHE_TAGS, sanityFetch } from "@/sanity/lib/fetch";
-import { CATEGORIES_LIST_QUERY, COURSES_LIST_QUERY } from "@/sanity/lib/queries";
-
-const COLUMN_SIZE = 6;
-
-interface FooterLink {
-  label: string;
-  href: string;
-}
+import { Logo } from "@/components/brand/logo";
 
 /**
- * The site footer, laid out like Coursera's: four columns of plain links on a light band. Every
- * link is a real Vortex page, from the same cached queries the header uses.
+ * The site footer: one About section on a light band, with the mission in a line and a link to
+ * the About page, then the credit line. Static, so it costs no data fetch.
  */
-export async function SiteFooter() {
-  const [courses, categories] = await Promise.all([
-    sanityFetch({ query: COURSES_LIST_QUERY, tags: [CACHE_TAGS.course, CACHE_TAGS.lesson] }),
-    sanityFetch({ query: CATEGORIES_LIST_QUERY, tags: [CACHE_TAGS.category, CACHE_TAGS.course] }),
-  ]);
-  const ranked = toHomeCourses(courses);
-  const asLink = (course: (typeof ranked)[number]) => ({ label: course.title, href: course.href });
-
-  const columns: { title: string; links: FooterLink[] }[] = [
-    {
-      title: "Categories",
-      links: categories.flatMap((category) =>
-        category.slug && category.courseCount ? [{ label: category.title ?? category.slug, href: catalogHref(category.slug) }] : [],
-      ),
-    },
-    { title: "Popular courses", links: ranked.slice(0, COLUMN_SIZE).map(asLink) },
-    { title: "Go deeper", links: ranked.filter((course) => course.level === "advanced").slice(0, COLUMN_SIZE).map(asLink) },
-    {
-      title: "Vortex",
-      links: [
-        { label: "All courses", href: coursesHref },
-        { label: "Build your own plan", href: "/plans/new" },
-        { label: "Search", href: "/search" },
-        { label: "My Learning", href: "/my-learning" },
-      ],
-    },
-  ].filter((column) => column.links.length > 0);
-
+export function SiteFooter() {
   return (
     <footer className="mt-auto bg-neutral-100">
       <div className="mx-auto max-w-360 px-6 pt-14 pb-10 sm:px-10 xl:px-12">
-        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
-          {columns.map((column) => (
-            <nav key={column.title} aria-label={column.title}>
-              <h2 className="text-heading-2 text-neutral-900">{column.title}</h2>
-              <ul className="mt-2 flex flex-col gap-2.5">
-                {column.links.map((link) => (
-                  <li key={link.href}>
-                    <Link
-                      href={link.href}
-                      className="rounded-xs text-body-lg text-neutral-700 underline-offset-4 hover:text-neutral-900 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500"
-                    >
-                      {link.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </nav>
-          ))}
-        </div>
+        <section
+          aria-labelledby="footer-about"
+          className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between"
+        >
+          <div className="max-w-2xl">
+            <Logo size={28} />
+            <h2 id="footer-about" className="mt-5 text-heading-2 text-neutral-900">
+              About Vortex
+            </h2>
+            <p className="mt-2 text-body-lg text-neutral-700">
+              YouTube holds some of the best teaching in the world. Vortex gives it the order,
+              progress and quizzes of a real course, and keeps every creator credited.
+            </p>
+          </div>
+          <Link
+            href="/about"
+            className="group inline-flex items-center gap-2 self-start rounded-xs text-action text-primary-600 underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 lg:self-auto"
+          >
+            How Vortex works
+            <ArrowRight
+              className="size-4 transition-transform duration-200 ease-out-soft group-hover:translate-x-0.5"
+              strokeWidth={2}
+              aria-hidden
+            />
+          </Link>
+        </section>
         <p className="mt-12 border-t border-neutral-200 pt-6 text-body text-neutral-500">
           © {new Date().getFullYear()} Vortex. Videos belong to their YouTube creators.
         </p>
