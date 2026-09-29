@@ -23,6 +23,7 @@ async function getCourse(slug: string) {
   });
 }
 
+/** Every course slug, so course pages can be built ahead of time. */
 export async function generateStaticParams() {
   const courses = await sanityFetch({ query: COURSE_SLUGS_QUERY, tags: [CACHE_TAGS.course] });
 
@@ -31,6 +32,7 @@ export async function generateStaticParams() {
     .map((course) => ({ slug: course.slug as string }));
 }
 
+/** The course's title and summary as the page title and description. */
 export async function generateMetadata({
   params,
 }: PageProps<"/courses/[slug]">): Promise<Metadata> {
@@ -45,6 +47,7 @@ export async function generateMetadata({
   };
 }
 
+/** A course: hero, what you'll learn, curriculum, and the learner's own progress when signed in. */
 export default async function CoursePage({ params }: PageProps<"/courses/[slug]">) {
   const { slug } = await params;
   const course = await getCourse(slug);

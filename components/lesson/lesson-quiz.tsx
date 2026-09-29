@@ -39,8 +39,11 @@ interface LessonQuizProps {
   unlocked?: boolean;
   /** Where the results screen's "Next lesson" goes. */
   nextHref?: string | null;
-  /** Where the final score goes instead of the course progress route: plan lessons save to their plan. */
-  onFinish?: (score: number, total: number) => void | Promise<void>;
+  /**
+   * Where the answers go instead of the course progress route: plan lessons save to their plan.
+   * The server grades them; `attemptId` lets it ignore a retried submission.
+   */
+  onFinish?: (answers: Record<string, string>, attemptId: string) => void | Promise<void>;
 }
 
 type Phase = "locked" | "loading" | "error" | "ready" | "taking" | "results";
@@ -141,10 +144,13 @@ export function LessonQuiz({
     setAttempts((current) => current + 1);
     setPhase("results");
     cardRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    // The grade shown here is for the learner; the stored one is computed by the server from the
+    // same answers, so the two always agree.
+    const attemptId = crypto.randomUUID();
     const saved = onFinish
-      ? Promise.resolve(onFinish(right, total))
+      ? Promise.resolve(onFinish(answers, attemptId))
       : saveProgress
-        ? sendProgress({ type: "quiz", lessonId, score: right, total })
+        ? sendProgress({ type: "quiz", lessonId, answers, attemptId })
         : Promise.resolve();
     // The sidebar's quiz mark and the course percentage come from the server.
     void saved.then(() => router.refresh());

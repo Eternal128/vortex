@@ -12,6 +12,7 @@ interface LessonCardProps {
   className?: string;
 }
 
+/** A lesson as a card: a Lesson badge, its title and description, and its module. */
 export function LessonCard({ title, description, moduleLabel, href, className }: LessonCardProps) {
   return (
     <Card className={cn("gap-3", className)}>

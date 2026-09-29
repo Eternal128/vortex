@@ -3,7 +3,10 @@ import Image from "next/image";
 import Link from "next/link";
 import type { COURSES_LIST_QUERY_RESULT } from "@/sanity.types";
 import { CourseCard } from "@/components/cards/course-card";
-import { formatCount, formatDuration, formatLevel, pluralize } from "@/lib/format";
+import { CreatorAvatars } from "@/components/creators/creator-avatars";
+import { LiveLearners } from "@/components/learners/learner-counts";
+import { creatorsLabel, toCreators } from "@/lib/creators";
+import { formatDuration, formatLevel, pluralize } from "@/lib/format";
 import { courseHref } from "@/lib/routes";
 import { urlFor } from "@/sanity/lib/image";
 
@@ -20,6 +23,13 @@ interface CourseGridProps {
   showPopular?: boolean;
   /** Percent complete by course id, for courses the signed-in learner has started. */
   progress?: ReadonlyMap<string, number>;
+}
+
+/** "IBM Technology and 9 more", with their avatars: the real channels behind the course. */
+function creatorsOf(course: Course) {
+  const creators = toCreators(course.creators, 56);
+  if (creators.length === 0) return undefined;
+  return { label: creatorsLabel(creators), avatars: <CreatorAvatars creators={creators} size={28} /> };
 }
 
 /** The catalog card grid, shared by the home page preview and the full catalog. */
@@ -46,23 +56,8 @@ export function CourseGrid({ courses, limit, showPopular = true, progress }: Cou
               category={course.category?.title ?? undefined}
               popular={showPopular && (course.popular ?? false)}
               percentComplete={progress?.get(course._id)}
-              learners={formatCount(course.studentCount) ?? undefined}
-              instructor={
-                course.instructor?.name
-                  ? {
-                      name: course.instructor.name,
-                      avatar: course.instructor.photo?.asset ? (
-                        <Image
-                          src={urlFor(course.instructor.photo).width(56).height(56).fit("crop").url()}
-                          alt=""
-                          width={28}
-                          height={28}
-                          className="size-7 shrink-0 rounded-full object-cover"
-                        />
-                      ) : undefined,
-                    }
-                  : undefined
-              }
+              learners={<LiveLearners kind="course" id={course._id} />}
+              creators={creatorsOf(course)}
               logo={
                 course.coverImage?.asset ? (
                   <Image

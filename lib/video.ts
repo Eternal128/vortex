@@ -99,6 +99,7 @@ const PROVIDER_LABELS: Record<VideoProvider, string> = {
   bunny: "Bunny Stream",
 };
 
+/** The provider's display name, such as "YouTube". */
 export function videoProviderLabel(provider: VideoProvider) {
   return PROVIDER_LABELS[provider];
 }

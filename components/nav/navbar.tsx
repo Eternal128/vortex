@@ -23,6 +23,7 @@ const defaultLinks: NavLink[] = [
   { label: "My Learning", href: "/my-learning" },
 ];
 
+/** The header's primary navigation, marking the current section. */
 export function Navbar({ links = defaultLinks, activeHref, explore, className }: NavbarProps) {
   const visibleLinks = explore ? links.filter((link) => link.href !== coursesHref) : links;
 

@@ -1,14 +1,16 @@
 import { ArrowRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { CreatorAvatars } from "@/components/creators/creator-avatars";
 import type { HomeCourse } from "@/components/home/home-course";
+import { LevelAndLearners } from "@/components/learners/learner-counts";
 import { catalogHref, coursesHref } from "@/lib/routes";
 
 /** Rows per column, as in the reference. */
 const ROWS = 3;
 
 interface NewAndPopularProps {
-  /** Most-enrolled first. */
+  /** Most learners first. */
   courses: HomeCourse[];
   /** The category with the most courses, or null when there are none. */
   topCategory: { title: string; slug: string } | null;
@@ -25,7 +27,7 @@ const GRID_COLUMNS: Record<number, string> = { 1: "", 2: "lg:grid-cols-2", 3: "l
 
 /**
  * Three tinted columns of compact course rows. Every column is a real ordering of the data:
- * enrolment, a level, and the largest category. There is no rating data, so rows show level and
+ * live learners, a level, and the largest category. There is no rating data, so rows show level and
  * learners instead of stars.
  */
 export function NewAndPopular({ courses, topCategory }: NewAndPopularProps) {
@@ -105,24 +107,16 @@ function CourseRow({ course }: { course: HomeCourse }) {
         </span>
       )}
       <span className="min-w-0 flex-1">
-        {course.instructorName && (
+        {course.creators.length > 0 && (
           <span className="flex items-center gap-2 text-body-lg text-neutral-700">
-            {course.instructorPhoto && (
-              <Image
-                src={course.instructorPhoto}
-                alt=""
-                width={20}
-                height={20}
-                className="size-5 shrink-0 rounded-full object-cover"
-              />
-            )}
-            <span className="truncate">{course.instructorName}</span>
+            <CreatorAvatars creators={course.creators} size={20} />
+            <span className="truncate">{course.creatorsLabel}</span>
           </span>
         )}
         <span className="mt-0.5 block truncate text-heading-3 text-neutral-900 underline-offset-4 group-hover:underline">
           {course.title}
         </span>
-        {course.meta && <span className="mt-1 block text-body text-neutral-500">{course.meta}</span>}
+        <LevelAndLearners level={course.meta} courseId={course.id} className="mt-1 block text-body text-neutral-500" />
       </span>
     </Link>
   );

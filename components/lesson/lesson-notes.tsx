@@ -66,6 +66,7 @@ const components: PortableTextComponents = {
   },
 };
 
+/** The lesson's Portable Text notes, rendered with the site's typography. */
 export function LessonNotes({ notes }: { notes: BlockContent }) {
   return (
     <div className="flex flex-col gap-5">

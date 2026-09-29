@@ -28,6 +28,13 @@ export const progress = defineType({
             defineField({name: 'quizScore', type: 'number'}),
             defineField({name: 'quizTotal', type: 'number'}),
             defineField({name: 'quizAttempts', title: 'Quiz attempts', type: 'number'}),
+            defineField({
+              name: 'attemptIds',
+              title: 'Recent attempt ids',
+              description: 'The last 20 quiz submission ids, so a retried submission is not counted twice.',
+              type: 'array',
+              of: [defineArrayMember({type: 'string'})],
+            }),
             defineField({name: 'updatedAt', type: 'datetime'}),
           ],
         }),

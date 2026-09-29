@@ -24,6 +24,7 @@ const PACES = [
 /** What the server is doing, in order. The request is one call, so these advance on a timer. */
 const STEPS = ["Designing your syllabus…", "Finding the best videos on YouTube…", "Checking every video…", "Building your playlist…"];
 
+/** The personal plan form: goal, level and pace, then builds the plan and opens it. */
 export function PlanBuilderForm({ initialGoal = "" }: { initialGoal?: string }) {
   const router = useRouter();
   const id = useId();

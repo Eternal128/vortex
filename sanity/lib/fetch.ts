@@ -8,8 +8,9 @@ import { client } from "./client";
 export const CACHE_TAGS = {
   course: "course",
   lesson: "lesson",
-  instructor: "instructor",
   category: "category",
+  /** Live learner counts: expired by every progress and enrollment write. */
+  learners: "learners",
 } as const;
 
 const ONE_HOUR = 3600;
@@ -17,9 +18,9 @@ const ONE_HOUR = 3600;
 interface SanityFetchOptions<Params extends QueryParams> {
   query: string;
   params?: Params;
-  /** Tags to invalidate on demand via `revalidateTag`. Supplying tags disables time revalidation. */
+  /** Tags to invalidate on demand via `revalidateTag`. With tags, time revalidation is off unless set. */
   tags?: string[];
-  /** Only used when no tags are given. */
+  /** Seconds before a refetch. Defaults to an hour without tags, and to never with them. */
   revalidate?: number | false;
 }
 
@@ -32,11 +33,11 @@ export async function sanityFetch<const QueryString extends string>({
   query,
   params = {} as QueryParams,
   tags = [],
-  revalidate = ONE_HOUR,
+  revalidate,
 }: SanityFetchOptions<QueryParams> & { query: QueryString }) {
   return client.fetch(query, params, {
     next: {
-      revalidate: tags.length ? false : revalidate,
+      revalidate: revalidate ?? (tags.length ? false : ONE_HOUR),
       tags,
     },
   });

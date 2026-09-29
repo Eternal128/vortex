@@ -19,10 +19,10 @@ interface CourseCardProps {
   layout?: CourseCardLayout;
   /** Subject the course sits under, shown above the title on the stacked card. */
   category?: string;
-  /** Who teaches it. The avatar is optional; the name carries the credibility on its own. */
-  instructor?: { name: string; avatar?: ReactNode };
-  /** Pre-formatted learner count, e.g. `26k`. */
-  learners?: string;
+  /** The real creators whose videos make up the course: a label, with their avatars beside it. */
+  creators?: { label: string; avatars?: ReactNode };
+  /** The live learner count, e.g. `<LiveLearners />`; it renders nothing while the count is zero. */
+  learners?: ReactNode;
   /** Flags the course with the shared "popular" badge. */
   popular?: boolean;
   /** 0–100 for a signed-in learner who has started the course; the bar is hidden otherwise. */
@@ -61,6 +61,7 @@ function Meta({ level, duration, modules, tight = false }: MetaProps) {
   );
 }
 
+/** A course summary card: a compact row, or the stacked catalog card with creators and live learners. */
 export function CourseCard({
   title,
   description,
@@ -70,7 +71,7 @@ export function CourseCard({
   logo,
   layout = "row",
   category,
-  instructor,
+  creators,
   learners,
   popular = false,
   percentComplete,
@@ -105,23 +106,19 @@ export function CourseCard({
           <p className="mt-2 text-body text-neutral-500">{description}</p>
         </div>
 
-        {instructor || learners ? (
+        {creators || learners ? (
           <div className="flex min-w-0 items-center justify-between gap-3">
-            {instructor ? (
+            {creators ? (
               <span className="flex min-w-0 items-center gap-2">
-                {instructor.avatar}
+                {creators.avatars}
                 <span className="truncate text-body text-neutral-700">
-                  {instructor.name}
+                  {creators.label}
                 </span>
               </span>
             ) : (
               <span />
             )}
-            {learners ? (
-              <span className="tabular shrink-0 text-small text-neutral-500">
-                {learners} learners
-              </span>
-            ) : null}
+            {learners ? <span className="shrink-0 text-small text-neutral-500">{learners}</span> : null}
           </div>
         ) : null}
 

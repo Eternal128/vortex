@@ -13,6 +13,7 @@ const groq = createOpenAI({
 
 export const PLAN_MODEL = process.env.PLAN_MODEL || "openai/gpt-oss-120b";
 
+/** The Groq model that designs plans and writes their quizzes; needs GROQ_API_KEY. */
 export function planModel() {
   if (!process.env.GROQ_API_KEY) throw new Error("Missing environment variable: GROQ_API_KEY");
   return groq.chat(PLAN_MODEL);

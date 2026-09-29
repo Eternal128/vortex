@@ -33,6 +33,7 @@ const inputs: Record<SearchInputSize, string> = {
   lg: "text-body-lg",
 };
 
+/** The pill search field with its submit button. */
 export function SearchInput({
   id = "search",
   label = "Search",

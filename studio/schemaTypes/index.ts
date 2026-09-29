@@ -2,9 +2,9 @@ import {type SchemaTypeDefinition} from 'sanity'
 
 import {category} from './documents/category'
 import {course} from './documents/course'
-import {instructor} from './documents/instructor'
 import {lesson} from './documents/lesson'
 import {plan} from './documents/plan'
+import {planQuota} from './documents/planQuota'
 import {progress} from './documents/progress'
 import {quiz} from './documents/quiz'
 import {video} from './documents/video'
@@ -20,12 +20,12 @@ export const schema: {types: SchemaTypeDefinition[]} = {
     // Documents
     course,
     lesson,
-    instructor,
     category,
     video,
     quiz,
     progress,
     plan,
+    planQuota,
     // Objects
     courseModule,
     learningOutcome,

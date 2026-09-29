@@ -37,6 +37,7 @@ const cell =
   "inline-flex size-9 items-center justify-center rounded-md text-body transition-colors " +
   "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2";
 
+/** Numbered page links with previous and next, collapsing long ranges with ellipses. */
 export function Pagination({ currentPage, totalPages, buildHref, className }: PaginationProps) {
   const items = pageItems(currentPage, totalPages);
   const hasPrevious = currentPage > 1;

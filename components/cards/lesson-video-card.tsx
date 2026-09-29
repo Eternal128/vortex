@@ -14,6 +14,7 @@ interface LessonVideoCardProps {
   className?: string;
 }
 
+/** A lesson's video as a card: thumbnail, length, and its position in the course. */
 export function LessonVideoCard({
   title,
   description,

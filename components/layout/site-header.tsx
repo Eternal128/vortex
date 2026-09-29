@@ -7,6 +7,7 @@ import { Navbar } from "@/components/nav/navbar";
 import { SearchForm } from "@/components/search/search-form";
 import { Button, buttonClasses } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
+import { getLearnerCounts } from "@/lib/learners";
 import { catalogHref, courseHref } from "@/lib/routes";
 import { cn } from "@/lib/utils";
 import { CACHE_TAGS, sanityFetch } from "@/sanity/lib/fetch";
@@ -23,11 +24,12 @@ interface SiteHeaderProps {
 
 /** The Explore menu's links. Same queries and tags as the catalog, so the fetches are shared. */
 async function exploreMenuData(): Promise<ExploreMenuData> {
-  const [courses, categories] = await Promise.all([
+  const [courses, categories, learners] = await Promise.all([
     sanityFetch({ query: COURSES_LIST_QUERY, tags: [CACHE_TAGS.course, CACHE_TAGS.lesson] }),
     sanityFetch({ query: CATEGORIES_LIST_QUERY, tags: [CACHE_TAGS.category, CACHE_TAGS.course] }),
+    getLearnerCounts(),
   ]);
-  const ranked = toHomeCourses(courses);
+  const ranked = toHomeCourses(courses, learners.courses);
   const asLink = (course: (typeof ranked)[number]) => ({ label: course.title, href: course.href });
 
   return {
@@ -49,6 +51,7 @@ async function exploreMenuData(): Promise<ExploreMenuData> {
   };
 }
 
+/** The site header: logo, Explore menu, search, theme toggle, Create plan, and account controls. */
 export async function SiteHeader({ activeHref, className }: SiteHeaderProps) {
   const explore = await exploreMenuData();
 

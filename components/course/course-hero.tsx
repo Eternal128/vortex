@@ -3,8 +3,11 @@ import Image from "next/image";
 import type { COURSE_BY_SLUG_QUERY_RESULT } from "@/sanity.types";
 import { Badge } from "@/components/ui/badge";
 import { CourseHeroActions, type EnrollState } from "@/components/course/course-hero-actions";
+import { CreatorAvatars } from "@/components/creators/creator-avatars";
+import { LiveLearners } from "@/components/learners/learner-counts";
+import { creatorsLabel, toCreators } from "@/lib/creators";
 import { urlFor } from "@/sanity/lib/image";
-import { formatCount, formatDuration, formatLevel, pluralize } from "@/lib/format";
+import { formatDuration, formatLevel, pluralize } from "@/lib/format";
 
 type Course = NonNullable<COURSE_BY_SLUG_QUERY_RESULT>;
 
@@ -22,13 +25,12 @@ export function CourseHero({ course, continueHref, enrollState, percentComplete,
   const level = formatLevel(course.level);
   const duration = formatDuration(course.durationSeconds);
   const modules = course.moduleCount ? pluralize(course.moduleCount, "module") : null;
-  const students = formatCount(course.studentCount);
+  const creators = toCreators(course.creators, 64);
 
   const meta: { icon: LucideIcon; label: string }[] = [];
   if (level) meta.push({ icon: BarChart3, label: level });
   if (duration) meta.push({ icon: Clock, label: duration });
   if (modules) meta.push({ icon: FileText, label: modules });
-  if (students) meta.push({ icon: Users, label: `${students} students` });
 
   return (
     <div className="flex flex-col gap-8 lg:flex-row lg:gap-15">
@@ -56,19 +58,28 @@ export function CourseHero({ course, continueHref, enrollState, percentComplete,
           </p>
         )}
 
-        {meta.length > 0 && (
-          <ul className="mt-11 flex flex-wrap items-center gap-x-9 gap-y-3">
-            {meta.map(({ icon: Icon, label }) => (
-              <li
-                key={label}
-                className="inline-flex items-center gap-2 text-body whitespace-nowrap text-neutral-500"
-              >
-                <Icon className="size-4 shrink-0" strokeWidth={2} aria-hidden />
-                {label}
-              </li>
-            ))}
-          </ul>
+        {creators.length > 0 && (
+          <p className="mt-5 flex items-center gap-3 text-body-lg text-neutral-700">
+            <CreatorAvatars creators={creators} max={4} size={32} />
+            <span className="min-w-0">Videos by {creatorsLabel(creators, 2)}</span>
+          </p>
         )}
+
+        <ul className="mt-9 flex flex-wrap items-center gap-x-9 gap-y-3">
+          {meta.map(({ icon: Icon, label }) => (
+            <li
+              key={label}
+              className="inline-flex items-center gap-2 text-body whitespace-nowrap text-neutral-500"
+            >
+              <Icon className="size-4 shrink-0" strokeWidth={2} aria-hidden />
+              {label}
+            </li>
+          ))}
+          <li className="inline-flex items-center gap-2 text-body whitespace-nowrap text-neutral-500">
+            <Users className="size-4 shrink-0" strokeWidth={2} aria-hidden />
+            <LiveLearners kind="course" id={course._id} zero="Be the first to enroll" />
+          </li>
+        </ul>
 
         <CourseHeroActions
           continueHref={continueHref}

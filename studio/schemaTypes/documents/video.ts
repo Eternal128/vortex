@@ -50,6 +50,17 @@ export const video = defineType({
       type: 'string',
     }),
     defineField({
+      name: 'channelId',
+      title: 'Channel ID',
+      description: 'The YouTube channel id, from the Data API. Written by scripts/media/channels.mjs.',
+      type: 'string',
+    }),
+    defineField({
+      name: 'channelAvatar',
+      description: "The channel's own YouTube avatar, imported as an asset by scripts/media/channels.mjs.",
+      type: 'image',
+    }),
+    defineField({
       name: 'chapters',
       description: 'Table of contents. Empty when the source published no markers.',
       type: 'array',

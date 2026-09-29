@@ -46,6 +46,7 @@ interface WatchDepthOptions {
   startSeconds: number;
 }
 
+/** Estimates how far a Vimeo or Bunny video has been watched from wall-clock play time, and saves it as progress. */
 export function useWatchDepth({
   isPlaying,
   lessonId,

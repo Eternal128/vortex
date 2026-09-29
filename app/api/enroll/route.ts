@@ -1,6 +1,7 @@
 import { auth } from "@clerk/nextjs/server";
 import { z } from "zod";
 
+import { expireLearnerCounts } from "@/lib/learners";
 import { client } from "@/sanity/lib/client";
 import { enrollCourse } from "@/sanity/lib/progress";
 
@@ -18,5 +19,6 @@ export async function POST(request: Request) {
   if (!exists) return Response.json({ error: "Unknown course" }, { status: 404 });
 
   await enrollCourse(userId, parsed.data.courseId);
+  expireLearnerCounts();
   return new Response(null, { status: 204 });
 }

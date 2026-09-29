@@ -7,6 +7,7 @@ import { PageFrame } from "@/components/layout/page-frame";
 import { SiteHeader } from "@/components/layout/site-header";
 import { buttonClasses } from "@/components/ui/button";
 import { ProgressBar } from "@/components/ui/progress-bar";
+import { creatorsLabel, toCreators } from "@/lib/creators";
 import { pluralize } from "@/lib/format";
 import { planHref } from "@/lib/plans/labels";
 import { listPlans, type Plan } from "@/lib/plans/store";
@@ -250,6 +251,7 @@ function Section({ title, children }: { title: string; children: React.ReactNode
 function CourseRow({ state }: { state: CourseState }) {
   const { course, resume } = state;
   const lessonCount = course.lessonCount ?? 0;
+  const creators = creatorsLabel(toCreators(course.creators));
   return (
     <li className="lift flex flex-col gap-5 rounded-lg border border-neutral-200 bg-surface p-4 sm:flex-row sm:items-center">
       <span className="relative block aspect-4/3 w-full shrink-0 overflow-hidden rounded-md bg-neutral-100 sm:w-36">
@@ -278,7 +280,7 @@ function CourseRow({ state }: { state: CourseState }) {
           )}
         </h3>
         <p className="mt-1 text-body text-neutral-500">
-          {[course.instructor?.name && `Curated by ${course.instructor.name}`, lessonCount && pluralize(lessonCount, "video")]
+          {[creators && `Videos by ${creators}`, lessonCount && pluralize(lessonCount, "video")]
             .filter(Boolean)
             .join(" · ")}
         </p>

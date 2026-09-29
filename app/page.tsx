@@ -8,19 +8,22 @@ import { PromoCarousel } from "@/components/home/promo-carousel";
 import { StatsBand } from "@/components/home/stats-band";
 import { PageFrame } from "@/components/layout/page-frame";
 import { SiteHeader } from "@/components/layout/site-header";
+import { getLearnerCounts } from "@/lib/learners";
 import { CACHE_TAGS, sanityFetch } from "@/sanity/lib/fetch";
 import { CATEGORIES_LIST_QUERY, COURSES_LIST_QUERY } from "@/sanity/lib/queries";
 
 /** Course slides after the pitch in the carousel. */
 const FEATURED_COURSE_COUNT = 3;
 
+/** The home page: featured courses, rows ranked by live learners, the plan teaser, and categories. */
 export default async function Home() {
-  const [courses, categories] = await Promise.all([
+  const [courses, categories, learners] = await Promise.all([
     sanityFetch({ query: COURSES_LIST_QUERY, tags: [CACHE_TAGS.course, CACHE_TAGS.lesson] }),
     sanityFetch({ query: CATEGORIES_LIST_QUERY, tags: [CACHE_TAGS.category, CACHE_TAGS.course] }),
+    getLearnerCounts(),
   ]);
 
-  const homeCourses = toHomeCourses(courses);
+  const homeCourses = toHomeCourses(courses, learners.courses);
   const featured = homeCourses.filter((course) => course.cover).slice(0, FEATURED_COURSE_COUNT);
 
   const withCourses = categories

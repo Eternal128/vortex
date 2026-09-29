@@ -15,6 +15,7 @@ interface BadgeProps {
   className?: string;
 }
 
+/** A small label chip, such as Popular, Lesson or Free preview. */
 export function Badge({ variant = "video", children, className }: BadgeProps) {
   return (
     <span

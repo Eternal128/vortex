@@ -94,13 +94,6 @@ export const lesson = defineType({
       initialValue: false,
     }),
     defineField({
-      name: 'studentCount',
-      description: 'Display only.',
-      type: 'number',
-      group: 'extras',
-      validation: (rule) => rule.integer().min(0),
-    }),
-    defineField({
       name: 'notes',
       description: 'The written lesson notes shown beside the video.',
       type: 'blockContent',

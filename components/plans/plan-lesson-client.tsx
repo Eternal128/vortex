@@ -51,8 +51,8 @@ export function PlanLessonClient({ planKey, lessonKey, eventId, initialQuestions
       bestScore={bestScore}
       unlocked={completed}
       nextHref={nextHref}
-      onFinish={async (score, total) => {
-        await post(`/api/plans/${planKey}/progress`, { type: "quiz", lessonKey, score, total }).catch(() => undefined);
+      onFinish={async (answers, attemptId) => {
+        await post(`/api/plans/${planKey}/progress`, { type: "quiz", lessonKey, answers, attemptId }).catch(() => undefined);
       }}
     />
   );

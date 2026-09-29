@@ -157,6 +157,7 @@ const buttonRows = [
 
 /* ------------------------------------------------------------------ page */
 
+/** A living reference of the design tokens and components, for building new UI against. */
 export default function DesignSystemPage() {
   return (
     <main id="main" className="mx-auto w-full max-w-[1440px] px-4 py-10 sm:px-6 lg:px-8">

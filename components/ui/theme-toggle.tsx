@@ -32,6 +32,7 @@ function getServerSnapshot(): Theme | null {
   return null;
 }
 
+/** The light, system and dark switch, remembered per browser. */
 export function ThemeToggle({ className }: { className?: string }) {
   const theme = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 

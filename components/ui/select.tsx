@@ -14,6 +14,7 @@ interface SelectProps extends Omit<ComponentPropsWithoutRef<"select">, "classNam
   className?: string;
 }
 
+/** A native select styled to the design system, with a visually hidden label. */
 export function Select({ id = "select", label = "Sort by", options, className, ...props }: SelectProps) {
   return (
     <div className={cn("relative w-full", className)}>

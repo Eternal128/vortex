@@ -15,6 +15,7 @@ const SAILS = [
   { d: "M24 24 L2 24 L11 8 Z", fill: "var(--color-neutral-900)" },
 ];
 
+/** The windmill mark on its own, for tight spaces. */
 export function LogoMark({ size = 28, className }: Omit<LogoProps, "showWordmark">) {
   return (
     <svg
@@ -34,6 +35,7 @@ export function LogoMark({ size = 28, className }: Omit<LogoProps, "showWordmark
   );
 }
 
+/** The windmill mark with the Vortex wordmark beside it. */
 export function Logo({ size = 28, showWordmark = true, className }: LogoProps) {
   return (
     <span className={cn("inline-flex items-center gap-2", className)}>

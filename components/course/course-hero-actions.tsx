@@ -7,6 +7,7 @@ import posthog from "posthog-js";
 import { useEffect, useRef, useState } from "react";
 import { CourseResumeLink } from "@/components/course/course-resume-link";
 import { Button } from "@/components/ui/button";
+import { LEARNERS_CHANGED_EVENT } from "@/lib/progress/client";
 
 export type EnrollState = "signed-out" | "not-enrolled" | "enrolled";
 
@@ -28,6 +29,7 @@ async function enroll(courseId: string) {
     headers: { "content-type": "application/json" },
     body: JSON.stringify({ courseId }),
   });
+  if (response.ok) window.dispatchEvent(new Event(LEARNERS_CHANGED_EVENT));
   return response.ok;
 }
 

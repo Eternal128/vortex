@@ -3,13 +3,13 @@ import { z } from "zod";
 
 import { designPlan, LEVELS, PACES } from "@/lib/plans/design";
 import { pickVideos } from "@/lib/plans/pick";
-import { countPlansSince, createPlan, type PlanModule } from "@/lib/plans/store";
+import { PLANS_PER_DAY, reservePlanBuild } from "@/lib/plans/quota";
+import { createPlan, type PlanModule } from "@/lib/plans/store";
 import { videoCandidates, YouTubeQuotaError, type PlanVideo } from "@/lib/plans/youtube";
 
 /** One LLM call plus ~12 YouTube lookups. */
 export const maxDuration = 60;
 
-const PLANS_PER_DAY = 5;
 const MIN_LESSONS = 6;
 
 const bodySchema = z.object({
@@ -19,8 +19,17 @@ const bodySchema = z.object({
 });
 
 /**
+ * Test hook for the admission check: with PLAN_BUILD_STUB=1 outside production, an admitted
+ * request returns before any model or YouTube call, so the limit can be tested without spending
+ * quota. Never honoured in production.
+ */
+const STUB_BUILDS = process.env.NODE_ENV !== "production" && process.env.PLAN_BUILD_STUB === "1";
+
+/**
  * Builds a learner's plan: syllabus from the LLM (which may refuse), then one YouTube video per
  * lesson. The learner comes from Clerk, never from the body; nothing is saved on refusal or failure.
+ * A build slot is reserved before any upstream call, so the daily limit bounds real work, including
+ * refused, failed and parallel builds.
  */
 export async function POST(request: Request) {
   const { userId } = await auth();
@@ -29,10 +38,10 @@ export async function POST(request: Request) {
   const parsed = bodySchema.safeParse(await request.json().catch(() => null));
   if (!parsed.success) return Response.json({ error: "Tell us what you want to learn (3–120 characters)." }, { status: 400 });
 
-  const since = new Date(Date.now() - 24 * 60 * 60 * 1000);
-  if ((await countPlansSince(userId, since)) >= PLANS_PER_DAY) {
+  if (!(await reservePlanBuild(userId))) {
     return Response.json({ error: `You can build ${PLANS_PER_DAY} plans a day. Try again tomorrow.` }, { status: 429 });
   }
+  if (STUB_BUILDS) return Response.json({ admitted: true }, { status: 202 });
 
   let outline;
   try {

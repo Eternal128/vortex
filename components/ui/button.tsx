@@ -83,6 +83,7 @@ interface ButtonBaseProps {
 type ButtonProps = ButtonBaseProps &
   Omit<ComponentPropsWithoutRef<"button">, "children" | "className">;
 
+/** The design system's button, in its variants and sizes. */
 export function Button({
   variant = "primary",
   size = "lg",
@@ -115,6 +116,7 @@ export function Button({
 type ButtonLinkProps = ButtonBaseProps &
   Omit<ComponentPropsWithoutRef<"a">, "children" | "className">;
 
+/** A plain anchor styled as a button, for links that are not `next/link`. */
 export function ButtonLink({
   variant = "primary",
   size = "lg",

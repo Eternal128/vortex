@@ -17,6 +17,7 @@ interface StatusIndicatorProps {
   className?: string;
 }
 
+/** A dot and label for a lesson's state: in progress, completed, now playing, or locked. */
 export function StatusIndicator({ status, label, className }: StatusIndicatorProps) {
   const { label: defaultLabel, className: tone } = config[status];
 

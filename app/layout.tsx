@@ -1,7 +1,9 @@
 import { ClerkProvider } from "@clerk/nextjs";
 import type { Metadata } from "next";
 import { Source_Sans_3 } from "next/font/google";
+import { LearnerCountsProvider } from "@/components/learners/learner-counts";
 import { PostHogUserIdentifier } from "@/components/posthog/posthog-user-identifier";
+import { getLearnerCounts } from "@/lib/learners";
 import { themeInitScript } from "@/lib/theme";
 import "./globals.css";
 
@@ -16,7 +18,11 @@ export const metadata: Metadata = {
     "Vortex turns YouTube's best lessons into structured courses: curated playlists with transcripts, chapters, notes, quizzes and search that finds the exact second a topic is taught.",
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+/** The document shell: font, theme, Clerk, analytics, and live learner counts around every page. */
+export default async function RootLayout({ children }: LayoutProps<"/">) {
+  // First paint carries real counts; the provider keeps them live from there.
+  const learners = await getLearnerCounts();
+
   return (
     <html
       lang="en"
@@ -35,7 +41,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         </a>
         <ClerkProvider>
           <PostHogUserIdentifier />
-          {children}
+          <LearnerCountsProvider initial={learners}>{children}</LearnerCountsProvider>
         </ClerkProvider>
       </body>
     </html>

@@ -13,6 +13,7 @@ interface ResourceCardProps {
   className?: string;
 }
 
+/** One of a lesson's resources (docs, article, repository) as a linked card. */
 export function ResourceCard({
   title,
   description,

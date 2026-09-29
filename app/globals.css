@@ -276,6 +276,25 @@
   }
 }
 
+/* A live learner count that just changed: a brief coral wash, so the update is noticed. */
+@keyframes learner-tick {
+  from {
+    background-color: var(--color-primary-200);
+  }
+  to {
+    background-color: transparent;
+  }
+}
+
+.learner-tick {
+  border-radius: 4px;
+  padding-inline: 2px;
+  margin-inline: -2px;
+  @media (prefers-reduced-motion: no-preference) {
+    animation: learner-tick 1.6s ease-out;
+  }
+}
+
 /* Digits in meta rows (durations, counts) align column-to-column. */
 @utility tabular {
   font-variant-numeric: tabular-nums;

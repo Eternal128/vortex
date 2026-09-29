@@ -2,7 +2,7 @@ import { auth } from "@clerk/nextjs/server";
 import { z } from "zod";
 
 import { generatePlanQuiz } from "@/lib/plans/quiz";
-import { findLesson, getPlan, updatePlanLesson } from "@/lib/plans/store";
+import { changePlanLesson, findLesson, getPlan } from "@/lib/plans/store";
 import { fetchTranscriptText } from "@/lib/plans/transcript";
 
 /** Transcript fetch plus one LLM call, the first time a lesson is opened. */
@@ -12,7 +12,8 @@ const bodySchema = z.object({ lessonKey: z.string().max(20) });
 
 /**
  * The lesson's quiz, generated on first request from the video's transcript and cached on the plan.
- * Later requests return the stored quiz.
+ * Later requests return the stored quiz. If two first requests race, the first stored quiz wins and
+ * both return it, so the quiz a learner answers is always the one their answers are graded against.
  */
 export async function POST(request: Request, { params }: RouteContext<"/api/plans/[key]/quiz">) {
   const { userId } = await auth();
@@ -46,8 +47,12 @@ export async function POST(request: Request, { params }: RouteContext<"/api/plan
         options: question.options.map((option, o) => ({ _key: `q${q}o${o}`, _type: "planOption", ...option })),
       })),
     };
-    await updatePlanLesson(userId, key, found.target, { quiz: stored as never });
-    return Response.json({ quiz: stored });
+    const kept = await changePlanLesson(userId, key, lesson._key, (current) =>
+      current.quiz?.questions?.length
+        ? { fields: null, result: current.quiz }
+        : { fields: { quiz: stored as never }, result: stored },
+    );
+    return Response.json({ quiz: kept ?? stored });
   } catch {
     return Response.json({ error: "We couldn't write a quiz for this video just now." }, { status: 502 });
   }

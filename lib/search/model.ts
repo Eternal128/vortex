@@ -8,6 +8,7 @@ import { createOpenAI, openai } from "@ai-sdk/openai";
  */
 export type SearchProvider = "groq" | "openai";
 
+/** Which provider runs search: Groq when its key is set (unless SEARCH_PROVIDER says otherwise), else OpenAI. */
 export function searchProvider(): SearchProvider {
   if (process.env.SEARCH_PROVIDER === "openai") return "openai";
   if (process.env.SEARCH_PROVIDER === "groq" || process.env.GROQ_API_KEY) return "groq";

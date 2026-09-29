@@ -19,6 +19,7 @@ export const metadata: Metadata = {
   description: "Every course on Vortex, from first principles to production.",
 };
 
+/** The catalog: every course, filterable by category, with the learner's progress on started courses. */
 export default async function CoursesPage({ searchParams }: PageProps<"/courses">) {
   const [allCourses, categories] = await Promise.all([
     sanityFetch({

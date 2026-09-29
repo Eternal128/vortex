@@ -43,6 +43,7 @@ export interface Curriculum {
   next: CurriculumLesson | null;
 }
 
+/** The course's lessons in order with derived "5.1" labels, completion and grades, plus the current, previous and next lesson. */
 export function buildCurriculum(
   modules: CourseModule[] | null | undefined,
   currentLessonId: string,

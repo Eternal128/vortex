@@ -2,6 +2,7 @@ import "server-only";
 
 import { randomBytes } from "node:crypto";
 
+import { compareAndSet } from "@/sanity/lib/cas";
 import { writeClient } from "@/sanity/lib/write-client";
 
 import type { PlanQuiz } from "./quiz";
@@ -42,14 +43,17 @@ function planId(userId: string, key: string) {
   return `plan.${userId}.${key}`;
 }
 
-const PLAN_FIELDS = `
-  "key": string::split(_id, ".")[2], goal, level, pace, title, summary, createdAt,
-  modules[]{_key, title, lessons[]{
-    _key, title, objective, videoId, videoUrl, videoTitle, channel, durationSeconds, thumbnailUrl,
-    completedAt, quizScore, quizTotal, quiz
-  }}
+const PLAN_LESSON_FIELDS = `
+  _key, title, objective, videoId, videoUrl, videoTitle, channel, durationSeconds, thumbnailUrl,
+  completedAt, quizScore, quizTotal, quiz
 `;
 
+const PLAN_FIELDS = `
+  "key": string::split(_id, ".")[2], goal, level, pace, title, summary, createdAt,
+  modules[]{_key, title, lessons[]{${PLAN_LESSON_FIELDS}}}
+`;
+
+/** Saves a newly built plan for its owner and returns its key. */
 export async function createPlan(
   userId: string,
   plan: Omit<Plan, "key" | "createdAt">,
@@ -84,6 +88,7 @@ export async function getPlan(userId: string, key: string): Promise<Plan | null>
   }, { cache: "no-store" });
 }
 
+/** The learner's plans, newest first. */
 export async function listPlans(userId: string): Promise<Plan[]> {
   return writeClient.fetch<Plan[]>(
     `*[_type == "plan" && userId == $userId] | order(createdAt desc){${PLAN_FIELDS}}`,
@@ -92,34 +97,50 @@ export async function listPlans(userId: string): Promise<Plan[]> {
   );
 }
 
-/** For the daily limit. */
-export async function countPlansSince(userId: string, since: Date): Promise<number> {
-  return writeClient.fetch<number>(
-    `count(*[_type == "plan" && userId == $userId && createdAt > $since])`,
-    { userId, since: since.toISOString() },
-    { cache: "no-store" },
-  );
-}
-
+/** Deletes one of the learner's plans (a key belonging to someone else addresses nothing). */
 export async function deletePlan(userId: string, key: string) {
   await writeClient.delete(planId(userId, key));
 }
 
+type LessonFields = Partial<Pick<PlanLesson, "completedAt" | "quizScore" | "quizTotal" | "quiz">>;
+
 /**
- * Sets fields on one lesson. Both keys come from `findLesson` on the stored plan, never from input
- * directly. The module is addressed by key: a wildcard over modules is silently ignored by the API.
+ * Race-safe change to one lesson of the learner's own plan: reads the plan with its revision, lets
+ * `change` compute the new fields from the lesson as stored, and commits only if nothing wrote in
+ * between (retrying otherwise). `change` returns `fields: null` to write nothing. Resolves to null
+ * when the plan or lesson does not exist for this owner. The module is addressed by key: a
+ * wildcard over modules is silently ignored by the API.
  */
-export async function updatePlanLesson(
+export async function changePlanLesson<Result>(
   userId: string,
   key: string,
-  target: { moduleKey: string; lessonKey: string },
-  fields: Partial<Pick<PlanLesson, "completedAt" | "quizScore" | "quizTotal" | "quiz">>,
-) {
-  const path = `modules[_key=="${target.moduleKey}"].lessons[_key=="${target.lessonKey}"]`;
-  const set = Object.fromEntries(Object.entries(fields).map(([name, value]) => [`${path}.${name}`, value]));
-  await writeClient.patch(planId(userId, key)).set(set).commit();
+  lessonKey: string,
+  change: (lesson: PlanLesson) => { fields: LessonFields | null; result: Result },
+): Promise<Result | null> {
+  if (!/^[a-f0-9]{10}$/.test(key)) return null;
+  const id = planId(userId, key);
+  return compareAndSet(
+    id,
+    async () =>
+      (await writeClient.fetch<{ _rev: string; modules: PlanModule[] } | null>(
+        `*[_id == $id && userId == $userId][0]{_rev, modules[]{_key, lessons[]{${PLAN_LESSON_FIELDS}}}}`,
+        { id, userId },
+        { cache: "no-store" },
+      )) ?? { _rev: "", modules: [] },
+    (doc) => {
+      const planModule = doc.modules.find((item) => item.lessons.some((lesson) => lesson._key === lessonKey));
+      const lesson = planModule?.lessons.find((item) => item._key === lessonKey);
+      if (!planModule || !lesson) return { patch: null, result: null };
+      const { fields, result } = change(lesson);
+      if (!fields) return { patch: null, result };
+      const path = `modules[_key=="${planModule._key}"].lessons[_key=="${lessonKey}"]`;
+      const set = Object.fromEntries(Object.entries(fields).map(([name, value]) => [`${path}.${name}`, value]));
+      return { patch: (patch) => patch.set(set), result };
+    },
+  );
 }
 
+/** A lesson of a loaded plan, with its position and the keys a later update addresses it by. */
 export function findLesson(plan: Plan, lessonKey: string) {
   const flat = plan.modules.flatMap((module) => module.lessons);
   const index = flat.findIndex((lesson) => lesson._key === lessonKey);

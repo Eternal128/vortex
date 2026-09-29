@@ -4,7 +4,9 @@ import { ArrowRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useId, useRef, useState, type KeyboardEvent } from "react";
+import { CreatorAvatars } from "@/components/creators/creator-avatars";
 import type { HomeCourse } from "@/components/home/home-course";
+import { LevelAndLearners } from "@/components/learners/learner-counts";
 import { buttonClasses } from "@/components/ui/button";
 import { catalogHref } from "@/lib/routes";
 import { cn } from "@/lib/utils";
@@ -114,24 +116,16 @@ export function CategoryBrowser({ categories, courses }: CategoryBrowserProps) {
                   <Image src={course.cover} alt="" fill sizes="(min-width: 1280px) 240px, 45vw" className="object-cover" />
                 )}
               </span>
-              {course.instructorName && (
+              {course.creators.length > 0 && (
                 <span className="mt-3 flex items-center gap-2 text-body text-neutral-700">
-                  {course.instructorPhoto && (
-                    <Image
-                      src={course.instructorPhoto}
-                      alt=""
-                      width={20}
-                      height={20}
-                      className="size-5 shrink-0 rounded-full object-cover"
-                    />
-                  )}
-                  <span className="truncate">{course.instructorName}</span>
+                  <CreatorAvatars creators={course.creators} size={20} />
+                  <span className="truncate">{course.creatorsLabel}</span>
                 </span>
               )}
               <span className="mt-1 line-clamp-2 text-heading-3 text-neutral-900 underline-offset-4 group-hover:underline">
                 {course.title}
               </span>
-              {course.meta && <span className="mt-auto pt-2 text-body text-neutral-500">{course.meta}</span>}
+              <LevelAndLearners level={course.meta} courseId={course.id} className="mt-auto pt-2 text-body text-neutral-500" />
             </Link>
           ))}
         </div>

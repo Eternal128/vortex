@@ -4,6 +4,7 @@ import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
+import { CreatorAvatars } from "@/components/creators/creator-avatars";
 import type { HomeCourse } from "@/components/home/home-course";
 import { buttonClasses } from "@/components/ui/button";
 import { coursesHref } from "@/lib/routes";
@@ -104,18 +105,10 @@ export function PromoCarousel({ courses }: PromoCarouselProps) {
             className={tints[index % tints.length]}
           >
             <div className="relative z-10 flex flex-col justify-center p-8 sm:max-w-[60%]">
-              {course.instructorName && (
+              {course.creators.length > 0 && (
                 <p className="flex items-center gap-2 text-body-lg text-neutral-700">
-                  {course.instructorPhoto && (
-                    <Image
-                      src={course.instructorPhoto}
-                      alt=""
-                      width={28}
-                      height={28}
-                      className="size-7 rounded-full object-cover"
-                    />
-                  )}
-                  Curated by {course.instructorName}
+                  <CreatorAvatars creators={course.creators} size={28} />
+                  <span className="min-w-0 truncate">Videos by {course.creatorsLabel}</span>
                 </p>
               )}
               <h2 className="mt-3 line-clamp-2 text-display-2 text-neutral-900">{course.title}</h2>

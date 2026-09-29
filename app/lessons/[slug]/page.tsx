@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { CreatorAvatars } from "@/components/creators/creator-avatars";
 import { PageFrame } from "@/components/layout/page-frame";
 import { SiteHeader } from "@/components/layout/site-header";
 import { buildCurriculum } from "@/components/lesson/lesson-curriculum";
@@ -14,6 +15,7 @@ import { LessonTabs } from "@/components/lesson/lesson-tabs";
 import { LessonVideo } from "@/components/lesson/lesson-video";
 import { LessonViewTracker } from "@/components/lesson/lesson-view-tracker";
 import { Breadcrumbs } from "@/components/nav/breadcrumbs";
+import { toCreators } from "@/lib/creators";
 import { firstParagraph, splitLeadParagraph, truncate } from "@/lib/portable-text";
 import { START_SECONDS_PARAM, courseHref, coursesHref, lessonHref } from "@/lib/routes";
 import { parseVideoUrl } from "@/lib/video";
@@ -31,6 +33,7 @@ async function getLesson(slug: string) {
   });
 }
 
+/** Every lesson slug, so lesson pages can be built ahead of time. */
 export async function generateStaticParams() {
   const lessons = await sanityFetch({ query: LESSON_SLUGS_QUERY, tags: [CACHE_TAGS.lesson] });
 
@@ -39,6 +42,7 @@ export async function generateStaticParams() {
     .map((lesson) => ({ slug: lesson.slug as string }));
 }
 
+/** The lesson's title and the lead of its notes as the page title and description. */
 export async function generateMetadata({
   params,
 }: PageProps<"/lessons/[slug]">): Promise<Metadata> {
@@ -64,6 +68,7 @@ function readStartSeconds(value: string | string[] | undefined, durationSeconds:
   return durationSeconds ? Math.min(parsed, durationSeconds) : parsed;
 }
 
+/** A lesson: the video (from `?t=` when deep-linked), notes, quiz, and the course sidebar with progress. */
 export default async function LessonPage({ params, searchParams }: PageProps<"/lessons/[slug]">) {
   const { slug } = await params;
   const lesson = await getLesson(slug);
@@ -95,6 +100,8 @@ export default async function LessonPage({ params, searchParams }: PageProps<"/l
     lesson.duration,
   );
 
+  // The real channel that published this lesson's video.
+  const [creator] = toCreators([lesson.creator], 56);
   const keyPoints = lesson.keyPoints ?? [];
   const resources = lesson.resources ?? [];
 
@@ -151,7 +158,7 @@ export default async function LessonPage({ params, searchParams }: PageProps<"/l
               summary={summary}
               durationSeconds={lesson.duration}
               level={course?.level ?? null}
-              studentCount={lesson.studentCount}
+              lessonId={lesson._id}
               lessonSlug={slug}
             />
 
@@ -175,14 +182,12 @@ export default async function LessonPage({ params, searchParams }: PageProps<"/l
               nextHref={curriculum.next?.slug ? lessonHref(curriculum.next.slug) : null}
             />
 
-            {(lesson.channel || course?.instructor?.name) && (
-              <p className="-mt-4 flex flex-wrap gap-x-4 gap-y-1 text-body text-neutral-500">
-                {lesson.channel && (
-                  <span>
-                    Video by <span className="font-semibold text-neutral-700">{lesson.channel}</span> · YouTube
-                  </span>
-                )}
-                {course?.instructor?.name && <span>Curated by {course.instructor.name}</span>}
+            {creator && (
+              <p className="-mt-4 flex items-center gap-2.5 text-body text-neutral-500">
+                <CreatorAvatars creators={[creator]} size={28} />
+                <span>
+                  Video by <span className="font-semibold text-neutral-700">{creator.name}</span> · YouTube
+                </span>
               </p>
             )}
 
