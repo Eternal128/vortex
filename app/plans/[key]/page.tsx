@@ -37,7 +37,7 @@ export default async function PlanPage({ params }: PageProps<"/plans/[key]">) {
 
         <section className="grid gap-8 rounded-lg bg-callout p-8 text-white lg:grid-cols-[minmax(0,1fr)_minmax(0,22rem)] lg:p-10">
           <div>
-            <p className="text-action text-primary-300">Your plan · {plan.goal}</p>
+            <p className="line-clamp-2 text-action text-primary-300">Your plan · {plan.goal}</p>
             <h1 className="mt-3 text-display-1 text-white">{plan.title}</h1>
             <p className="mt-4 max-w-2xl text-body-lg text-white/80">{plan.summary}</p>
             <p className="mt-5 flex flex-wrap gap-x-5 gap-y-1 text-body text-white/70">

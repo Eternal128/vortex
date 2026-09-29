@@ -1,4 +1,4 @@
-import type { ComponentPropsWithoutRef } from "react";
+import type { ComponentPropsWithoutRef, ReactNode } from "react";
 import { Search } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -15,6 +15,8 @@ interface SearchInputProps extends Omit<ComponentPropsWithoutRef<"input">, "clas
   /** `lg` is the hero field: taller, roomier, larger placeholder. Ignored by `pill`. */
   size?: SearchInputSize;
   variant?: SearchInputVariant;
+  /** Replaces the magnifier on the `field` variant, e.g. a sparkle for the plan composer. */
+  icon?: ReactNode;
   className?: string;
 }
 
@@ -41,6 +43,7 @@ export function SearchInput({
   shortcut = "⌘ K",
   size = "md",
   variant = "field",
+  icon,
   className,
   ...props
 }: SearchInputProps) {
@@ -81,11 +84,13 @@ export function SearchInput({
           fields[size],
         )}
       >
-        <Search
-          className={cn("shrink-0 text-neutral-900", icons[size])}
-          strokeWidth={2}
-          aria-hidden
-        />
+        {icon ?? (
+          <Search
+            className={cn("shrink-0 text-neutral-900", icons[size])}
+            strokeWidth={2}
+            aria-hidden
+          />
+        )}
         <input
           id={id}
           type="search"

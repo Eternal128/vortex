@@ -2,6 +2,7 @@ import { auth } from "@clerk/nextjs/server";
 import { z } from "zod";
 
 import { designPlan, LEVELS, PACES } from "@/lib/plans/design";
+import { GOAL_MAX, GOAL_MIN } from "@/lib/plans/limits";
 import { pickVideos } from "@/lib/plans/pick";
 import { PLANS_PER_DAY, reservePlanBuild } from "@/lib/plans/quota";
 import { createPlan, type PlanModule } from "@/lib/plans/store";
@@ -13,7 +14,7 @@ export const maxDuration = 60;
 const MIN_LESSONS = 6;
 
 const bodySchema = z.object({
-  goal: z.string().trim().min(3).max(120),
+  goal: z.string().trim().min(GOAL_MIN).max(GOAL_MAX),
   level: z.enum(LEVELS),
   pace: z.enum(PACES),
 });

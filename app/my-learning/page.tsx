@@ -204,7 +204,7 @@ function PlanCard({ plan }: { plan: Plan }) {
   const next = flat.find((lesson) => !lesson.completedAt) ?? flat[0];
   return (
     <li className="lift flex flex-col rounded-lg border border-neutral-200 bg-surface p-5">
-      <p className="text-small font-semibold text-neutral-500">Your plan · {plan.goal}</p>
+      <p className="line-clamp-1 text-small font-semibold text-neutral-500">Your plan · {plan.goal}</p>
       <h3 className="mt-1">
         <Link
           href={planHref(plan.key)}
