@@ -45,6 +45,11 @@ export const video = defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
+      name: 'channel',
+      description: 'The creator who published the video, credited on every lesson that uses it.',
+      type: 'string',
+    }),
+    defineField({
       name: 'chapters',
       description: 'Table of contents. Empty when the source published no markers.',
       type: 'array',

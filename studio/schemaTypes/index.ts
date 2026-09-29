@@ -4,6 +4,9 @@ import {category} from './documents/category'
 import {course} from './documents/course'
 import {instructor} from './documents/instructor'
 import {lesson} from './documents/lesson'
+import {plan} from './documents/plan'
+import {progress} from './documents/progress'
+import {quiz} from './documents/quiz'
 import {video} from './documents/video'
 import {blockContent} from './objects/blockContent'
 import {learningOutcome} from './objects/learningOutcome'
@@ -20,6 +23,9 @@ export const schema: {types: SchemaTypeDefinition[]} = {
     instructor,
     category,
     video,
+    quiz,
+    progress,
+    plan,
     // Objects
     courseModule,
     learningOutcome,

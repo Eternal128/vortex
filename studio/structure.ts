@@ -1,6 +1,9 @@
+import {ActivityIcon} from '@sanity/icons/Activity'
 import {BookIcon} from '@sanity/icons/Book'
 import {DocumentVideoIcon} from '@sanity/icons/DocumentVideo'
+import {HelpCircleIcon} from '@sanity/icons/HelpCircle'
 import {PlayIcon} from '@sanity/icons/Play'
+import {SparklesIcon} from '@sanity/icons/Sparkles'
 import {TagIcon} from '@sanity/icons/Tag'
 import {UserIcon} from '@sanity/icons/User'
 import type {StructureResolver} from 'sanity/structure'
@@ -17,4 +20,7 @@ export const structure: StructureResolver = (S) =>
       S.divider(),
       // Internal lookup data, built by scripts/ingest and read-only here.
       S.documentTypeListItem('video').title('Video intelligence').icon(DocumentVideoIcon),
+      S.documentTypeListItem('quiz').title('Quizzes').icon(HelpCircleIcon),
+      S.documentTypeListItem('progress').title('Learner progress').icon(ActivityIcon),
+      S.documentTypeListItem('plan').title('Learner plans').icon(SparklesIcon),
     ])

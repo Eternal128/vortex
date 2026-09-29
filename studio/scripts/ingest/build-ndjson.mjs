@@ -20,6 +20,16 @@ const HERE = dirname(fileURLToPath(import.meta.url))
 const CACHE_DIR = join(HERE, '.cache')
 const OUT_PATH = join(HERE, 'videos.ndjson')
 
+// The creator of each YouTube video, as resolve-videos recorded it — credited on every lesson.
+const SEED_VIDEOS = join(HERE, '../seed/videos.json')
+const channelByVideoId = new Map(
+  existsSync(SEED_VIDEOS)
+    ? Object.values(JSON.parse(readFileSync(SEED_VIDEOS, 'utf8')))
+        .filter((entry) => entry?.id && entry?.channel)
+        .map((entry) => [entry.id, entry.channel])
+    : [],
+)
+
 if (!existsSync(CACHE_DIR)) {
   console.error('No ingestion cache. Run: node scripts/ingest/ingest-videos.mjs')
   process.exit(1)
@@ -102,6 +112,7 @@ for (const file of files) {
     videoId: cached.videoId,
     url: cached.url,
     provider: cached.provider,
+    ...(channelByVideoId.has(cached.videoId) ? {channel: channelByVideoId.get(cached.videoId)} : {}),
     chapters: chapters.map((chapter) => ({
       _type: 'videoChapter',
       _key: `chapter-${chapter.startSeconds}`,
