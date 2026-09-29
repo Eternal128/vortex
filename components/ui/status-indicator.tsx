@@ -4,9 +4,9 @@ import { cn } from "@/lib/utils";
 export type Status = "in-progress" | "completed" | "now-playing" | "locked";
 
 const config: Record<Status, { label: string; className: string }> = {
-  "in-progress": { label: "In Progress", className: "text-primary-500" },
+  "in-progress": { label: "In Progress", className: "text-primary-600" },
   completed: { label: "Completed", className: "text-success" },
-  "now-playing": { label: "Now Playing", className: "text-primary-500" },
+  "now-playing": { label: "Now Playing", className: "text-primary-600" },
   locked: { label: "Locked", className: "text-neutral-700" },
 };
 
@@ -17,6 +17,7 @@ interface StatusIndicatorProps {
   className?: string;
 }
 
+/** A dot and label for a lesson's state: in progress, completed, now playing, or locked. */
 export function StatusIndicator({ status, label, className }: StatusIndicatorProps) {
   const { label: defaultLabel, className: tone } = config[status];
 

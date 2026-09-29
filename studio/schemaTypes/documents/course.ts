@@ -35,6 +35,7 @@ export const course = defineType({
     }),
     defineField({
       name: 'coverImage',
+      description: "Built by scripts/media/covers.mjs from the course's own video thumbnails.",
       type: 'image',
       group: 'overview',
       options: {hotspot: true},
@@ -46,13 +47,6 @@ export const course = defineType({
           validation: (rule) => rule.required(),
         }),
       ],
-      validation: (rule) => rule.required(),
-    }),
-    defineField({
-      name: 'instructor',
-      type: 'reference',
-      to: [{type: 'instructor'}],
-      group: 'overview',
       validation: (rule) => rule.required(),
     }),
     defineField({
@@ -91,13 +85,6 @@ export const course = defineType({
       initialValue: false,
     }),
     defineField({
-      name: 'studentCount',
-      description: 'Display only.',
-      type: 'number',
-      group: 'marketing',
-      validation: (rule) => rule.integer().min(0),
-    }),
-    defineField({
       name: 'learningOutcomes',
       title: "What you'll learn",
       type: 'array',
@@ -115,9 +102,9 @@ export const course = defineType({
     }),
   ],
   preview: {
-    select: {title: 'title', media: 'coverImage', level: 'level', instructor: 'instructor.name'},
-    prepare({title, media, level, instructor}) {
-      return {title, media, subtitle: [level, instructor].filter(Boolean).join(' · ')}
+    select: {title: 'title', media: 'coverImage', level: 'level', category: 'category.title'},
+    prepare({title, media, level, category}) {
+      return {title, media, subtitle: [level, category].filter(Boolean).join(' · ')}
     },
   },
 })

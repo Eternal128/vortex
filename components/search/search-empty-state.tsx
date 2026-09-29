@@ -12,7 +12,7 @@ export function SearchEmptyState() {
     <div className="flex flex-col items-start justify-between gap-5 rounded-lg border border-primary-200 bg-primary-100 p-5 sm:flex-row sm:items-center sm:gap-8 sm:p-6">
       <div className="flex min-w-0 items-center gap-4">
         <span className="flex size-11 shrink-0 items-center justify-center rounded-full bg-primary-200">
-          <Search className="size-5 text-primary-500" strokeWidth={2} aria-hidden />
+          <Search className="size-5 text-primary-600" strokeWidth={2} aria-hidden />
         </span>
         <div className="min-w-0">
           <p className="text-body-lg font-semibold text-neutral-900">
@@ -29,7 +29,7 @@ export function SearchEmptyState() {
         className={buttonClasses({
           variant: "tertiary",
           size: "lg",
-          className: "w-full shrink-0 text-primary-500 sm:w-auto",
+          className: "w-full shrink-0 text-primary-600 sm:w-auto",
         })}
       >
         Browse all courses

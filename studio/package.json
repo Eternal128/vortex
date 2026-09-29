@@ -16,7 +16,9 @@
     "context:import": "sanity dataset import scripts/context/vortex-search.ndjson --dataset production --replace",
     "ingest:videos": "node scripts/ingest/ingest-videos.mjs",
     "ingest:build": "node scripts/ingest/build-ndjson.mjs",
-    "ingest:import": "sanity dataset import scripts/ingest/videos.ndjson --dataset production --replace"
+    "ingest:import": "sanity dataset import scripts/ingest/videos.ndjson --dataset production --replace",
+    "quiz:generate": "sanity exec scripts/quiz/generate.mjs --with-user-token --",
+    "quiz:import": "sanity exec scripts/quiz/import.mjs --with-user-token --"
   },
   "dependencies": {
     "@sanity/icons": "^5.2.1",

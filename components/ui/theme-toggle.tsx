@@ -2,7 +2,7 @@
 
 import { Monitor, Moon, Sun } from "lucide-react";
 import { useEffect, useSyncExternalStore } from "react";
-import { applyTheme, THEME_STORAGE_KEY, type Theme } from "@/lib/theme";
+import { applyTheme, DEFAULT_THEME, THEME_STORAGE_KEY, type Theme } from "@/lib/theme";
 import { cn } from "@/lib/utils";
 
 const options = [
@@ -24,7 +24,7 @@ function subscribe(onChange: () => void) {
 }
 
 function getSnapshot(): Theme {
-  return (localStorage.getItem(THEME_STORAGE_KEY) as Theme | null) ?? "system";
+  return (localStorage.getItem(THEME_STORAGE_KEY) as Theme | null) ?? DEFAULT_THEME;
 }
 
 /** No stored choice is readable on the server, so no segment renders selected. */
@@ -32,6 +32,7 @@ function getServerSnapshot(): Theme | null {
   return null;
 }
 
+/** The light, system and dark switch, remembered per browser. */
 export function ThemeToggle({ className }: { className?: string }) {
   const theme = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 
@@ -70,7 +71,7 @@ export function ThemeToggle({ className }: { className?: string }) {
             title={label}
             onClick={() => choose(value)}
             className={cn(
-              "rounded-xs p-1.5 transition-colors duration-200 focus-visible:outline-none",
+              "rounded-sm p-1.5 transition-colors duration-200 focus-visible:outline-none",
               "focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-1",
               "focus-visible:ring-offset-background",
               selected

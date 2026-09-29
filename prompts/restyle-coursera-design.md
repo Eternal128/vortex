@@ -331,3 +331,46 @@ At the end: `npm run dev`, then a visual pass of every route in light and dark m
 9. Resize to 375px. The header wraps, the hero card stacks, the grids go to one column, the
    lesson sidebar collapses, and there is no horizontal scroll.
 10. Open `/design-system`. Swatches, type, and radii show the new tokens.
+
+## Deviations during implementation
+
+- **`lib/utils.ts` changed (the plan listed `lib/` as untouched).** `cn()` used plain
+  `twMerge`, which reads custom type utilities as text colors, so
+  `cn("text-body text-neutral-900")` silently dropped `text-body`. This was a pre-existing bug.
+  The type scale is now registered as a font-size group through `extendTailwindMerge`. The
+  signature of `cn` is unchanged.
+- **New token `--color-field-line`:** ink in light mode and `#5b6780` in dark mode, for text
+  field borders. The spec's ink outline would render as a near-white line in dark mode.
+- **Pre-existing dark-mode bugs fixed along the way:**
+  - The course monogram fallbacks (`course-card`, `course-icon`, the design-system sample)
+    were `bg-neutral-900 text-white`, which is white on near-white in dark mode. They now use
+    `bg-callout-navy`.
+  - The video frames and the duration chip used `bg-neutral-900`. They now use `bg-black` or
+    `bg-black/80`.
+  - Primary-filled icons (the sidebar step and now-playing marks, and the video play button)
+    now use `text-on-primary`.
+- **The select stays 44px tall** (not 48px), so the sort control keeps its alignment. Search
+  fields are 48px.
+- **The blockquote in lesson notes drops `italic`**, per the spec's "no italic flourish". The
+  left rule still marks the quote.
+- **Inline code in notes uses `text-[0.875em]`**, which is relative to the surrounding text and
+  not a px value. The type utilities set `font-family`, which would fight `font-mono`.
+- **The design-system "Ag" specimen uses Tailwind's `text-6xl`.** It is a display artifact,
+  not UI text.
+
+## Verification results
+
+- Typecheck and lint pass after every step. `next build` passes after step 1 and at the end
+  (all routes, no warnings).
+- There is no test script in `package.json`, so no test suite ran.
+- Diff review from baseline `3c2d94d`:
+  - No changed line touches props, types, hooks, handlers, queries, PostHog, or routing.
+  - These are unchanged: `lib/search`, `lib/routes.ts`, `lib/theme.ts`, `sanity/`,
+    `studio/`, `agent/`, `proxy.ts`, `instrumentation-client.ts`,
+    `components/analytics`, `components/posthog`, and `app/api`.
+- Visual pass with Playwright against the dev server: 6 routes × 4 widths
+  (1440/1024/768/375) × 2 themes = 48 checks.
+  - All 48 have zero horizontal overflow and zero weight-500 text.
+  - Source Sans 3 is the only rendered family.
+  - The theme applies correctly on every run.
+  - Primary is `#0056d2` with white text (light) and `#3587fc` with ink text (dark).

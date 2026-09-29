@@ -3,7 +3,10 @@ import Image from "next/image";
 import Link from "next/link";
 import type { COURSES_LIST_QUERY_RESULT } from "@/sanity.types";
 import { CourseCard } from "@/components/cards/course-card";
-import { formatCount, formatDuration, formatLevel, pluralize } from "@/lib/format";
+import { CreatorAvatars } from "@/components/creators/creator-avatars";
+import { LiveLearners } from "@/components/learners/learner-counts";
+import { creatorsLabel, toCreators } from "@/lib/creators";
+import { formatDuration, formatLevel, pluralize } from "@/lib/format";
 import { courseHref } from "@/lib/routes";
 import { urlFor } from "@/sanity/lib/image";
 
@@ -18,21 +21,30 @@ interface CourseGridProps {
    * nothing. Only the full catalog has the mix that makes it meaningful.
    */
   showPopular?: boolean;
+  /** Percent complete by course id, for courses the signed-in learner has started. */
+  progress?: ReadonlyMap<string, number>;
+}
+
+/** "IBM Technology and 9 more", with their avatars: the real channels behind the course. */
+function creatorsOf(course: Course) {
+  const creators = toCreators(course.creators, 56);
+  if (creators.length === 0) return undefined;
+  return { label: creatorsLabel(creators), avatars: <CreatorAvatars creators={creators} size={28} /> };
 }
 
 /** The catalog card grid, shared by the home page preview and the full catalog. */
-export function CourseGrid({ courses, limit, showPopular = true }: CourseGridProps) {
+export function CourseGrid({ courses, limit, showPopular = true, progress }: CourseGridProps) {
   const visible = courses.filter((course) => course.slug !== null).slice(0, limit);
 
   if (visible.length === 0) return <CourseGridEmpty />;
 
   return (
-    <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+    <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
       {visible.map((course) => (
         <li key={course._id} className="flex min-w-0">
           <Link
             href={courseHref(course.slug as string)}
-            className="flex min-w-0 flex-1 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
+            className="lift flex min-w-0 flex-1 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
           >
             <CourseCard
               layout="stacked"
@@ -43,23 +55,9 @@ export function CourseGrid({ courses, limit, showPopular = true }: CourseGridPro
               modules={course.moduleCount ? pluralize(course.moduleCount, "module") : ""}
               category={course.category?.title ?? undefined}
               popular={showPopular && (course.popular ?? false)}
-              learners={formatCount(course.studentCount) ?? undefined}
-              instructor={
-                course.instructor?.name
-                  ? {
-                      name: course.instructor.name,
-                      avatar: course.instructor.photo?.asset ? (
-                        <Image
-                          src={urlFor(course.instructor.photo).width(56).height(56).fit("crop").url()}
-                          alt=""
-                          width={28}
-                          height={28}
-                          className="size-7 shrink-0 rounded-full object-cover"
-                        />
-                      ) : undefined,
-                    }
-                  : undefined
-              }
+              percentComplete={progress?.get(course._id)}
+              learners={<LiveLearners kind="course" id={course._id} />}
+              creators={creatorsOf(course)}
               logo={
                 course.coverImage?.asset ? (
                   <Image
@@ -71,7 +69,7 @@ export function CourseGrid({ courses, limit, showPopular = true }: CourseGridPro
                   />
                 ) : undefined
               }
-              className="min-w-0 flex-1 border-canvas-line transition-[transform,border-color] duration-300 ease-out-soft hover:-translate-y-0.5 hover:border-primary-300"
+              className="min-w-0 flex-1 border-canvas-line transition-colors duration-200 hover:border-primary-500"
             />
           </Link>
         </li>
@@ -87,13 +85,13 @@ export function CourseGrid({ courses, limit, showPopular = true }: CourseGridPro
 function CourseGridEmpty() {
   return (
     <div className="flex flex-col items-center rounded-xl border border-dashed border-canvas-line bg-surface/50 px-6 py-16 text-center">
-      <span className="flex size-14 items-center justify-center rounded-lg bg-primary-100 text-primary-500">
+      <span className="flex size-14 items-center justify-center rounded-lg bg-primary-100 text-primary-600">
         <Library className="size-7" strokeWidth={1.75} aria-hidden />
       </span>
-      <h3 className="mt-6 font-display text-[22px] leading-7 font-bold text-neutral-900">
+      <h3 className="mt-6 text-heading-2 text-neutral-900">
         No courses published yet
       </h3>
-      <p className="mt-3 max-w-[48ch] text-[15px] leading-6.5 text-neutral-500">
+      <p className="mt-2 max-w-[48ch] text-body text-neutral-500">
         Courses added in Sanity Studio appear here as soon as they are published. Run the studio
         locally with <code className="text-neutral-700">npm run dev</code> inside{" "}
         <code className="text-neutral-700">studio/</code> to create the first one.

@@ -31,8 +31,8 @@ export function CourseProgressBar({
       )}
     >
       <div className="shrink-0">
-        <p className="text-[13px] leading-5 text-neutral-500">Your Progress</p>
-        <p className="mt-1 text-[15px] leading-6 text-neutral-500">
+        <p className="text-body text-neutral-500">Your Progress</p>
+        <p className="mt-1 text-body text-neutral-500">
           <span className="font-semibold text-neutral-900">{value}%</span>{" "}
           {value === 0 ? "not started" : "complete"}
         </p>
@@ -55,7 +55,7 @@ export function CourseProgressBar({
           courseSlug={courseSlug}
           location="progress_bar"
           percentComplete={value}
-          className="h-14 shrink-0 px-6 text-[16px]"
+          className="h-12 shrink-0 px-6"
         />
       )}
     </div>

@@ -20,6 +20,8 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 Vortex is a learning platform. Authors create courses in Sanity, and a Next.js site serves them to learners. What sets it apart is search. A learner types a plain language query and gets back ranked, clickable cards. Each card links straight to the exact second in a lesson's video where that topic is taught, and the video plays on the site itself.
 
+Learners can also build their own **personal plans**: they describe a goal, an LLM designs the syllabus, and each lesson is matched to a YouTube video through the official YouTube Data API. Plans are private per learner, with progress and a transcript-grounded quiz per lesson.
+
 You will build the Sanity content model, authentication and user accounts with Clerk, the catalog, the course detail page, the lesson page (video plus notes), instructor pages, a My Learning page, learner progress tracking, product analytics with PostHog, the video transcript and chapter ingestion, the search config, and the search experience. Build nothing beyond that. Do not overbuild.
 
 ---
@@ -48,6 +50,8 @@ Do not write code before the prompt is approved, unless the user tells you to sk
 # 3. UI work
 
 You do not design UI. The user gives you the design as desktop images plus a prompt. Reproduce them exactly: layout, spacing, typography, color, and states. There is no mobile reference, so make each page responsive down to mobile, adapting the layout sensibly (stack columns, collapse the lesson sidebar) while keeping the desktop exact. Do not restyle or improve beyond the reference. Reuse the components and Tailwind patterns already in the project before you add new ones. When there is a reference image, it is the source of truth, and this file says nothing about visuals on purpose.
+
+The visual system is centralized in `app/globals.css`: layout, radii and component shapes follow `design/coursera.design.md`, but the palette is Vortex's own: brand **coral `#f35252`** on warm onyx and ivory, in one typeface, Source Sans 3. Coral fills take onyx labels (white on coral fails AA); coral text uses the deeper `primary-600`. It supersedes the older `design/*.png` references and the spec's blue. When a new reference image arrives, take layout from the image and colors and type from the tokens. Do not reintroduce the Coursera blue or the old orange styling.
 
 ---
 
@@ -90,7 +94,7 @@ Never cross these boundaries. The browser holds no token, never calls the MCP or
 
 # 6. Tech stack
 
-Use Next.js (App Router), Clerk for authentication, PostHog for product analytics, Sanity Studio with `next-sanity`, `@sanity/image-url`, and `@portabletext/react`, Tailwind with typography, the Sanity Context MCP over server side HTTP, the Vercel AI SDK with the OpenAI provider, `react-markdown` only for rendering the search reply, Zod for validating structured output, and TypeScript.
+Use Next.js (App Router), Clerk for authentication, PostHog for product analytics, Sanity Studio with `next-sanity`, `@sanity/image-url`, and `@portabletext/react`, Tailwind with typography, the Sanity Context MCP over server side HTTP, the Vercel AI SDK with Groq (open-weight gpt-oss, through the OpenAI-compatible provider) for search and plans, and OpenAI as an optional search provider (`SEARCH_PROVIDER=openai`), `react-markdown` only for rendering the search reply, Zod for validating structured output, and TypeScript.
 
 Do not use the `@sanity/context` Studio plugin when it lags the Studio's Sanity major version, `text::semanticSimilarity()` unless embeddings are enabled, an embedded Studio, a public dataset, a client side token, or a separate backend framework. Section 12 explains why.
 
@@ -131,6 +135,8 @@ Here is the shape of the content in Sanity. The relationships and the fields cal
 ---
 
 # 9. How videos get their transcripts
+
+Personal plans are the one exception to offline-only video work: `/api/plans` searches YouTube in the request path, but only through the official Data API (safe search, embeddable only), and a plan lesson's quiz reads that video's captions on first open and caches the result on the plan. Course content still comes only from the offline pipeline.
 
 Build the video documents with offline tooling, keyed by an id derived from the video URL, stripping any characters the datastore rejects in ids. Store the transcript as many short timestamped chunks, and store the source's chapter markers as the table of contents. Keep whole transcripts out of anything the request path returns.
 

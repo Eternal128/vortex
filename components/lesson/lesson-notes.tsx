@@ -8,30 +8,30 @@ import type { BlockContent } from "@/sanity.types";
 const components: PortableTextComponents = {
   block: {
     normal: ({ children }) => (
-      <p className="text-[15px] leading-[28px] text-neutral-700">{children}</p>
+      <p className="text-body-lg text-neutral-700">{children}</p>
     ),
     h2: ({ children }) => (
-      <h3 className="mt-8 font-display text-[20px] leading-7 font-bold text-neutral-900">
+      <h3 className="mt-8 text-heading-2 text-neutral-900">
         {children}
       </h3>
     ),
     h3: ({ children }) => (
-      <h4 className="mt-6 text-[16px] leading-6 font-semibold text-neutral-900">{children}</h4>
+      <h4 className="mt-6 text-heading-3 text-neutral-900">{children}</h4>
     ),
     blockquote: ({ children }) => (
-      <blockquote className="border-l-2 border-primary-500 pl-4 text-[15px] leading-[28px] text-neutral-700 italic">
+      <blockquote className="border-l-2 border-primary-500 pl-4 text-body-lg text-neutral-700">
         {children}
       </blockquote>
     ),
   },
   list: {
     bullet: ({ children }) => (
-      <ul className="list-disc pl-5 text-[15px] leading-[28px] text-neutral-700 marker:text-primary-500">
+      <ul className="list-disc pl-5 text-body-lg text-neutral-700 marker:text-primary-500">
         {children}
       </ul>
     ),
     number: ({ children }) => (
-      <ol className="list-decimal pl-5 text-[15px] leading-[28px] text-neutral-700 marker:text-neutral-500">
+      <ol className="list-decimal pl-5 text-body-lg text-neutral-700 marker:text-neutral-500">
         {children}
       </ol>
     ),
@@ -44,7 +44,7 @@ const components: PortableTextComponents = {
     strong: ({ children }) => <strong className="font-semibold text-neutral-900">{children}</strong>,
     em: ({ children }) => <em className="italic">{children}</em>,
     code: ({ children }) => (
-      <code className="rounded-xs bg-neutral-100 px-1.5 py-0.5 font-mono text-[13px] text-neutral-900">
+      <code className="rounded-xs bg-neutral-100 px-1.5 py-0.5 font-mono text-[0.875em] text-neutral-900">
         {children}
       </code>
     ),
@@ -57,7 +57,7 @@ const components: PortableTextComponents = {
           href={href}
           target="_blank"
           rel="noopener noreferrer"
-          className="rounded-xs text-primary-500 underline underline-offset-2 transition-colors hover:text-primary-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
+          className="rounded-xs text-primary-600 underline underline-offset-2 transition-colors hover:text-primary-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
         >
           {children}
         </a>
@@ -66,6 +66,7 @@ const components: PortableTextComponents = {
   },
 };
 
+/** The lesson's Portable Text notes, rendered with the site's typography. */
 export function LessonNotes({ notes }: { notes: BlockContent }) {
   return (
     <div className="flex flex-col gap-5">

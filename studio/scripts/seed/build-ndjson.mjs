@@ -19,7 +19,7 @@ import {readFileSync, writeFileSync, existsSync} from 'node:fs'
 import {dirname, join} from 'node:path'
 import {fileURLToPath} from 'node:url'
 
-import {categories, courses, instructors} from './content.mjs'
+import {categories, courses} from './content.mjs'
 
 const HERE = dirname(fileURLToPath(import.meta.url))
 const CACHE_PATH = join(HERE, 'videos.json')
@@ -84,9 +84,7 @@ const bullet = (text, keyBase) => ({
  */
 const image = (url, alt) => ({_type: 'image', _sanityAsset: `image@${url}`, alt})
 
-const coverImageUrl = (slug) => `https://picsum.photos/seed/vortex-${slug}/1600/900`
 const posterUrl = (videoId) => `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`
-const portraitUrl = ({gender, id}) => `https://randomuser.me/api/portraits/${gender}/${id}.jpg`
 
 /* ------------------------------------------------------------- documents */
 
@@ -103,33 +101,13 @@ for (const category of categories) {
   })
 }
 
-for (const instructor of instructors) {
-  check(
-    instructor.expertise.length >= 1 && instructor.expertise.length <= 8,
-    `instructor ${instructor.slug}: expertise must hold 1-8 tags`,
-  )
-  documents.push({
-    _id: `instructor.${instructor.slug}`,
-    _type: 'instructor',
-    name: instructor.name,
-    slug: {_type: 'slug', current: instructor.slug},
-    photo: image(portraitUrl(instructor.portrait), `Portrait of ${instructor.name}`),
-    expertise: instructor.expertise,
-    bio: instructor.bio.map((paragraph, index) =>
-      block(paragraph, 'normal', `${instructor.slug}-bio-${index}`),
-    ),
-  })
-}
-
 const categorySlugs = new Set(categories.map((c) => c.slug))
-const instructorSlugs = new Set(instructors.map((i) => i.slug))
 const lessonIds = new Set()
 const referencedLessonIds = new Set()
 const usedVideoIds = new Map()
 
 for (const course of courses) {
   check(categorySlugs.has(course.category), `course ${course.slug}: unknown category`)
-  check(instructorSlugs.has(course.instructor), `course ${course.slug}: unknown instructor`)
   check(course.summary.length <= 200, `course ${course.slug}: summary over 200 chars`)
   check(course.outcomes.length <= 6, `course ${course.slug}: more than 6 learning outcomes`)
   check(course.modules.length >= 1, `course ${course.slug}: needs at least one module`)
@@ -139,7 +117,8 @@ for (const course of courses) {
    * no lesson ever claims more students than the course that contains it.
    */
   let lessonPosition = 0
-  const totalLessons = course.modules.reduce((sum, m) => sum + m.lessons.length, 0)
+  // The course cover starts as its first video's frame; scripts/media/covers.mjs builds the real one.
+  let firstVideoId = null
 
   const modules = course.modules.map((module, moduleIndex) => {
     check(
@@ -174,10 +153,7 @@ for (const course of courses) {
       // 0-based position of this lesson within the whole course.
       const position = lessonPosition
       lessonPosition += 1
-
-      const studentCount = Math.round(
-        course.studentCount * (1 - (position / Math.max(totalLessons, 1)) * 0.62),
-      )
+      if (position === 0) firstVideoId = video?.id ?? null
 
       const resources = [
         {
@@ -207,7 +183,6 @@ for (const course of courses) {
         duration: video?.duration ?? 0,
         // One free preview per course: the opening lesson.
         freePreview: position === 0,
-        studentCount,
         notes: [
           block(lesson.summary, 'normal', `${slug}-intro`),
           block('What this lesson covers', 'h2', `${slug}-h2`),
@@ -242,13 +217,11 @@ for (const course of courses) {
     title: course.title,
     slug: {_type: 'slug', current: course.slug},
     summary: course.summary,
-    coverImage: image(coverImageUrl(course.slug), `Cover image for ${course.title}`),
-    instructor: {_type: 'reference', _ref: `instructor.${course.instructor}`},
+    coverImage: image(posterUrl(firstVideoId ?? 'missing'), `A frame from ${course.title}`),
     category: {_type: 'reference', _ref: `category.${course.category}`},
     level: course.level,
     price: course.price,
     popular: course.popular,
-    studentCount: course.studentCount,
     learningOutcomes: course.outcomes.map((outcome, index) => {
       check(outcome.title.length <= 60, `course ${course.slug}: outcome title over 60 chars`)
       check(
@@ -282,7 +255,6 @@ const count = (type) => documents.filter((doc) => doc._type === type).length
 console.log(`Wrote ${documents.length} documents to ${OUT_PATH}`)
 console.log(
   `  categories: ${count('category')}\n` +
-    `  instructors: ${count('instructor')}\n` +
     `  courses: ${count('course')}\n` +
     `  lessons: ${count('lesson')}`,
 )

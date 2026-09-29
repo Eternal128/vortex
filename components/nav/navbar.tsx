@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { Logo } from "@/components/brand/logo";
+import { ExploreMenu, type ExploreMenuData } from "@/components/layout/explore-menu";
+import { coursesHref } from "@/lib/routes";
 import { cn } from "@/lib/utils";
 
 interface NavLink {
@@ -11,28 +13,31 @@ interface NavbarProps {
   links?: NavLink[];
   /** href of the link to mark as current. */
   activeHref?: string;
+  /** When given, an Explore menu stands in for the Courses link. */
+  explore?: ExploreMenuData;
   className?: string;
 }
 
 const defaultLinks: NavLink[] = [
-  { label: "Courses", href: "/courses" },
+  { label: "Courses", href: coursesHref },
   { label: "My Learning", href: "/my-learning" },
 ];
 
-export function Navbar({ links = defaultLinks, activeHref, className }: NavbarProps) {
+/** The header's primary navigation, marking the current section. */
+export function Navbar({ links = defaultLinks, activeHref, explore, className }: NavbarProps) {
+  const visibleLinks = explore ? links.filter((link) => link.href !== coursesHref) : links;
+
   return (
-    <nav
-      aria-label="Main"
-      className={cn("flex flex-wrap items-center gap-x-8 gap-y-4", className)}
-    >
+    <nav aria-label="Main" className={cn("flex items-center gap-x-4 sm:gap-x-6", className)}>
       <Link
         href="/"
-        className="rounded-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
+        className="mr-2 flex items-center rounded-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
       >
-        <Logo size={24} />
+        <Logo size={26} />
       </Link>
-      <ul className="flex items-center gap-8">
-        {links.map((link) => {
+      {explore && <ExploreMenu {...explore} active={activeHref === coursesHref} />}
+      <ul className="flex items-center gap-6">
+        {visibleLinks.map((link) => {
           const isActive = link.href === activeHref;
           return (
             <li key={link.href}>
@@ -40,10 +45,10 @@ export function Navbar({ links = defaultLinks, activeHref, className }: NavbarPr
                 href={link.href}
                 aria-current={isActive ? "page" : undefined}
                 className={cn(
-                  "rounded-xs text-body-lg font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2",
+                  "rounded-xs text-body-lg whitespace-nowrap transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2",
                   isActive
-                    ? "text-primary-500"
-                    : "text-neutral-900 hover:text-primary-500",
+                    ? "font-semibold text-primary-600"
+                    : "text-neutral-700 hover:text-primary-500",
                 )}
               >
                 {link.label}

@@ -62,7 +62,7 @@ export function ResultCard({
           start_seconds: result.kind === "video" ? result.startSeconds : null,
         })
       }
-      className="group flex flex-col gap-4 rounded-lg border border-neutral-200 bg-surface p-4 shadow-sm transition-colors hover:border-primary-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 sm:flex-row sm:gap-6"
+      className="lift group flex flex-col gap-4 rounded-lg border border-neutral-200 bg-surface p-4 transition-colors hover:border-primary-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 sm:flex-row sm:gap-6"
     >
       <div className="w-full shrink-0 sm:w-69">{media}</div>
 
@@ -75,7 +75,7 @@ export function ResultCard({
           <Badge variant={badge.variant}>{badge.label}</Badge>
         </div>
 
-        <h2 className="text-[19px] leading-7 font-semibold text-neutral-900">{title}</h2>
+        <h2 className="text-heading-2 text-neutral-900">{title}</h2>
 
         <p className="text-body leading-6 text-neutral-500">{description}</p>
 
@@ -83,7 +83,7 @@ export function ResultCard({
           <span className="flex min-w-0 flex-wrap items-center gap-2 text-body text-neutral-500">
             {meta}
           </span>
-          <span className="inline-flex shrink-0 items-center gap-2 text-body font-medium text-primary-500 transition-colors group-hover:text-primary-600">
+          <span className="inline-flex shrink-0 items-center gap-2 text-action text-primary-600 underline-offset-4 transition-colors group-hover:text-primary-600 group-hover:underline">
             {action}
           </span>
         </div>

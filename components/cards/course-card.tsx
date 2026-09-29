@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import { BarChart3, Clock, FolderClosed } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardFooter } from "@/components/ui/card";
+import { ProgressBar } from "@/components/ui/progress-bar";
 import { cn } from "@/lib/utils";
 
 export type CourseCardLayout = "row" | "stacked";
@@ -18,12 +19,14 @@ interface CourseCardProps {
   layout?: CourseCardLayout;
   /** Subject the course sits under, shown above the title on the stacked card. */
   category?: string;
-  /** Who teaches it. The avatar is optional; the name carries the credibility on its own. */
-  instructor?: { name: string; avatar?: ReactNode };
-  /** Pre-formatted learner count, e.g. `26k`. */
-  learners?: string;
+  /** The real creators whose videos make up the course: a label, with their avatars beside it. */
+  creators?: { label: string; avatars?: ReactNode };
+  /** The live learner count, e.g. `<LiveLearners />`; it renders nothing while the count is zero. */
+  learners?: ReactNode;
   /** Flags the course with the shared "popular" badge. */
   popular?: boolean;
+  /** 0–100 for a signed-in learner who has started the course; the bar is hidden otherwise. */
+  percentComplete?: number;
   className?: string;
 }
 
@@ -36,7 +39,7 @@ function Meta({ level, duration, modules, tight = false }: MetaProps) {
   // Not cn(): tailwind-merge reads the custom `text-small` utility as a colour class and would
   // drop it in favour of `text-neutral-500`.
   const item = `inline-flex items-center whitespace-nowrap font-sans text-neutral-500 ${
-    tight ? "gap-1 text-[11px] leading-4" : "text-small gap-2"
+    tight ? "gap-1 text-caption" : "text-small gap-2"
   }`;
   const icon = `text-neutral-500 ${tight ? "size-3.5" : "size-4"}`;
 
@@ -58,6 +61,7 @@ function Meta({ level, duration, modules, tight = false }: MetaProps) {
   );
 }
 
+/** A course summary card: a compact row, or the stacked catalog card with creators and live learners. */
 export function CourseCard({
   title,
   description,
@@ -67,15 +71,16 @@ export function CourseCard({
   logo,
   layout = "row",
   category,
-  instructor,
+  creators,
   learners,
   popular = false,
+  percentComplete,
   className,
 }: CourseCardProps) {
   const fallbackLogo = (size: string) => (
     <span
       className={cn(
-        "flex shrink-0 items-center justify-center rounded-md bg-neutral-900 font-display leading-none font-bold text-white",
+        "flex shrink-0 items-center justify-center rounded-md bg-callout leading-none font-bold text-white",
         size,
       )}
     >
@@ -85,43 +90,41 @@ export function CourseCard({
 
   if (layout === "stacked") {
     return (
-      <Card className={cn("gap-5 p-4.5 xl:p-6", className)}>
+      <Card className={cn("gap-4", className)}>
         <div className="flex items-start justify-between gap-3">
-          {logo ?? fallbackLogo("size-18 rounded-lg text-[32px]")}
+          {logo ?? fallbackLogo("size-18 rounded-lg text-display-2")}
           {popular ? <Badge variant="popular">Popular</Badge> : null}
         </div>
 
         <div className="min-w-0">
           {category ? (
-            <p className="text-[12px] leading-4 font-medium text-neutral-500">{category}</p>
+            <p className="text-small font-semibold text-neutral-500">{category}</p>
           ) : null}
-          <h3 className="mt-1.5 font-display text-[22px] leading-7 font-bold text-neutral-900">
+          <h3 className="mt-1.5 text-heading-2 text-neutral-900">
             {title}
           </h3>
-          <p className="mt-3 text-[15px] leading-6.25 text-neutral-500">{description}</p>
+          <p className="mt-2 text-body text-neutral-500">{description}</p>
         </div>
 
-        {instructor || learners ? (
+        {creators || learners ? (
           <div className="flex min-w-0 items-center justify-between gap-3">
-            {instructor ? (
+            {creators ? (
               <span className="flex min-w-0 items-center gap-2">
-                {instructor.avatar}
-                <span className="truncate text-[13px] leading-5 text-neutral-700">
-                  {instructor.name}
+                {creators.avatars}
+                <span className="truncate text-body text-neutral-700">
+                  {creators.label}
                 </span>
               </span>
             ) : (
               <span />
             )}
-            {learners ? (
-              <span className="tabular shrink-0 text-[12px] leading-4 text-neutral-500">
-                {learners} learners
-              </span>
-            ) : null}
+            {learners ? <span className="shrink-0 text-small text-neutral-500">{learners}</span> : null}
           </div>
         ) : null}
 
-        <CardFooter className="flex-wrap gap-x-1 gap-y-2 border-t border-canvas-line pt-5">
+        {percentComplete !== undefined && <ProgressBar value={percentComplete} className="mt-auto" />}
+
+        <CardFooter className="flex-wrap gap-x-1 gap-y-2 border-t border-canvas-line pt-4">
           <Meta level={level} duration={duration} modules={modules} tight />
         </CardFooter>
       </Card>
@@ -131,7 +134,7 @@ export function CourseCard({
   return (
     <Card className={cn("gap-5", className)}>
       <div className="flex items-start gap-4">
-        {logo ?? fallbackLogo("size-12 rounded-md text-[22px]")}
+        {logo ?? fallbackLogo("size-12 rounded-md text-heading-2")}
         <div className="min-w-0">
           <h3 className="text-heading-3 text-neutral-900">{title}</h3>
           <p className="mt-1 text-body text-neutral-500">{description}</p>

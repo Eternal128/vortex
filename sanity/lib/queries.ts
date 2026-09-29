@@ -19,11 +19,12 @@ const COURSE_CARD_FIELDS = /* groq */ `
   level,
   price,
   popular,
-  studentCount,
   coverImage,
-  "instructor": instructor->{name, "slug": slug.current, photo},
+  "creators": *[_type == "video" && url in ^.modules[].lessons[]->videoUrl]{channel, channelId, channelAvatar},
   "category": category->{title, "slug": slug.current},
   "moduleCount": count(modules),
+  "lessonIds": modules[].lessons[]._ref,
+  "lessonMeta": modules[].lessons[]->{_id, duration},
   "lessonCount": count(modules[].lessons[]),
   "durationSeconds": math::sum(modules[].lessons[]->duration)
 `;
@@ -46,14 +47,6 @@ export const COURSE_BY_SLUG_QUERY = defineQuery(`
   *[_type == "course" && slug.current == $slug][0]{
     ${COURSE_CARD_FIELDS},
     learningOutcomes[]{_key, icon, title, description},
-    "instructorDetail": instructor->{
-      _id,
-      name,
-      "slug": slug.current,
-      photo,
-      expertise,
-      bio
-    },
     modules[]{
       _key,
       title,
@@ -89,18 +82,20 @@ export const LESSON_BY_SLUG_QUERY = defineQuery(`
     thumbnail,
     duration,
     freePreview,
-    studentCount,
     notes,
     keyPoints,
     proTip,
     resources[]{_key, type, title, description, url},
+    "creator": *[_type == "video" && url == ^.videoUrl][0]{channel, channelId, channelAvatar},
+    "quiz": *[_type == "quiz" && lesson._ref == ^._id][0]{
+      questions[]{_key, prompt, options[]{_key, text, isCorrect, feedback}}
+    },
     "course": *[_type == "course" && references(^._id)][0]{
       _id,
       title,
       "slug": slug.current,
       level,
       coverImage,
-      "instructor": instructor->{name, "slug": slug.current, photo},
       modules[]{
         _key,
         title,
@@ -147,30 +142,11 @@ export const LESSONS_BY_IDS_QUERY = defineQuery(`
   }
 `);
 
-/** Instructor index. */
-export const INSTRUCTORS_LIST_QUERY = defineQuery(`
-  *[_type == "instructor" && defined(slug.current)] | order(name asc) {
-    _id,
-    name,
-    "slug": slug.current,
-    photo,
-    expertise,
-    "courseCount": count(*[_type == "course" && instructor._ref == ^._id])
-  }
-`);
-
-/** Instructor detail with the courses they teach. */
-export const INSTRUCTOR_BY_SLUG_QUERY = defineQuery(`
-  *[_type == "instructor" && slug.current == $slug][0]{
-    _id,
-    name,
-    "slug": slug.current,
-    photo,
-    expertise,
-    bio,
-    "courses": *[_type == "course" && instructor._ref == ^._id] | order(title asc) {
-      ${COURSE_CARD_FIELDS}
-    }
+/** My Learning: every course with its lessons in order, so progress can pick the resume point. */
+export const MY_LEARNING_COURSES_QUERY = defineQuery(`
+  *[_type == "course" && defined(slug.current)] | order(title asc) {
+    ${COURSE_CARD_FIELDS},
+    "lessons": modules[].lessons[]->{_id, title, "slug": slug.current, duration}
   }
 `);
 
@@ -184,3 +160,15 @@ export const CATEGORIES_LIST_QUERY = defineQuery(`
     "courseCount": count(*[_type == "course" && category._ref == ^._id])
   }
 `);
+
+/**
+ * Live learner counts. Progress records carry each learner's enrollments and lessons; the catalog
+ * maps lessons to courses. Counted on the server, so no progress record or user id leaves it.
+ */
+export const LEARNER_COUNTS_QUERY = defineQuery(`{
+  "progress": *[_type == "progress"]{
+    "courses": enrollments[].course._ref,
+    "lessons": lessons[].lesson._ref
+  },
+  "courses": *[_type == "course"]{_id, "lessonIds": modules[].lessons[]._ref}
+}`);

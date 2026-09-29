@@ -14,6 +14,8 @@ interface CourseResumeLinkProps {
   location: ResumeLocation;
   /** 0–100. Zero everywhere until a progress record exists (AGENTS.md §7). */
   percentComplete: number;
+  /** Defaults to "Continue Learning"; "Start course" before any lesson has been watched. */
+  label?: string;
   className?: string;
 }
 
@@ -26,6 +28,7 @@ export function CourseResumeLink({
   courseSlug,
   location,
   percentComplete,
+  label = "Continue Learning",
   className,
 }: CourseResumeLinkProps) {
   return (
@@ -40,7 +43,7 @@ export function CourseResumeLink({
         })
       }
     >
-      Continue Learning
+      {label}
       <ArrowRight className="size-5" strokeWidth={2} aria-hidden />
     </Link>
   );

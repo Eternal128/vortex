@@ -54,63 +54,6 @@ export const categories = [
 ]
 
 /**
- * Instructors. Each teaches exactly two courses, and their expertise tags match what they teach.
- * These are fictional people; portraits are synthetic placeholder images.
- */
-export const instructors = [
-  {
-    slug: 'mira-kovac',
-    name: 'Mira Kovac',
-    portrait: {gender: 'women', id: 44},
-    expertise: ['React', 'Next.js', 'Web performance', 'Rendering'],
-    bio: [
-      'Mira has spent the last decade building large React applications and then making them fast again. She works on rendering architecture, and cares more about what ships to the browser than about what looks clever in the editor.',
-      'She teaches the way she debugs: measure first, form a hypothesis, change one thing. Her courses lean heavily on the profiler and the network tab.',
-    ],
-  },
-  {
-    slug: 'daniel-okafor',
-    name: 'Daniel Okafor',
-    portrait: {gender: 'men', id: 32},
-    expertise: ['TypeScript', 'PostgreSQL', 'API design', 'Data modelling'],
-    bio: [
-      'Daniel works on the layer where application code meets the database. He has spent years untangling type systems and query plans, usually in the same afternoon.',
-      'He believes most runtime bugs are modelling mistakes that were visible earlier, and he teaches both TypeScript and Postgres from that angle.',
-    ],
-  },
-  {
-    slug: 'priya-raman',
-    name: 'Priya Raman',
-    portrait: {gender: 'women', id: 68},
-    expertise: ['LLMs', 'RAG', 'Prompt engineering', 'Evaluation'],
-    bio: [
-      'Priya builds products on top of language models and, more importantly, the evaluation harnesses that tell you whether they actually work. She has shipped retrieval systems over messy, real-world corpora.',
-      'Her position is that almost every bad AI feature is a retrieval or evaluation problem wearing a prompt-engineering costume.',
-    ],
-  },
-  {
-    slug: 'tomas-berg',
-    name: 'Tomas Berg',
-    portrait: {gender: 'men', id: 75},
-    expertise: ['Python', 'pandas', 'System design', 'Distributed systems'],
-    bio: [
-      'Tomas moves between data work and backend architecture, which is less of a jump than it sounds: both are mostly about what you do when the volume grows by two orders of magnitude.',
-      'He teaches with worked examples and back-of-the-envelope numbers, because a design you cannot estimate is a design you cannot defend.',
-    ],
-  },
-  {
-    slug: 'alina-costa',
-    name: 'Alina Costa',
-    portrait: {gender: 'women', id: 12},
-    expertise: ['Docker', 'Kubernetes', 'CI/CD', 'Application security'],
-    bio: [
-      'Alina runs the path from a developer laptop to production and everything that can go wrong along it — build pipelines, orchestration, secrets, and the attack surface all of it creates.',
-      'She teaches operations and security together, on the grounds that a system nobody can deploy safely is not actually secure.',
-    ],
-  },
-]
-
-/**
  * Courses. Four modules each, three lessons per module.
  *
  * Per lesson:
@@ -123,11 +66,9 @@ export const courses = [
     slug: 'nextjs-app-router-in-depth',
     title: 'Next.js App Router in Depth',
     category: 'web-development',
-    instructor: 'mira-kovac',
     level: 'intermediate',
     price: 89,
     popular: true,
-    studentCount: 18240,
     summary:
       'Learn the App Router the way it actually works: routing and layouts, the server/client boundary, caching, and server actions.',
     docs: {title: 'Next.js documentation', url: 'https://nextjs.org/docs'},
@@ -353,11 +294,9 @@ export const courses = [
     slug: 'react-performance-engineering',
     title: 'React Performance Engineering',
     category: 'web-development',
-    instructor: 'mira-kovac',
     level: 'advanced',
     price: 119,
     popular: false,
-    studentCount: 7420,
     summary:
       'Measure before you optimise. Profiling, render behaviour, concurrent features, and shipping less JavaScript.',
     docs: {title: 'React documentation', url: 'https://react.dev/learn'},
@@ -573,11 +512,9 @@ export const courses = [
     slug: 'typescript-for-application-developers',
     title: 'TypeScript for Application Developers',
     category: 'languages',
-    instructor: 'daniel-okafor',
     level: 'intermediate',
     price: 79,
     popular: true,
-    studentCount: 22110,
     summary:
       'Go past annotations. Structural typing, narrowing, generics, and the type-level tools that make invalid states impossible.',
     docs: {title: 'TypeScript handbook', url: 'https://www.typescriptlang.org/docs/handbook/intro.html'},
@@ -799,11 +736,9 @@ export const courses = [
     slug: 'building-ai-apps-with-llms',
     title: 'Building AI Apps with LLMs',
     category: 'ai-engineering',
-    instructor: 'priya-raman',
     level: 'intermediate',
     price: 99,
     popular: true,
-    studentCount: 26380,
     summary:
       'From first API call to a feature you can ship: prompting, structured output, tool calling, streaming, and cost control.',
     docs: {title: 'Claude API documentation', url: 'https://docs.anthropic.com/en/api/overview'},
@@ -1019,11 +954,9 @@ export const courses = [
     slug: 'retrieval-augmented-generation-from-scratch',
     title: 'Retrieval-Augmented Generation from Scratch',
     category: 'ai-engineering',
-    instructor: 'priya-raman',
     level: 'advanced',
     price: 129,
     popular: false,
-    studentCount: 9130,
     summary:
       'Build a RAG system that actually retrieves the right thing: embeddings, chunking, hybrid search, reranking, and grounded answers.',
     docs: {title: 'Sanity Context and content APIs', url: 'https://www.sanity.io/docs'},
@@ -1239,11 +1172,9 @@ export const courses = [
     slug: 'python-for-data-work',
     title: 'Python for Data Work',
     category: 'data',
-    instructor: 'tomas-berg',
     level: 'beginner',
     price: 0,
     popular: true,
-    studentCount: 31450,
     summary:
       'A practical on-ramp to data work in Python: the language basics you need, pandas, plotting, and reproducible workflows.',
     docs: {title: 'pandas documentation', url: 'https://pandas.pydata.org/docs/'},
@@ -1459,11 +1390,9 @@ export const courses = [
     slug: 'system-design-foundations',
     title: 'System Design Foundations',
     category: 'backend-infrastructure',
-    instructor: 'tomas-berg',
     level: 'intermediate',
     price: 109,
     popular: false,
-    studentCount: 14760,
     summary:
       'The building blocks of scalable systems — load balancing, caching, queues, partitioning, and the reliability work around them.',
     docs: {title: 'AWS Architecture Center', url: 'https://aws.amazon.com/architecture/'},
@@ -1679,11 +1608,9 @@ export const courses = [
     slug: 'postgresql-for-developers',
     title: 'PostgreSQL for Developers',
     category: 'data',
-    instructor: 'daniel-okafor',
     level: 'intermediate',
     price: 89,
     popular: false,
-    studentCount: 11890,
     summary:
       'SQL you will actually write, schemas that hold up, indexes that get used, and the operational basics behind them.',
     docs: {title: 'PostgreSQL documentation', url: 'https://www.postgresql.org/docs/current/'},
@@ -1901,11 +1828,9 @@ export const courses = [
     slug: 'devops-with-docker-and-kubernetes',
     title: 'DevOps with Docker and Kubernetes',
     category: 'backend-infrastructure',
-    instructor: 'alina-costa',
     level: 'advanced',
     price: 139,
     popular: false,
-    studentCount: 8640,
     summary:
       'Containerise an application, run it on Kubernetes, ship it through a pipeline, and operate it once it is live.',
     docs: {title: 'Kubernetes documentation', url: 'https://kubernetes.io/docs/home/'},
@@ -2121,11 +2046,9 @@ export const courses = [
     slug: 'practical-web-security',
     title: 'Practical Web Security',
     category: 'security',
-    instructor: 'alina-costa',
     level: 'intermediate',
     price: 99,
     popular: false,
-    studentCount: 13270,
     summary:
       'The vulnerabilities that actually show up in web applications, how they are exploited, and how to close them for good.',
     docs: {title: 'OWASP Top 10', url: 'https://owasp.org/www-project-top-ten/'},

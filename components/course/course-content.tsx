@@ -51,11 +51,11 @@ export function CourseContent({ modules, durationSeconds }: CourseContentProps) 
       <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
         <h2
           id="course-content"
-          className="font-display text-[24px] leading-8 font-bold text-neutral-900"
+          className="text-heading-2 text-neutral-900"
         >
           Course Content
         </h2>
-        <p className="text-[13px] leading-5 text-neutral-500">
+        <p className="text-body text-neutral-500">
           {pluralize(modules.length, "module")}
           {duration && <span aria-hidden> &nbsp;•&nbsp; </span>}
           {duration}
@@ -81,7 +81,7 @@ export function CourseContent({ modules, durationSeconds }: CourseContentProps) 
                 className="flex w-full items-center gap-5 px-5 py-3.5 text-left transition-colors hover:bg-canvas-line/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-inset sm:px-7"
               >
                 <span className="relative flex shrink-0 justify-center" aria-hidden>
-                  <span className="flex size-7.25 items-center justify-center rounded-full border border-canvas-line bg-canvas text-[13px] leading-none text-neutral-700">
+                  <span className="flex size-7.25 items-center justify-center rounded-full border border-canvas-line bg-canvas text-small leading-none text-neutral-700">
                     {moduleIndex + 1}
                   </span>
                   {moduleIndex < visible.length - 1 && !isOpen && (
@@ -90,18 +90,18 @@ export function CourseContent({ modules, durationSeconds }: CourseContentProps) 
                 </span>
 
                 <span className="min-w-0 flex-1">
-                  <span className="block font-display text-[15px] leading-5 font-medium text-neutral-900">
+                  <span className="block text-heading-3 text-neutral-900">
                     {module.title}
                   </span>
                   {module.summary && (
-                    <span className="mt-1 block text-[13px] leading-5 text-neutral-500">
+                    <span className="mt-1 block text-body text-neutral-500">
                       {module.summary}
                     </span>
                   )}
                 </span>
 
                 {moduleDuration && (
-                  <span className="shrink-0 text-[13px] leading-5 whitespace-nowrap text-neutral-500">
+                  <span className="shrink-0 text-body whitespace-nowrap text-neutral-500">
                     {moduleDuration}
                   </span>
                 )}
@@ -170,7 +170,7 @@ export function CourseContent({ modules, durationSeconds }: CourseContentProps) 
               });
             }}
             aria-expanded={showAll}
-            className="inline-flex items-center gap-3 rounded-md border border-canvas-line bg-canvas px-6 py-2.5 text-[15px] leading-6 text-neutral-900 transition-colors hover:text-primary-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
+            className="inline-flex items-center gap-3 rounded-md border border-canvas-line bg-canvas px-4 py-2 text-action text-neutral-900 transition-colors hover:text-primary-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
           >
             {showAll ? "Show fewer modules" : `Show all ${modules.length} modules`}
             <ChevronDown
@@ -198,15 +198,15 @@ function LessonRow({ label, title, duration, freePreview }: LessonRowProps) {
   return (
     <>
       <PlayCircle className="size-4 shrink-0 text-neutral-300" strokeWidth={2} aria-hidden />
-      <span className="shrink-0 text-[13px] leading-5 text-neutral-500">{label}</span>
-      <span className="min-w-0 flex-1 text-[14px] leading-5 text-neutral-700">{title}</span>
+      <span className="shrink-0 text-body text-neutral-500">{label}</span>
+      <span className="min-w-0 flex-1 text-body text-neutral-700">{title}</span>
       {freePreview && (
         <Badge variant="lesson" className="shrink-0 whitespace-nowrap">
           Free preview
         </Badge>
       )}
       {formatted && (
-        <span className="shrink-0 text-[13px] leading-5 whitespace-nowrap text-neutral-500">
+        <span className="shrink-0 text-body whitespace-nowrap text-neutral-500">
           {formatted}
         </span>
       )}

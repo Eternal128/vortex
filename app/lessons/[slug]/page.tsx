@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { CreatorAvatars } from "@/components/creators/creator-avatars";
 import { PageFrame } from "@/components/layout/page-frame";
 import { SiteHeader } from "@/components/layout/site-header";
 import { buildCurriculum } from "@/components/lesson/lesson-curriculum";
@@ -7,17 +8,21 @@ import { LessonFooterNav } from "@/components/lesson/lesson-footer-nav";
 import { LessonHeader } from "@/components/lesson/lesson-header";
 import { LessonKeyPoints, LessonProTip } from "@/components/lesson/lesson-key-points";
 import { LessonNotes } from "@/components/lesson/lesson-notes";
+import { LessonQuiz } from "@/components/lesson/lesson-quiz";
 import { LessonResources } from "@/components/lesson/lesson-resources";
 import { LessonSidebar } from "@/components/lesson/lesson-sidebar";
 import { LessonTabs } from "@/components/lesson/lesson-tabs";
 import { LessonVideo } from "@/components/lesson/lesson-video";
 import { LessonViewTracker } from "@/components/lesson/lesson-view-tracker";
 import { Breadcrumbs } from "@/components/nav/breadcrumbs";
+import { toCreators } from "@/lib/creators";
 import { firstParagraph, splitLeadParagraph, truncate } from "@/lib/portable-text";
-import { START_SECONDS_PARAM, courseHref, coursesHref } from "@/lib/routes";
+import { START_SECONDS_PARAM, courseHref, coursesHref, lessonHref } from "@/lib/routes";
 import { parseVideoUrl } from "@/lib/video";
 import { CACHE_TAGS, sanityFetch } from "@/sanity/lib/fetch";
 import { urlFor } from "@/sanity/lib/image";
+import { percentFor } from "@/lib/progress/resume";
+import { getLearnerProgress } from "@/sanity/lib/progress";
 import { LESSON_BY_SLUG_QUERY, LESSON_SLUGS_QUERY } from "@/sanity/lib/queries";
 
 async function getLesson(slug: string) {
@@ -28,6 +33,7 @@ async function getLesson(slug: string) {
   });
 }
 
+/** Every lesson slug, so lesson pages can be built ahead of time. */
 export async function generateStaticParams() {
   const lessons = await sanityFetch({ query: LESSON_SLUGS_QUERY, tags: [CACHE_TAGS.lesson] });
 
@@ -36,6 +42,7 @@ export async function generateStaticParams() {
     .map((lesson) => ({ slug: lesson.slug as string }));
 }
 
+/** The lesson's title and the lead of its notes as the page title and description. */
 export async function generateMetadata({
   params,
 }: PageProps<"/lessons/[slug]">): Promise<Metadata> {
@@ -61,6 +68,7 @@ function readStartSeconds(value: string | string[] | undefined, durationSeconds:
   return durationSeconds ? Math.min(parsed, durationSeconds) : parsed;
 }
 
+/** A lesson: the video (from `?t=` when deep-linked), notes, quiz, and the course sidebar with progress. */
 export default async function LessonPage({ params, searchParams }: PageProps<"/lessons/[slug]">) {
   const { slug } = await params;
   const lesson = await getLesson(slug);
@@ -68,7 +76,22 @@ export default async function LessonPage({ params, searchParams }: PageProps<"/l
   if (!lesson) notFound();
 
   const course = lesson.course;
-  const curriculum = buildCurriculum(course?.modules, lesson._id);
+  // Null when signed out: nothing is saved, and every completion mark stays empty.
+  const progress = await getLearnerProgress();
+  const completed = new Set(
+    [...(progress?.lessons.values() ?? [])].filter((entry) => entry.completedAt).map((entry) => entry.lessonId),
+  );
+  const quizGrades = new Map(
+    [...(progress?.lessons.values() ?? [])]
+      .filter((entry) => entry.quizTotal)
+      .map((entry) => [entry.lessonId, `${Math.round(((entry.quizScore ?? 0) / (entry.quizTotal ?? 1)) * 100)}%`]),
+  );
+  const curriculum = buildCurriculum(course?.modules, lesson._id, completed, quizGrades);
+  const percentComplete = percentFor(
+    curriculum.flat.map((entry) => ({ _id: entry._id, duration: entry.duration })),
+    progress,
+  );
+  const quizQuestions = lesson.quiz?.questions ?? [];
   // The lesson schema has no summary field, so the notes' lead paragraph fills that role — and is
   // dropped from the body below so the page does not print it twice.
   const { lead: summary, rest: body } = splitLeadParagraph(lesson.notes);
@@ -77,12 +100,13 @@ export default async function LessonPage({ params, searchParams }: PageProps<"/l
     lesson.duration,
   );
 
+  // The real channel that published this lesson's video.
+  const [creator] = toCreators([lesson.creator], 56);
   const keyPoints = lesson.keyPoints ?? [];
   const resources = lesson.resources ?? [];
 
   return (
-    <PageFrame>
-      <SiteHeader activeHref={coursesHref} />
+    <PageFrame header={<SiteHeader activeHref={coursesHref} />}>
 
       <div className="flex flex-1 flex-col lg:flex-row">
         {course && (
@@ -96,7 +120,7 @@ export default async function LessonPage({ params, searchParams }: PageProps<"/l
             }
             courseImageAlt={course.coverImage?.alt ?? course.title ?? ""}
             modules={curriculum.modules}
-            percentComplete={0}
+            percentComplete={percentComplete}
             className="border-b border-canvas-line lg:w-69.5 lg:shrink-0 lg:border-r lg:border-b-0"
           />
         )}
@@ -134,11 +158,13 @@ export default async function LessonPage({ params, searchParams }: PageProps<"/l
               summary={summary}
               durationSeconds={lesson.duration}
               level={course?.level ?? null}
-              studentCount={lesson.studentCount}
+              lessonId={lesson._id}
               lessonSlug={slug}
             />
 
             <LessonVideo
+              lessonId={lesson._id}
+              saveProgress={progress !== null}
               lessonTitle={lesson.title ?? "Lesson"}
               lessonSlug={slug}
               courseSlug={course?.slug ?? null}
@@ -152,7 +178,30 @@ export default async function LessonPage({ params, searchParams }: PageProps<"/l
               posterAlt={lesson.thumbnail?.alt ?? lesson.title ?? ""}
               startSeconds={startSeconds}
               durationSeconds={lesson.duration}
+              hasQuiz={quizQuestions.length > 0}
+              nextHref={curriculum.next?.slug ? lessonHref(curriculum.next.slug) : null}
             />
+
+            {creator && (
+              <p className="-mt-4 flex items-center gap-2.5 text-body text-neutral-500">
+                <CreatorAvatars creators={[creator]} size={28} />
+                <span>
+                  Video by <span className="font-semibold text-neutral-700">{creator.name}</span> · YouTube
+                </span>
+              </p>
+            )}
+
+            {quizQuestions.length > 0 && (
+              <LessonQuiz
+                lessonId={lesson._id}
+                questions={quizQuestions}
+                saveProgress={progress !== null}
+                bestScore={progress?.lessons.get(lesson._id)?.quizScore ?? null}
+                attempts={progress?.lessons.get(lesson._id)?.quizAttempts ?? 0}
+                unlocked={Boolean(progress?.lessons.get(lesson._id)?.completedAt)}
+                nextHref={curriculum.next?.slug ? lessonHref(curriculum.next.slug) : null}
+              />
+            )}
 
             <LessonTabs lessonSlug={slug}>
               <div className="flex flex-col gap-8">
@@ -160,7 +209,7 @@ export default async function LessonPage({ params, searchParams }: PageProps<"/l
                   <section aria-labelledby="lesson-overview">
                     <h2
                       id="lesson-overview"
-                      className="font-display text-[20px] leading-7 font-bold text-neutral-900"
+                      className="text-heading-2 text-neutral-900"
                     >
                       Overview
                     </h2>

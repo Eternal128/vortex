@@ -1,7 +1,9 @@
 # Seed content
 
-Sample content for the `production` dataset: 6 categories, 5 instructors, 10 courses, 4 modules
-per course, 3 lessons per module — 120 lessons, each with its own real YouTube video.
+Sample content for the `production` dataset: 6 categories, 10 courses, 4 modules per course,
+3 lessons per module — 120 lessons, each with its own real YouTube video. Every video is credited
+to the real channel that published it; there are no invented instructors or learner counts
+(learner numbers on the site are live, from progress records).
 
 ## Running it
 
@@ -34,8 +36,10 @@ Import authenticates through the Sanity CLI, so no write token is needed anywher
   with `math::sum` — add up to exactly the sum of their parts. Nothing stores an aggregate.
 - **`build-ndjson.mjs` re-implements the Studio's validation rules** and refuses to write a file
   that would fail them. Studio validation does not run on import, so this is the only gate.
-- **Images upload as real assets** at import time via `_sanityAsset`: course covers from Lorem
-  Picsum, lesson thumbnails from the video's own poster frame, instructor portraits from
-  randomuser.me. Nothing hotlinks at runtime.
+- **Images upload as real assets** at import time via `_sanityAsset`: each lesson's thumbnail is
+  its video's own poster frame, and each course cover starts as its first video's frame. After an
+  import, run the media scripts (`scripts/media/`) to finish the real images: `channels.mjs`
+  (channel names and avatars, needs `YOUTUBE_API_KEY`), `thumbnails.mjs` (full-resolution frames),
+  then `covers.mjs` (a filmstrip of each course's own videos). Nothing hotlinks at runtime.
 - **Adding a lesson** means adding it to `content.mjs`, then running all three commands. The
   resolver only fetches what is missing from the cache.
