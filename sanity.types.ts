@@ -27,12 +27,85 @@ export type VideoChapter = {
   label?: string;
 };
 
+export type Citation = {
+  _type: "citation";
+  authors?: string;
+  year?: number;
+  title?: string;
+  venue?: string;
+  url?: string;
+};
+
+export type Callout = {
+  _type: "callout";
+  tone?: "takeaway" | "vortex" | "caveat";
+  text?: string;
+};
+
+export type Diagram = {
+  _type: "diagram";
+  name?:
+    | "vortex-before-after"
+    | "system-architecture"
+    | "search-pipeline"
+    | "ingestion-pipeline"
+    | "trust-boundaries"
+    | "write-path-guards"
+    | "creator-flow"
+    | "spacing-ridgeline"
+    | "forgetting-reviews"
+    | "testing-effect"
+    | "engagement-by-length"
+    | "interpolated-quizzes"
+    | "feeling-vs-learning"
+    | "blocked-vs-interleaved"
+    | "pretest-loop";
+  caption?: string;
+};
+
 export type SanityImageAssetReference = {
   _ref: string;
   _type: "reference";
   _weak?: boolean;
   [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
 };
+
+export type PostContent = Array<
+  | {
+      children?: Array<{
+        marks?: Array<string>;
+        text?: string;
+        _type: "span";
+        _key: string;
+      }>;
+      style?: "normal" | "h2" | "h3" | "h4" | "blockquote";
+      listItem?: "bullet" | "number";
+      markDefs?: Array<{
+        href?: string;
+        _type: "link";
+        _key: string;
+      }>;
+      level?: number;
+      _type: "block";
+      _key: string;
+    }
+  | {
+      asset?: SanityImageAssetReference;
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      alt?: string;
+      caption?: string;
+      _type: "image";
+      _key: string;
+    }
+  | ({
+      _key: string;
+    } & Diagram)
+  | ({
+      _key: string;
+    } & Callout)
+>;
 
 export type BlockContent = Array<
   | {
@@ -167,7 +240,12 @@ export type Post = {
   authorName?: string;
   topic?: CategoryReference;
   relatedCourse?: CourseReference;
-  body?: BlockContent;
+  body?: PostContent;
+  references?: Array<
+    {
+      _key: string;
+    } & Citation
+  >;
 };
 
 export type Slug = {
@@ -507,7 +585,11 @@ export type Geopoint = {
 export type AllSanitySchemaTypes =
   | VideoChunk
   | VideoChapter
+  | Citation
+  | Callout
+  | Diagram
   | SanityImageAssetReference
+  | PostContent
   | BlockContent
   | Resource
   | LearningOutcome
@@ -938,7 +1020,7 @@ export type POST_SLUGS_QUERY_RESULT = Array<{
 
 // Source: ../sanity/lib/queries.ts
 // Variable: POST_BY_SLUG_QUERY
-// Query: *[_type == "post" && slug.current == $slug && publishedAt <= now()][0]{      _id,  title,  "slug": slug.current,  excerpt,  publishedAt,  "topic": topic->{title, "slug": slug.current},  authorName,  "wordCount": count(string::split(pt::text(body), " ")),    body,    "related": *[      _type == "post" && defined(slug.current) && publishedAt <= now()      && topic._ref == ^.topic._ref && _id != ^._id    ] | order(publishedAt desc)[0...3]{      _id,      title,      "slug": slug.current,      "topic": topic->{title}    },    "relatedCourse": relatedCourse->{      title,      "slug": slug.current,      summary,      "category": category->{title}    }  }
+// Query: *[_type == "post" && slug.current == $slug && publishedAt <= now()][0]{      _id,  title,  "slug": slug.current,  excerpt,  publishedAt,  "topic": topic->{title, "slug": slug.current},  authorName,  "wordCount": count(string::split(pt::text(body), " ")),    body,    references[]{_key, authors, year, title, venue, url},    "related": *[      _type == "post" && defined(slug.current) && publishedAt <= now()      && topic._ref == ^.topic._ref && _id != ^._id    ] | order(publishedAt desc)[0...3]{      _id,      title,      "slug": slug.current,      "topic": topic->{title}    },    "relatedCourse": relatedCourse->{      title,      "slug": slug.current,      summary,      "category": category->{title}    }  }
 export type POST_BY_SLUG_QUERY_RESULT = {
   _id: string;
   title: string | null;
@@ -951,7 +1033,15 @@ export type POST_BY_SLUG_QUERY_RESULT = {
   } | null;
   authorName: string | null;
   wordCount: number;
-  body: BlockContent | null;
+  body: PostContent | null;
+  references: Array<{
+    _key: string;
+    authors: string | null;
+    year: number | null;
+    title: string | null;
+    venue: string | null;
+    url: string | null;
+  }> | null;
   related: Array<{
     _id: string;
     title: string | null;
@@ -1037,7 +1127,7 @@ declare module "@sanity/client" {
     '{\n  "progress": *[_type == "progress"]{\n    "courses": enrollments[].course._ref,\n    "lessons": lessons[].lesson._ref\n  },\n  "courses": *[_type == "course"]{_id, "lessonIds": modules[].lessons[]._ref}\n}': LEARNER_COUNTS_QUERY_RESULT;
     '\n  *[_type == "post" && defined(slug.current) && publishedAt <= now()]\n  | order(publishedAt desc) {\n    \n  _id,\n  title,\n  "slug": slug.current,\n  excerpt,\n  publishedAt,\n  "topic": topic->{title, "slug": slug.current},\n  authorName,\n  "wordCount": count(string::split(pt::text(body), " "))\n\n  }\n': POSTS_LIST_QUERY_RESULT;
     '\n  *[_type == "post" && defined(slug.current) && publishedAt <= now()]{"slug": slug.current}\n': POST_SLUGS_QUERY_RESULT;
-    '\n  *[_type == "post" && slug.current == $slug && publishedAt <= now()][0]{\n    \n  _id,\n  title,\n  "slug": slug.current,\n  excerpt,\n  publishedAt,\n  "topic": topic->{title, "slug": slug.current},\n  authorName,\n  "wordCount": count(string::split(pt::text(body), " "))\n,\n    body,\n    "related": *[\n      _type == "post" && defined(slug.current) && publishedAt <= now()\n      && topic._ref == ^.topic._ref && _id != ^._id\n    ] | order(publishedAt desc)[0...3]{\n      _id,\n      title,\n      "slug": slug.current,\n      "topic": topic->{title}\n    },\n    "relatedCourse": relatedCourse->{\n      title,\n      "slug": slug.current,\n      summary,\n      "category": category->{title}\n    }\n  }\n': POST_BY_SLUG_QUERY_RESULT;
+    '\n  *[_type == "post" && slug.current == $slug && publishedAt <= now()][0]{\n    \n  _id,\n  title,\n  "slug": slug.current,\n  excerpt,\n  publishedAt,\n  "topic": topic->{title, "slug": slug.current},\n  authorName,\n  "wordCount": count(string::split(pt::text(body), " "))\n,\n    body,\n    references[]{_key, authors, year, title, venue, url},\n    "related": *[\n      _type == "post" && defined(slug.current) && publishedAt <= now()\n      && topic._ref == ^.topic._ref && _id != ^._id\n    ] | order(publishedAt desc)[0...3]{\n      _id,\n      title,\n      "slug": slug.current,\n      "topic": topic->{title}\n    },\n    "relatedCourse": relatedCourse->{\n      title,\n      "slug": slug.current,\n      summary,\n      "category": category->{title}\n    }\n  }\n': POST_BY_SLUG_QUERY_RESULT;
     '\n  *[\n    _type == "idea" && status != "declined"\n    && (moderation == "approved" || ($userId != "" && moderation == "pending" && authorId == $userId))\n  ]{\n    _id,\n    title,\n    description,\n    kind,\n    status,\n    origin,\n    moderation,\n    authorName,\n    createdAt,\n    "votes": count(*[_type == "ideaVote" && idea._ref == ^._id]),\n    "hasVoted": $userId != "" && count(*[_type == "ideaVote" && idea._ref == ^._id && voterId == $userId]) > 0\n  }\n': IDEAS_BOARD_QUERY_RESULT;
     '\n  *[_type == "category" && defined(slug.current) && count(*[_type == "course" && references(^._id)]) > 0]\n  | order(title asc) {\n    _id,\n    title,\n    "slug": slug.current,\n    description,\n    "courses": *[_type == "course" && category._ref == ^._id && defined(slug.current)] | order(title asc) {\n      _id,\n      title,\n      "slug": slug.current,\n      accent,\n      level,\n      "lessonCount": count(modules[].lessons[]),\n      "modules": modules[]{\n        _key,\n        title,\n        "lessonCount": count(lessons),\n        "firstLessonSlug": lessons[0]->slug.current\n      }\n    }\n  }\n': ROADMAP_QUERY_RESULT;
   }

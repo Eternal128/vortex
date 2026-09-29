@@ -28,6 +28,15 @@
   --color-sail-ocean: #2d6a9d;
   --color-sail-mint: #14b894;
 
+  /*
+   * Chart series, in fixed order (never cycled). Validated with the dataviz skill's checker:
+   * light passes all checks against white; slot 2 is under 3:1 contrast, so bars carry direct
+   * value labels. Dark mode uses its own passing steps below.
+   */
+  --color-chart-1: #2d6a9d;
+  --color-chart-2: #d9822b;
+  --color-chart-3: #14a37f;
+
   /* Charcoal callout surface: dark cards and bands. */
   --color-callout: #1f1f1f;
   --color-callout-mid: #2b2b2b;
@@ -116,6 +125,10 @@
   --color-brand-600: #fbc56a;
   --color-brand-500: #f5a524;
   --color-brand-100: #2e2210;
+
+  --color-chart-1: #4a86bd;
+  --color-chart-2: #c7742a;
+  --color-chart-3: #1f9e78;
 
   --color-callout: #1b1b1b;
   --color-callout-mid: #262626;

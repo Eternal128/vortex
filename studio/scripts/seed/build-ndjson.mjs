@@ -19,7 +19,11 @@ import {readFileSync, writeFileSync, existsSync} from 'node:fs'
 import {dirname, join} from 'node:path'
 import {fileURLToPath} from 'node:url'
 
-import {categories, courseArt, courses, posts, teamIdeas} from './content.mjs'
+import {categories as courseCategories, courseArt, courses, posts, teamIdeas} from './content.mjs'
+import {fieldNotes, noteCategories} from './field-notes.mjs'
+
+/** Course categories plus the blog-only topics (they have no courses, so the catalog hides them). */
+const categories = [...courseCategories, ...noteCategories]
 
 const HERE = dirname(fileURLToPath(import.meta.url))
 const CACHE_PATH = join(HERE, 'videos.json')
@@ -237,9 +241,42 @@ for (const course of courses) {
 
 /* ------------------------------------------------------------ field notes */
 
+/** Diagram names the web registry can draw (components/blog/diagrams/index.tsx). */
+const DIAGRAM_NAMES = new Set([
+  'vortex-before-after', 'system-architecture', 'search-pipeline', 'ingestion-pipeline',
+  'trust-boundaries', 'write-path-guards', 'creator-flow', 'spacing-ridgeline',
+  'forgetting-reviews', 'testing-effect', 'engagement-by-length', 'interpolated-quizzes',
+  'feeling-vs-learning', 'blocked-vs-interleaved', 'pretest-loop',
+])
+
+/** One body tuple from content.mjs / field-notes.mjs as a Portable Text member. */
+function noteBlock(slug, [kind, a, b], index) {
+  const keyBase = `${slug}-${index}`
+  switch (kind) {
+    case 'h2':
+    case 'h3':
+      return block(a, kind, keyBase)
+    case 'quote':
+      return block(a, 'blockquote', keyBase)
+    case 'li':
+      return bullet(a, keyBase)
+    case 'ol':
+      return {...block(a, 'normal', keyBase), listItem: 'number', level: 1}
+    case 'diagram':
+      check(DIAGRAM_NAMES.has(a), `post ${slug}: unknown diagram "${a}"`)
+      return {_type: 'diagram', _key: keyOf(keyBase, 'diagram'), name: a, ...(b ? {caption: b} : {})}
+    case 'callout':
+      check(['takeaway', 'vortex', 'caveat'].includes(a), `post ${slug}: unknown callout tone "${a}"`)
+      return {_type: 'callout', _key: keyOf(keyBase, 'callout'), tone: a, text: b}
+    default:
+      check(kind === 'p', `post ${slug}: unknown body entry "${kind}"`)
+      return block(a, 'normal', keyBase)
+  }
+}
+
 const courseSlugs = new Set(courses.map((c) => c.slug))
 
-for (const post of posts) {
+for (const post of [...posts, ...fieldNotes]) {
   check(categorySlugs.has(post.topic), `post ${post.slug}: unknown topic`)
   check(post.author.length <= 60, `post ${post.slug}: author over 60 chars`)
   check(!post.course || courseSlugs.has(post.course), `post ${post.slug}: unknown course`)
@@ -258,11 +295,15 @@ for (const post of posts) {
     ...(post.course
       ? {relatedCourse: {_type: 'reference', _ref: `course.${post.course}`}}
       : {}),
-    body: post.body.map(([style, text], index) => {
-      const keyBase = `${post.slug}-${index}`
-      if (style === 'li') return bullet(text, keyBase)
-      return block(text, style === 'h2' ? 'h2' : 'normal', keyBase)
-    }),
+    body: post.body.map((entry, index) => noteBlock(post.slug, entry, index)),
+    ...(post.references?.length
+      ? {
+          references: post.references.map((ref, index) => {
+            check(ref.url?.startsWith('https://'), `post ${post.slug}: reference ${index + 1} needs an https url`)
+            return {_type: 'citation', _key: keyOf(post.slug, 'ref', String(index)), ...ref}
+          }),
+        }
+      : {}),
   })
 }
 
