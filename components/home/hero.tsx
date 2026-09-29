@@ -1,7 +1,7 @@
 import { ArrowRight, Sparkles } from "lucide-react";
 import Link from "next/link";
 import { CourseStackArt } from "@/components/brand/course-stack-art";
-import { SearchForm } from "@/components/search/search-form";
+import { PlanPromptForm } from "@/components/plans/plan-prompt-form";
 import { buttonClasses } from "@/components/ui/button";
 import { container } from "@/lib/layout";
 import { artLabelFor, paletteFor } from "@/lib/palette";
@@ -88,13 +88,7 @@ export function Hero({ newest, showcase, note }: HeroProps) {
           </Link>
         </div>
 
-        <SearchForm
-          id="home-search"
-          size="lg"
-          label="Ask anything about your learning"
-          placeholder="Ask anything… “how does caching work in the App Router?”"
-          className="mt-14 w-full max-w-180"
-        />
+        <PlanPromptForm id="home-plan" className="mt-14 w-full max-w-180" />
       </div>
     </section>
   );
