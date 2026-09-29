@@ -1,13 +1,13 @@
 import { BarChart3, Clock, FileText, type LucideIcon, Users } from "lucide-react";
-import Image from "next/image";
 import type { COURSE_BY_SLUG_QUERY_RESULT } from "@/sanity.types";
+import { CourseStackArt } from "@/components/brand/course-stack-art";
 import { Badge } from "@/components/ui/badge";
 import { CourseHeroActions, type EnrollState } from "@/components/course/course-hero-actions";
 import { CreatorAvatars } from "@/components/creators/creator-avatars";
 import { LiveLearners } from "@/components/learners/learner-counts";
 import { creatorsLabel, toCreators } from "@/lib/creators";
-import { urlFor } from "@/sanity/lib/image";
 import { formatDuration, formatLevel, pluralize } from "@/lib/format";
+import { artLabelFor, paletteFor } from "@/lib/palette";
 
 type Course = NonNullable<COURSE_BY_SLUG_QUERY_RESULT>;
 
@@ -20,7 +20,7 @@ interface CourseHeroProps {
   started: boolean;
 }
 
-/** Cover art, marketing copy, the derived meta row, and the two calls to action. */
+/** Marketing copy, the derived meta row and the calls to action, beside the course's stack art. */
 export function CourseHero({ course, continueHref, enrollState, percentComplete, started }: CourseHeroProps) {
   const level = formatLevel(course.level);
   const duration = formatDuration(course.durationSeconds);
@@ -32,28 +32,22 @@ export function CourseHero({ course, continueHref, enrollState, percentComplete,
   if (duration) meta.push({ icon: Clock, label: duration });
   if (modules) meta.push({ icon: FileText, label: modules });
 
+  const palette = paletteFor(course.accent, course.slug);
+
   return (
-    <div className="flex flex-col gap-8 lg:flex-row lg:gap-15">
-      {course.coverImage?.asset && (
-        <Image
-          src={urlFor(course.coverImage).width(560).height(656).fit("crop").url()}
-          alt={course.coverImage.alt ?? ""}
-          width={280}
-          height={328}
-          priority
-          className="h-[328px] w-full max-w-[280px] shrink-0 rounded-lg object-cover"
-        />
-      )}
+    <div className="grid items-center gap-10 lg:grid-cols-[1.15fr_1fr] lg:gap-16">
+      <div className="min-w-0">
+        <div className="flex flex-wrap items-center gap-3">
+          {course.category?.title && <p className="eyebrow text-neutral-500">{course.category.title}</p>}
+          {course.popular && <Badge variant="popular">Popular</Badge>}
+        </div>
 
-      <div className="min-w-0 flex-1">
-        {course.popular && <Badge variant="popular">Popular</Badge>}
-
-        <h1 className="mt-6 text-heading-1 text-neutral-900">
+        <h1 className="mt-5 text-[40px] leading-[1.02] font-semibold tracking-[-0.05em] text-balance text-neutral-900 sm:text-[56px]">
           {course.title}
         </h1>
 
         {course.summary && (
-          <p className="mt-4 max-w-[420px] text-body-lg text-neutral-500">
+          <p className="mt-6 max-w-[52ch] text-[17px] leading-7 text-neutral-500">
             {course.summary}
           </p>
         )}
@@ -65,18 +59,18 @@ export function CourseHero({ course, continueHref, enrollState, percentComplete,
           </p>
         )}
 
-        <ul className="mt-9 flex flex-wrap items-center gap-x-9 gap-y-3">
+        <ul className="mt-8 flex flex-wrap items-center gap-x-7 gap-y-3 border-t border-canvas-line pt-6">
           {meta.map(({ icon: Icon, label }) => (
             <li
               key={label}
-              className="inline-flex items-center gap-2 text-body whitespace-nowrap text-neutral-500"
+              className="inline-flex items-center gap-2 font-mono text-[12px] tracking-[0.06em] whitespace-nowrap text-neutral-500 uppercase"
             >
-              <Icon className="size-4 shrink-0" strokeWidth={2} aria-hidden />
+              <Icon className="size-3.5 shrink-0" strokeWidth={2} aria-hidden />
               {label}
             </li>
           ))}
-          <li className="inline-flex items-center gap-2 text-body whitespace-nowrap text-neutral-500">
-            <Users className="size-4 shrink-0" strokeWidth={2} aria-hidden />
+          <li className="inline-flex items-center gap-2 font-mono text-[12px] tracking-[0.06em] whitespace-nowrap text-neutral-500 uppercase">
+            <Users className="size-3.5 shrink-0" strokeWidth={2} aria-hidden />
             <LiveLearners kind="course" id={course._id} zero="Be the first to enroll" />
           </li>
         </ul>
@@ -88,6 +82,18 @@ export function CourseHero({ course, continueHref, enrollState, percentComplete,
           enrollState={enrollState}
           percentComplete={percentComplete}
           started={started}
+        />
+      </div>
+
+      <div
+        className="flex h-80 items-center justify-center overflow-hidden rounded-[24px] shadow-sm sm:h-96"
+        style={{ backgroundColor: palette.card }}
+      >
+        <CourseStackArt
+          palette={palette}
+          label={artLabelFor(course.artLabel, course.title)}
+          size="lg"
+          className="h-full w-full px-6 pt-6"
         />
       </div>
     </div>

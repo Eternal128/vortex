@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Logo } from "@/components/brand/logo";
 import { ExploreMenu, type ExploreMenuData } from "@/components/layout/explore-menu";
-import { coursesHref } from "@/lib/routes";
+import { blogHref, coursesHref, ideasHref, myLearningHref } from "@/lib/routes";
 import { cn } from "@/lib/utils";
 
 interface NavLink {
@@ -18,25 +18,28 @@ interface NavbarProps {
   className?: string;
 }
 
-const defaultLinks: NavLink[] = [
+/** The primary links, shared with the header's mobile menu. */
+export const primaryLinks: NavLink[] = [
   { label: "Courses", href: coursesHref },
-  { label: "My Learning", href: "/my-learning" },
+  { label: "Field notes", href: blogHref },
+  { label: "Ideas", href: ideasHref },
+  { label: "My Learning", href: myLearningHref },
 ];
 
 /** The header's primary navigation, marking the current section. */
-export function Navbar({ links = defaultLinks, activeHref, explore, className }: NavbarProps) {
+export function Navbar({ links = primaryLinks, activeHref, explore, className }: NavbarProps) {
   const visibleLinks = explore ? links.filter((link) => link.href !== coursesHref) : links;
 
   return (
-    <nav aria-label="Main" className={cn("flex items-center gap-x-4 sm:gap-x-6", className)}>
+    <nav aria-label="Main" className={cn("flex items-center gap-x-3 sm:gap-x-5", className)}>
       <Link
         href="/"
         className="mr-2 flex items-center rounded-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
       >
-        <Logo size={26} />
+        <Logo size={24} />
       </Link>
       {explore && <ExploreMenu {...explore} active={activeHref === coursesHref} />}
-      <ul className="flex items-center gap-6">
+      <ul className="hidden items-center gap-1 md:flex">
         {visibleLinks.map((link) => {
           const isActive = link.href === activeHref;
           return (
@@ -45,10 +48,10 @@ export function Navbar({ links = defaultLinks, activeHref, explore, className }:
                 href={link.href}
                 aria-current={isActive ? "page" : undefined}
                 className={cn(
-                  "rounded-xs text-body-lg whitespace-nowrap transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2",
+                  "block rounded-sm px-2.5 py-1.5 text-nav whitespace-nowrap transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500",
                   isActive
-                    ? "font-semibold text-primary-600"
-                    : "text-neutral-700 hover:text-primary-500",
+                    ? "text-neutral-900"
+                    : "font-normal text-neutral-500 hover:text-neutral-900",
                 )}
               >
                 {link.label}

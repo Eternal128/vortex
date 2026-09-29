@@ -52,3 +52,35 @@ export function pluralize(count: number, singular: string, plural = `${singular}
 export function lessonLabel(moduleIndex: number, lessonIndex: number) {
   return `${moduleIndex + 1}.${lessonIndex + 1}`;
 }
+
+/** `3d ago`, `2mo ago`: compact relative time for card meta rows. */
+export function formatRelativeTime(iso: string | null | undefined, now = Date.now()) {
+  if (!iso) return null;
+  const then = new Date(iso).getTime();
+  if (Number.isNaN(then)) return null;
+  const seconds = Math.max(0, Math.round((now - then) / 1000));
+  if (seconds < 60) return "just now";
+  const minutes = Math.round(seconds / 60);
+  if (minutes < 60) return `${minutes}m ago`;
+  const hours = Math.round(minutes / 60);
+  if (hours < 24) return `${hours}h ago`;
+  const days = Math.round(hours / 24);
+  if (days < 30) return `${days}d ago`;
+  const months = Math.round(days / 30);
+  if (months < 12) return `${months}mo ago`;
+  return `${Math.round(months / 12)}y ago`;
+}
+
+/** `September 7, 2026`. */
+export function formatDate(iso: string | null | undefined) {
+  if (!iso) return null;
+  const date = new Date(iso);
+  if (Number.isNaN(date.getTime())) return null;
+  return date.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric", timeZone: "UTC" });
+}
+
+/** Reading time at ~220 words a minute, never less than one. */
+export function formatReadingTime(wordCount: number | null | undefined) {
+  if (!wordCount) return null;
+  return `${Math.max(1, Math.round(wordCount / 220))} min read`;
+}

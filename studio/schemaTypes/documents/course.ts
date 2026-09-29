@@ -85,6 +85,35 @@ export const course = defineType({
       initialValue: false,
     }),
     defineField({
+      name: 'accent',
+      title: 'Card palette',
+      description:
+        'Colour of the course card and its stacked-card thumbnail. Leave empty to pick one automatically.',
+      type: 'string',
+      group: 'marketing',
+      options: {
+        list: [
+          {title: 'Ocean blue', value: 'blue'},
+          {title: 'Mint', value: 'mint'},
+          {title: 'Sand', value: 'sand'},
+          {title: 'Ink', value: 'ink'},
+          {title: 'Lilac', value: 'lilac'},
+          {title: 'Sky', value: 'sky'},
+          {title: 'Forest', value: 'forest'},
+          {title: 'Navy', value: 'navy'},
+        ],
+      },
+    }),
+    defineField({
+      name: 'artLabel',
+      title: 'Thumbnail label',
+      description:
+        'Short lowercase label drawn on the card thumbnail, e.g. "app router". Defaults to the title.',
+      type: 'string',
+      group: 'marketing',
+      validation: (rule) => rule.max(28),
+    }),
+    defineField({
       name: 'learningOutcomes',
       title: "What you'll learn",
       type: 'array',

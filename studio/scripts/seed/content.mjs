@@ -2262,3 +2262,122 @@ export const courses = [
     ],
   },
 ]
+
+/**
+ * Card palette and thumbnail label per course (the stacked-card art on course cards). Optional in
+ * the schema; set here so the seeded catalog reads as a designed set rather than a hash.
+ */
+export const courseArt = {
+  'nextjs-app-router-in-depth': {accent: 'ink', artLabel: 'app router'},
+  'react-performance-engineering': {accent: 'blue', artLabel: 'react perf'},
+  'typescript-for-application-developers': {accent: 'sky', artLabel: 'typescript'},
+  'building-ai-apps-with-llms': {accent: 'mint', artLabel: 'llm apps'},
+  'retrieval-augmented-generation-from-scratch': {accent: 'lilac', artLabel: 'rag from scratch'},
+  'python-for-data-work': {accent: 'sand', artLabel: 'python for data'},
+  'system-design-foundations': {accent: 'navy', artLabel: 'system design'},
+  'postgresql-for-developers': {accent: 'forest', artLabel: 'postgresql'},
+  'devops-with-docker-and-kubernetes': {accent: 'blue', artLabel: 'docker & k8s'},
+  'practical-web-security': {accent: 'ink', artLabel: 'web security'},
+}
+
+/**
+ * Field notes. Each is short, makes one point, and links to the course it extends. Body entries are
+ * [style, text] pairs: 'h2' starts a section (and an "On this page" entry), 'p' is a paragraph,
+ * 'li' a bullet.
+ */
+export const posts = [
+  {
+    slug: 'why-the-app-router-caches-what-it-caches',
+    title: 'Why the App Router caches what it caches',
+    topic: 'web-development',
+    author: 'Vortex team',
+    course: 'nextjs-app-router-in-depth',
+    publishedAt: '2026-09-07T09:00:00Z',
+    excerpt:
+      'Most caching surprises in the App Router come from one question the framework asks about every route: can this be rendered before a request arrives?',
+    body: [
+      ['p', 'Most caching surprises in the App Router trace back to a single question the framework asks about every route: can this page be rendered before a request arrives? If it can, it is rendered once and reused. If it cannot, it is rendered per request.'],
+      ['h2', 'Static until proven dynamic'],
+      ['p', 'A route starts out eligible for static rendering. It stays that way until the code reads something that only exists at request time: cookies, request headers, or the search parameters of the URL. The moment a component reads one of those, the route has to wait for a request.'],
+      ['p', 'That is why a page can flip from fast to slow after an innocent change. Nobody asked for dynamic rendering; a helper deep in the tree read a cookie.'],
+      ['h2', 'Data has its own clock'],
+      ['p', 'Rendering and data are cached separately. A static page can still hold data that expires, and a dynamic page can still reuse cached data. Time-based revalidation says how old data may get. Tag-based revalidation lets a write mark exactly the data it affected as stale.'],
+      ['li', 'Use a time window when the source changes on its own schedule.'],
+      ['li', 'Use tags when your own code performs the write and knows what it touched.'],
+      ['h2', 'Debug by asking the same question'],
+      ['p', 'When a page is slower or staler than expected, ask what it reads at request time and what its data is tagged with. The answer is almost always one of those two lists.'],
+    ],
+  },
+  {
+    slug: 'chunk-size-is-a-retrieval-decision',
+    title: 'Chunk size is a retrieval decision, not a storage one',
+    topic: 'ai-engineering',
+    author: 'Vortex team',
+    course: 'retrieval-augmented-generation-from-scratch',
+    publishedAt: '2026-09-14T09:00:00Z',
+    excerpt:
+      'Pick chunk sizes from the questions you expect, not from what fits the database. The unit you retrieve is the unit the model gets to reason over.',
+    body: [
+      ['p', 'Chunking is usually decided early and by convenience: a round number of tokens that fits comfortably in the vector store. But the chunk is the unit you retrieve, and the unit you retrieve is the unit the model reasons over.'],
+      ['h2', 'Too small loses the answer'],
+      ['p', 'A short chunk matches a query sharply, but it often holds the sentence that names the concept and not the sentence that explains it. The model then answers from a fragment.'],
+      ['h2', 'Too large drowns the answer'],
+      ['p', 'A long chunk contains the explanation, but its embedding averages over everything else in it. It ranks lower for specific questions, and when it is retrieved it spends the context window on text that does not help.'],
+      ['h2', 'Size from the questions'],
+      ['p', 'Write down twenty real questions and the passage that answers each one. Measure those passages. That distribution, not the database, tells you where to start.'],
+      ['li', 'Split on the structure the source already has: headings, paragraphs, timestamps.'],
+      ['li', 'Keep a little overlap so an answer that straddles a boundary survives.'],
+      ['li', 'Re-run the same twenty questions after every change.'],
+    ],
+  },
+  {
+    slug: 'read-the-query-plan-before-adding-an-index',
+    title: 'Read the query plan before you add an index',
+    topic: 'data',
+    author: 'Vortex team',
+    course: 'postgresql-for-developers',
+    publishedAt: '2026-09-21T09:00:00Z',
+    excerpt:
+      'An index is a guess about how the planner will run a query. EXPLAIN ANALYZE turns the guess into a measurement, and it takes seconds.',
+    body: [
+      ['p', 'When a query is slow, adding an index feels like the obvious fix. Sometimes it is. Often the planner was never going to use it, and the table now pays for it on every write.'],
+      ['h2', 'Ask the planner first'],
+      ['p', 'EXPLAIN shows the plan PostgreSQL intends to use. EXPLAIN ANALYZE runs the query and shows what actually happened, including real row counts and timings for every step.'],
+      ['h2', 'Look for the gap between estimate and reality'],
+      ['p', 'The most useful number on the plan is the difference between estimated rows and actual rows. When they differ by orders of magnitude, the planner chose its strategy for a different query than the one you ran. Fresh statistics often fix that without any new index.'],
+      ['h2', 'Then index the step that hurts'],
+      ['li', 'A sequential scan that discards most rows is the classic index candidate.'],
+      ['li', 'A sort on a large result may want an index in the sort order.'],
+      ['li', 'A nested loop over many rows may want an index on the join key.'],
+      ['p', 'Change one thing, run EXPLAIN ANALYZE again, and keep the index only if the plan and the timing both improved.'],
+    ],
+  },
+]
+
+/** A few team-posted ideas, so the board shows how it works before the community arrives. */
+export const teamIdeas = [
+  {
+    slug: 'sync-progress-across-devices',
+    title: 'Resume lessons across devices',
+    description: 'Save where you stopped in a lesson video and pick it up on another device from My Learning.',
+    kind: 'feature',
+    status: 'shipped',
+    createdAt: '2026-08-18T10:00:00Z',
+  },
+  {
+    slug: 'field-notes-for-every-course',
+    title: 'A field note for every course',
+    description: 'At least one short, focused article per course that goes deeper on a single idea from it.',
+    kind: 'content',
+    status: 'open',
+    createdAt: '2026-08-29T10:00:00Z',
+  },
+  {
+    slug: 'search-within-a-single-course',
+    title: 'Search inside a single course',
+    description: 'Scope a plain-English search to the course you are taking, straight from the course page.',
+    kind: 'improvement',
+    status: 'open',
+    createdAt: '2026-09-10T10:00:00Z',
+  },
+]

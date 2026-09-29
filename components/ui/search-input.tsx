@@ -50,18 +50,18 @@ export function SearchInput({
         <label htmlFor={id} className="sr-only">
           {label}
         </label>
-        <div className="flex h-12 items-center gap-2 rounded-full border border-neutral-200 bg-surface pr-1 pl-5 focus-within:border-primary-500 focus-within:ring-1 focus-within:ring-primary-500">
+        <div className="flex h-11 items-center gap-2 rounded-full border border-neutral-200 bg-surface pr-1 pl-5 shadow-press-soft transition-colors focus-within:border-neutral-500">
           <input
             id={id}
             type="search"
             placeholder={placeholder}
-            className="min-w-0 flex-1 bg-transparent text-body-lg text-neutral-900 placeholder:text-neutral-500 focus:outline-none"
+            className="min-w-0 flex-1 bg-transparent text-body text-neutral-900 placeholder:text-neutral-500 focus:outline-none"
             {...props}
           />
           <button
             type="submit"
             aria-label="Search"
-            className="flex size-10 shrink-0 items-center justify-center rounded-full bg-neutral-900 text-canvas transition-colors hover:bg-neutral-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
+            className="flex size-9 shrink-0 items-center justify-center rounded-full bg-neutral-900 text-canvas transition-colors hover:bg-neutral-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
           >
             <Search className="size-5" strokeWidth={2.25} aria-hidden />
           </button>
@@ -77,7 +77,7 @@ export function SearchInput({
       </label>
       <div
         className={cn(
-          "flex items-center rounded-md border border-field-line bg-surface focus-within:border-primary-500 focus-within:ring-1 focus-within:ring-primary-500",
+          "flex items-center rounded-lg border border-field-line bg-surface shadow-press-soft transition-colors focus-within:border-neutral-500",
           fields[size],
         )}
       >
@@ -99,7 +99,7 @@ export function SearchInput({
         {shortcut && (
           <kbd
             className={cn(
-              "hidden shrink-0 rounded-xs border border-neutral-200 font-sans text-neutral-700 sm:block",
+              "hidden shrink-0 rounded-xs border border-neutral-200 font-mono text-neutral-500 sm:block",
               size === "lg" ? "px-3 py-1.5 text-body" : "px-2 py-1 text-small",
             )}
           >

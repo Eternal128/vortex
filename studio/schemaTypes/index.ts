@@ -2,8 +2,11 @@ import {type SchemaTypeDefinition} from 'sanity'
 
 import {category} from './documents/category'
 import {course} from './documents/course'
+import {idea} from './documents/idea'
+import {ideaVote} from './documents/ideaVote'
 import {lesson} from './documents/lesson'
 import {plan} from './documents/plan'
+import {post} from './documents/post'
 import {planQuota} from './documents/planQuota'
 import {progress} from './documents/progress'
 import {quiz} from './documents/quiz'
@@ -26,6 +29,9 @@ export const schema: {types: SchemaTypeDefinition[]} = {
     progress,
     plan,
     planQuota,
+    post,
+    idea,
+    ideaVote,
     // Objects
     courseModule,
     learningOutcome,
