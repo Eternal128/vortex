@@ -72,36 +72,37 @@ function Caption({ children }: { children: ReactNode }) {
 /* ------------------------------------------------------------------ data */
 
 const primaryColors = [
-  { name: "Callout Onyx", hex: "#15120E", className: "bg-callout" },
-  { name: "Coral 600 (text)", hex: "#BD3636", className: "bg-primary-600" },
-  { name: "Coral 500 (brand)", hex: "#F35252", className: "bg-primary-500" },
-  { name: "Coral 400", hex: "#F77A7A", className: "bg-primary-400" },
-  { name: "Coral 100", hex: "#FDECEC", className: "bg-primary-100" },
-  { name: "Coral 50", hex: "#FEF6F6", className: "bg-primary-50 border border-neutral-200" },
+  { name: "Ink 500 (actions)", hex: "#262626", className: "bg-primary-500" },
+  { name: "Sail Ocean", hex: "#2D6A9D", className: "bg-sail-ocean" },
+  { name: "Sail Mint", hex: "#14B894", className: "bg-sail-mint" },
+  { name: "Amber 500 (brand)", hex: "#F5A524", className: "bg-brand-500" },
+  { name: "Amber 600 (text)", hex: "#8A5A00", className: "bg-brand-600" },
+  { name: "Amber 100", hex: "#FDF1DC", className: "bg-brand-100 border border-neutral-200" },
 ];
 
 const neutralColors = [
-  { name: "Stone 900", hex: "#1A1714", className: "bg-neutral-900" },
-  { name: "Stone 700", hex: "#2E2924", className: "bg-neutral-700" },
-  { name: "Stone 500", hex: "#6B6258", className: "bg-neutral-500" },
-  { name: "Stone 300", hex: "#A39A8F", className: "bg-neutral-300" },
-  { name: "Stone 200", hex: "#E6DFD5", className: "bg-neutral-200" },
-  { name: "Stone 100", hex: "#F1ECE4", className: "bg-neutral-100" },
-  { name: "Ivory", hex: "#FCFAF6", className: "bg-canvas border border-neutral-200" },
+  { name: "Neutral 900", hex: "#1F1F1F", className: "bg-neutral-900" },
+  { name: "Neutral 700", hex: "#4A4A4A", className: "bg-neutral-700" },
+  { name: "Neutral 500", hex: "#6E6E6E", className: "bg-neutral-500" },
+  { name: "Neutral 300", hex: "#B5B5B5", className: "bg-neutral-300" },
+  { name: "Neutral 200", hex: "#E6E6E6", className: "bg-neutral-200" },
+  { name: "Neutral 100", hex: "#F0F0F0", className: "bg-neutral-100" },
+  { name: "Canvas", hex: "#F7F7F7", className: "bg-canvas border border-neutral-200" },
   { name: "White", hex: "#FFFFFF", className: "bg-surface border border-neutral-200" },
 ];
 
+
 const typeScale = [
-  { style: "Display 1", font: "Source Sans 3", size: "40 / 48", weight: "Semi Bold", use: "Home headline" },
-  { style: "Display 2", font: "Source Sans 3", size: "28 / 32", weight: "Semi Bold", use: "Display" },
-  { style: "Heading 1", font: "Source Sans 3", size: "28 / 32", weight: "Semi Bold", use: "Page titles" },
-  { style: "Heading 2", font: "Source Sans 3", size: "20 / 28", weight: "Semi Bold", use: "Section titles" },
-  { style: "Heading 3", font: "Source Sans 3", size: "16 / 20", weight: "Semi Bold", use: "Small titles" },
-  { style: "Subtitle", font: "Source Sans 3", size: "14 / 18", weight: "Semi Bold", use: "Card titles" },
-  { style: "Body Large", font: "Source Sans 3", size: "16 / 24", weight: "Regular", use: "Reading copy" },
-  { style: "Body", font: "Source Sans 3", size: "14 / 20", weight: "Regular", use: "Supporting text" },
-  { style: "Small", font: "Source Sans 3", size: "12 / 18", weight: "Regular", use: "Captions, meta" },
-  { style: "Action", font: "Source Sans 3", size: "14 / 20", weight: "Semi Bold", use: "Buttons, chips" },
+  { style: "Display 1", font: "Geist", size: "44 / 48", weight: "Semi Bold", use: "Home headline" },
+  { style: "Display 2", font: "Geist", size: "28 / 32", weight: "Semi Bold", use: "Display" },
+  { style: "Heading 1", font: "Geist", size: "28 / 32", weight: "Semi Bold", use: "Page titles" },
+  { style: "Heading 2", font: "Geist", size: "20 / 28", weight: "Semi Bold", use: "Section titles" },
+  { style: "Heading 3", font: "Geist", size: "16 / 20", weight: "Semi Bold", use: "Small titles" },
+  { style: "Subtitle", font: "Geist", size: "14 / 18", weight: "Semi Bold", use: "Card titles" },
+  { style: "Body Large", font: "Geist", size: "16 / 24", weight: "Regular", use: "Reading copy" },
+  { style: "Body", font: "Geist", size: "14 / 20", weight: "Regular", use: "Supporting text" },
+  { style: "Small", font: "Geist", size: "12 / 18", weight: "Regular", use: "Captions, meta" },
+  { style: "Action", font: "Geist", size: "14 / 20", weight: "Semi Bold", use: "Buttons, chips" },
 ];
 
 const spacingScale = [4, 8, 12, 16, 24, 32, 40, 48, 64];
@@ -210,9 +211,10 @@ export default function DesignSystemPage() {
               Ag
             </span>
             <div>
-              <p className="text-heading-2 text-neutral-900">Source Sans 3</p>
-              <p className="mt-1 text-body text-neutral-500">One family for every role</p>
-              <p className="mt-1 text-body text-neutral-500">Regular 400 • Semi Bold 600 • Bold 700</p>
+              <p className="text-heading-2 text-neutral-900">Geist</p>
+              <p className="mt-1 text-body text-neutral-500">Headings and body, tight display tracking</p>
+              <p className="mt-1 font-mono text-body text-neutral-500">Geist Mono · labels and meta</p>
+              <p className="mt-1 font-pixel text-body text-neutral-500">Geist Pixel · accents</p>
             </div>
           </div>
         </Panel>
@@ -383,10 +385,10 @@ export default function DesignSystemPage() {
           <div className="mt-8">
             <GroupLabel>Button Specs</GroupLabel>
             <ul className="list-disc space-y-1 pl-5 text-body text-neutral-500">
-              <li>Height: 36px (md), 44px (lg), 48px (xl)</li>
-              <li>Padding: 0 16px (md, lg), 0 24px (xl)</li>
-              <li>Radius: 8px</li>
-              <li>Font: Source Sans 3 Semi Bold 14px, +0.14px tracking</li>
+              <li>Height: 36px (md), 44px (lg), 52px (xl); icon buttons are round</li>
+              <li>Padding: 0 14px (md), 0 16px (lg), 0 20px (xl)</li>
+              <li>Radius: 10px; pill buttons are fully rounded</li>
+              <li>Font: Geist Medium 14–17px; primary has a pressed-key edge</li>
             </ul>
           </div>
         </Panel>
@@ -413,10 +415,10 @@ export default function DesignSystemPage() {
             <GroupLabel>Field Specs</GroupLabel>
             <ul className="list-disc space-y-1 pl-5 text-body text-neutral-500">
               <li>Height: 48px (search), 44px (select)</li>
-              <li>Radius: 8px</li>
-              <li>Border: 1px solid ink #1A1714</li>
+              <li>Radius: 16px (field), full (header pill)</li>
+              <li>Border: 1px solid #D4D4D4 with a soft bottom edge</li>
               <li>Padding: 0 12px</li>
-              <li>Focus: 2px coral edge #F35252</li>
+              <li>Focus: border darkens to #6E6E6E</li>
             </ul>
           </div>
         </Panel>

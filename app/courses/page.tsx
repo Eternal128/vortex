@@ -3,8 +3,10 @@ import Link from "next/link";
 import { ViewTracker } from "@/components/analytics/view-tracker";
 import { CourseGrid } from "@/components/cards/course-grid";
 import { PageFrame } from "@/components/layout/page-frame";
+import { SectionHeading } from "@/components/layout/section-heading";
+import { container } from "@/lib/layout";
+import { cn } from "@/lib/utils";
 import { SiteHeader } from "@/components/layout/site-header";
-import { Breadcrumbs } from "@/components/nav/breadcrumbs";
 import { ANALYTICS_EVENTS } from "@/lib/analytics/events";
 import { pluralize } from "@/lib/format";
 import { CategoryFilter } from "@/components/catalog/category-filter";
@@ -59,22 +61,21 @@ export default async function CoursesPage({ searchParams }: PageProps<"/courses"
         properties={{ course_count: courses.length }}
       />
 
-      <main id="main" className="flex flex-1 flex-col px-6 pt-10 pb-16 sm:px-10 xl:px-12 xl:pb-20">
-        <Breadcrumbs items={[{ label: "All Courses" }]} />
-
-        <div className="mt-10 flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
-          <h1 className="text-heading-1 text-neutral-900">
-            All Courses
-          </h1>
-          {courses.length > 0 && (
-            <p className="text-body text-neutral-500">
-              {pluralize(courses.length, "course")}
-            </p>
-          )}
-        </div>
+      <main id="main" className={cn(container, "flex flex-1 flex-col pt-16 pb-20")}>
+        <SectionHeading
+          as="h1"
+          eyebrow="Pick your path"
+          title="All courses"
+          description="YouTube's best teaching, sequenced into courses with progress, notes and quizzes."
+          action={
+            courses.length > 0 ? (
+              <p className="eyebrow text-neutral-500">{pluralize(courses.length, "course")}</p>
+            ) : null
+          }
+        />
 
         {categories.length > 0 && (
-          <div className="mt-7">
+          <div className="mt-10">
             <CategoryFilter
               categories={categories}
               active={active}
@@ -84,8 +85,8 @@ export default async function CoursesPage({ searchParams }: PageProps<"/courses"
         )}
 
         {courses.length > 0 ? (
-          <div className="mt-8">
-            <CourseGrid courses={courses} progress={progress} />
+          <div className="mt-10">
+            <CourseGrid courses={courses} progress={progress} headingLevel="h2" />
           </div>
         ) : (
           <p className="mt-8 text-body-lg text-neutral-500">

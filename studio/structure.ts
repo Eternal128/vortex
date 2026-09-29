@@ -1,6 +1,8 @@
 import {ActivityIcon} from '@sanity/icons/Activity'
 import {BookIcon} from '@sanity/icons/Book'
+import {BulbOutlineIcon} from '@sanity/icons/BulbOutline'
 import {ClockIcon} from '@sanity/icons/Clock'
+import {DocumentTextIcon} from '@sanity/icons/DocumentText'
 import {DocumentVideoIcon} from '@sanity/icons/DocumentVideo'
 import {HelpCircleIcon} from '@sanity/icons/HelpCircle'
 import {PlayIcon} from '@sanity/icons/Play'
@@ -16,6 +18,28 @@ export const structure: StructureResolver = (S) =>
       S.documentTypeListItem('lesson').title('Lessons').icon(PlayIcon),
       S.divider(),
       S.documentTypeListItem('category').title('Categories').icon(TagIcon),
+      S.divider(),
+      S.documentTypeListItem('post').title('Field notes').icon(DocumentTextIcon),
+      S.listItem()
+        .title('Community ideas')
+        .icon(BulbOutlineIcon)
+        .child(
+          S.list()
+            .title('Community ideas')
+            .items([
+              S.listItem()
+                .title('Awaiting review')
+                .icon(ClockIcon)
+                .child(
+                  S.documentList()
+                    .title('Awaiting review')
+                    .schemaType('idea')
+                    .filter('_type == "idea" && moderation == "pending"')
+                    .defaultOrdering([{field: 'createdAt', direction: 'asc'}]),
+                ),
+              S.documentTypeListItem('idea').title('All ideas').icon(BulbOutlineIcon),
+            ]),
+        ),
       S.divider(),
       // Internal lookup data, built by scripts/ingest and read-only here.
       S.documentTypeListItem('video').title('Video intelligence').icon(DocumentVideoIcon),

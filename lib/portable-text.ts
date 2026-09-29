@@ -52,3 +52,36 @@ export function truncate(text: string, maxLength: number) {
   const clipped = text.slice(0, maxLength);
   return `${clipped.slice(0, clipped.lastIndexOf(" "))}…`;
 }
+
+function slugify(text: string) {
+  return (
+    text
+      .toLowerCase()
+      .normalize("NFKD")
+      .replace(/[̀-ͯ]/g, "")
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "")
+      .slice(0, 64) || "section"
+  );
+}
+
+/**
+ * The h2 outline of a Portable Text field, with stable, unique anchor ids. Keyed by block `_key`
+ * so the renderer and the "On this page" list agree on every id.
+ */
+export function headingOutline(blocks: BlockContent | null | undefined) {
+  const seen = new Map<string, number>();
+  const items: { key: string; id: string; text: string }[] = [];
+
+  for (const block of blocks ?? []) {
+    if (block._type !== "block" || block.style !== "h2") continue;
+    const text = blockText(block);
+    if (!text) continue;
+    const base = slugify(text);
+    const count = seen.get(base) ?? 0;
+    seen.set(base, count + 1);
+    items.push({ key: block._key, id: count ? `${base}-${count + 1}` : base, text });
+  }
+
+  return items;
+}

@@ -1,15 +1,29 @@
 import { ClerkProvider } from "@clerk/nextjs";
 import type { Metadata } from "next";
-import { Source_Sans_3 } from "next/font/google";
+import { Geist, Geist_Mono, Geist_Pixel } from "next/font/google";
 import { LearnerCountsProvider } from "@/components/learners/learner-counts";
 import { PostHogUserIdentifier } from "@/components/posthog/posthog-user-identifier";
 import { getLearnerCounts } from "@/lib/learners";
 import { themeInitScript } from "@/lib/theme";
 import "./globals.css";
 
-const sourceSans = Source_Sans_3({
-  variable: "--font-source-sans",
+const geist = Geist({
+  variable: "--font-geist",
   subsets: ["latin"],
+});
+
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
+  subsets: ["latin"],
+});
+
+/** Accent face only (course card titles, one hero word), so it is not preloaded. */
+const geistPixel = Geist_Pixel({
+  variable: "--font-geist-pixel",
+  subsets: ["latin"],
+  preload: false,
+  // No metric overrides exist for a pixel face, so skip the size-adjusted fallback.
+  adjustFontFallback: false,
 });
 
 export const metadata: Metadata = {
@@ -27,7 +41,7 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${sourceSans.variable} h-full antialiased`}
+      className={`${geist.variable} ${geistMono.variable} ${geistPixel.variable} h-full antialiased`}
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />

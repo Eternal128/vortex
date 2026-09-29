@@ -1,12 +1,17 @@
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 
-/** Private surfaces (AGENTS.md §5): learner pages, plans, and their write routes. Browsing stays public. */
+/**
+ * Private surfaces (AGENTS.md §5): learner pages, plans, and their write routes, including the Ideas
+ * board's post and vote routes (the page itself is public). Browsing stays public. Each route
+ * handler checks the session again itself.
+ */
 const isPrivate = createRouteMatcher([
   "/my-learning(.*)",
   "/plans(.*)",
   "/api/progress(.*)",
   "/api/enroll(.*)",
   "/api/plans(.*)",
+  "/api/ideas(.*)",
 ]);
 
 export default clerkMiddleware(async (auth, request) => {

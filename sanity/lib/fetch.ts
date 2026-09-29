@@ -9,6 +9,7 @@ export const CACHE_TAGS = {
   course: "course",
   lesson: "lesson",
   category: "category",
+  post: "post",
   /** Live learner counts: expired by every progress and enrollment write. */
   learners: "learners",
 } as const;

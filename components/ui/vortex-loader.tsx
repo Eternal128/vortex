@@ -11,11 +11,12 @@ interface VortexLoaderProps {
 /** One sail: a triangle from the hub out to the rim, echoing the logo mark. */
 const sail = "M24 24 L24 2 L40 11 Z";
 
+/** Same sail colours as the logo mark: ocean, mint, amber, ink. */
 const sails = [
-  { rotate: 0, fill: "var(--color-primary-600)" },
-  { rotate: 90, fill: "var(--color-primary-500)" },
-  { rotate: 180, fill: "var(--color-primary-400)" },
-  { rotate: 270, fill: "var(--color-callout-mid)" },
+  { rotate: 0, fill: "var(--color-sail-ocean)" },
+  { rotate: 90, fill: "var(--color-sail-mint)" },
+  { rotate: 180, fill: "var(--color-brand-500)" },
+  { rotate: 270, fill: "var(--color-neutral-900)" },
 ];
 
 /**
@@ -40,7 +41,7 @@ export function VortexLoader({ label, size = 48, className }: VortexLoaderProps)
           cy="24"
           r="3"
           fill="var(--color-surface)"
-          stroke="var(--color-primary-600)"
+          stroke="var(--color-neutral-900)"
           strokeWidth="1.5"
         />
       </svg>
