@@ -27,6 +27,9 @@ export const ANALYTICS_EVENTS = {
   searchPerformed: "search_performed",
   searchFailed: "search_failed",
   searchResultOpened: "search_result_opened",
+
+  // Field notes and community
+  blogPostViewed: "blog_post_viewed",
 } as const;
 
 /**

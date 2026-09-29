@@ -51,7 +51,7 @@ export function CourseContent({ modules, durationSeconds }: CourseContentProps) 
       <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
         <h2
           id="course-content"
-          className="font-display text-[24px] leading-8 font-bold text-neutral-900"
+          className="font-display text-[24px] leading-8 font-semibold tracking-[-0.03em] text-neutral-900"
         >
           Course Content
         </h2>

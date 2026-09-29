@@ -3,22 +3,32 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-  /* Primary */
-  --color-primary-600: #ea5a0b;
-  --color-primary-500: #f97316;
-  --color-primary-400: #fb923c;
-  --color-primary-300: #fdba74;
-  --color-primary-200: #fed7aa;
-  --color-primary-100: #ffeee5;
+  /*
+   * "Primary" is the action ink: charcoal buttons, links and focus rings, as in the reference.
+   * The Vortex orange lives on as `brand-*` and is spent deliberately (logo, live dots, now playing).
+   */
+  --color-primary-600: #0f0f0f;
+  --color-primary-500: #262626;
+  --color-primary-400: #3d3d3d;
+  --color-primary-300: #a3a3a3;
+  --color-primary-200: #e3e3e3;
+  --color-primary-100: #efefef;
 
-  /* Neutral — warm-tinted so the grays agree with the cream canvas */
-  --color-neutral-900: #1c1917;
-  --color-neutral-700: #44403c;
-  --color-neutral-500: #78716c;
-  --color-neutral-300: #d6d3d1;
-  --color-neutral-200: #e7e5e4;
-  --color-neutral-100: #f5f5f4;
-  --color-neutral-50: #fafaf9;
+  /* Text and icons that sit on a primary fill. */
+  --color-on-primary: #ffffff;
+
+  --color-brand-600: #ea5a0b;
+  --color-brand-500: #f97316;
+  --color-brand-100: #ffeee5;
+
+  /* Neutral — true grays, as flat as the reference's off-white canvas */
+  --color-neutral-900: #1f1f1f;
+  --color-neutral-700: #4a4a4a;
+  --color-neutral-500: #6e6e6e;
+  --color-neutral-300: #d4d4d4;
+  --color-neutral-200: #e6e6e6;
+  --color-neutral-100: #f0f0f0;
+  --color-neutral-50: #fafafa;
 
   /* Accents used by badges and status indicators */
   --color-lesson-bg: #eef0fe;
@@ -26,29 +36,37 @@
   --color-success: #16a34a;
 
   /* Surfaces */
-  --color-background: #faf7f4;
+  --color-background: #f7f7f7;
   --color-surface: #ffffff;
 
-  /* Warm canvas used by the marketing pages (home) and its hairlines */
-  --color-canvas: #fbf8f5;
-  --color-canvas-line: #efe6de;
+  /* Page canvas and its hairlines */
+  --color-canvas: #f7f7f7;
+  --color-canvas-line: #e9e9e9;
 
-  /* Typography */
-  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-  --font-display: var(--font-playfair), ui-serif, Georgia, serif;
+  /* Typography — one grotesk, a mono for labels, a pixel face for accents */
+  --font-sans: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+  --font-pixel: var(--font-geist-pixel), var(--font-geist-mono), ui-monospace, monospace;
 
   /* Radius */
   --radius-xs: 4px;
   --radius-sm: 8px;
-  --radius-md: 12px;
+  --radius-md: 10px;
   --radius-lg: 16px;
   --radius-xl: 24px;
 
-  /* Shadows — tinted with the canvas hue rather than neutral black */
-  --shadow-sm: 0 1px 2px 0 rgba(68, 44, 28, 0.05);
-  --shadow-md: 0 4px 12px -2px rgba(68, 44, 28, 0.08);
-  --shadow-lg: 0 12px 24px -4px rgba(68, 44, 28, 0.1);
-  --shadow-xl: 0 20px 40px -8px rgba(68, 44, 28, 0.12);
+  /* Shadows — soft and neutral; cards are carried by hairlines first */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 4px 14px -4px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 14px 30px -10px rgba(0, 0, 0, 0.14);
+  --shadow-xl: 0 24px 48px -16px rgba(0, 0, 0, 0.18);
+
+  /* The pressed-key edge on buttons: a lit top rim and a hard bottom lip. */
+  --shadow-press:
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.14), 0 2px 0 0 #000000, 0 6px 14px -6px rgba(0, 0, 0, 0.45);
+  --shadow-press-soft:
+    inset 0 -2px 0 0 rgba(0, 0, 0, 0.06), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
 
   /* Motion */
   --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
@@ -56,79 +74,88 @@
 
 /*
  * Dark theme. Every token below is a value swap for one already declared in
- * `@theme`, so the utilities generated from those names (`bg-canvas`,
- * `text-neutral-900`, `shadow-md`, …) re-resolve without any component churn.
- * The ramps keep their meaning rather than their lightness: `primary-600` is
- * still "one step stronger than 500", which here means lighter, not darker.
+ * `@theme`, so the utilities generated from those names re-resolve without any
+ * component churn. `primary-600` is still "one step stronger than 500", which on
+ * a dark canvas means lighter.
  */
 .dark {
   color-scheme: dark;
 
-  --color-primary-600: #fdba74;
-  --color-primary-500: #fb8b3d;
-  --color-primary-400: #f97316;
-  --color-primary-300: #9a4f18;
-  --color-primary-200: #48250f;
-  --color-primary-100: #2b1a0f;
+  --color-primary-600: #ffffff;
+  --color-primary-500: #ececec;
+  --color-primary-400: #cfcfcf;
+  --color-primary-300: #5c5c5c;
+  --color-primary-200: #343434;
+  --color-primary-100: #262626;
 
-  --color-neutral-900: #f5f1ed;
-  --color-neutral-700: #d4ccc5;
-  --color-neutral-500: #a39a93;
-  --color-neutral-300: #4c4440;
-  --color-neutral-200: #332c29;
-  --color-neutral-100: #241f1d;
-  --color-neutral-50: #1b1716;
+  --color-on-primary: #121212;
+
+  --color-brand-600: #fdba74;
+  --color-brand-500: #fb8b3d;
+  --color-brand-100: #2b1a0f;
+
+  --color-neutral-900: #f2f2f2;
+  --color-neutral-700: #cdcdcd;
+  --color-neutral-500: #999999;
+  --color-neutral-300: #444444;
+  --color-neutral-200: #2f2f2f;
+  --color-neutral-100: #242424;
+  --color-neutral-50: #1b1b1b;
 
   --color-lesson-bg: #1e1f3d;
   --color-lesson-fg: #a5b4fc;
   --color-success: #4ade80;
 
-  --color-background: #121010;
-  --color-surface: #1e1a19;
+  --color-background: #121212;
+  --color-surface: #1b1b1b;
 
-  --color-canvas: #171413;
-  --color-canvas-line: #2b2421;
+  --color-canvas: #121212;
+  --color-canvas-line: #2a2a2a;
 
   --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.4);
-  --shadow-md: 0 4px 12px -2px rgba(0, 0, 0, 0.5);
-  --shadow-lg: 0 12px 24px -4px rgba(0, 0, 0, 0.55);
-  --shadow-xl: 0 20px 40px -8px rgba(0, 0, 0, 0.6);
+  --shadow-md: 0 4px 14px -4px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 14px 30px -10px rgba(0, 0, 0, 0.6);
+  --shadow-xl: 0 24px 48px -16px rgba(0, 0, 0, 0.65);
+
+  --shadow-press:
+    inset 0 -2px 0 0 rgba(0, 0, 0, 0.18), 0 6px 14px -6px rgba(0, 0, 0, 0.6);
+  --shadow-press-soft: inset 0 -2px 0 0 rgba(0, 0, 0, 0.35), 0 1px 2px 0 rgba(0, 0, 0, 0.4);
 }
 
 /* Type scale — section 03 of the design system */
 @utility text-display-1 {
   font-family: var(--font-display);
   font-size: 48px;
-  line-height: 56px;
-  font-weight: 700;
-  letter-spacing: -0.02em;
+  line-height: 52px;
+  font-weight: 600;
+  letter-spacing: -0.045em;
   text-wrap: balance;
 }
 
 @utility text-display-2 {
   font-family: var(--font-display);
   font-size: 36px;
-  line-height: 44px;
-  font-weight: 700;
-  letter-spacing: -0.015em;
+  line-height: 42px;
+  font-weight: 600;
+  letter-spacing: -0.035em;
   text-wrap: balance;
 }
 
 @utility text-heading-1 {
   font-family: var(--font-sans);
   font-size: 28px;
-  line-height: 36px;
+  line-height: 34px;
   font-weight: 600;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.03em;
   text-wrap: balance;
 }
 
 @utility text-heading-2 {
   font-family: var(--font-sans);
   font-size: 22px;
-  line-height: 30px;
+  line-height: 28px;
   font-weight: 600;
-  letter-spacing: -0.005em;
+  letter-spacing: -0.02em;
   text-wrap: balance;
 }
 
@@ -165,27 +192,53 @@
   font-variant-numeric: tabular-nums;
 }
 
-/*
- * Film grain. Fixed and non-interactive, so it reads as a property of the
- * screen rather than of any element that scrolls under it.
- */
-@utility grain {
-  position: fixed;
-  inset: 0;
-  z-index: 50;
-  pointer-events: none;
-  opacity: 0.035;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+/* Spaced uppercase mono label: `PICK YOUR PATH`, `12 MODULES · 108 LESSONS`. */
+@utility eyebrow {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
 }
 
-.dark .grain {
-  opacity: 0.05;
+/* Tight grotesk for the biggest headlines. */
+@utility tracking-display {
+  letter-spacing: -0.05em;
+}
+
+/* Faint ruled lines behind course art, like the reference's paper backdrop. */
+@utility ruled {
+  background-image: repeating-linear-gradient(
+    to bottom,
+    color-mix(in srgb, currentColor 22%, transparent) 0 1px,
+    transparent 1px 9px
+  );
+}
+
+/* Halftone dot shade used on the back cards of the course stack art. */
+@utility halftone {
+  background-image: radial-gradient(rgba(0, 0, 0, 0.55) 0.9px, transparent 1.1px);
+  background-size: 4px 4px;
+}
+
+/* A hand-drawn squiggle rule under section eyebrows. */
+@utility squiggle {
+  height: 8px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='8' viewBox='0 0 16 8'%3E%3Cpath d='M0 4c2-3 6-3 8 0s6 3 8 0' fill='none' stroke='%23b8b8b8' stroke-width='1'/%3E%3C/svg%3E");
+  background-repeat: repeat-x;
 }
 
 body {
   background: var(--color-background);
   color: var(--color-neutral-900);
   font-family: var(--font-sans);
+  font-feature-settings: "ss01", "cv11";
+}
+
+/* FAQ disclosure: hide the native marker, the chevron carries the state. */
+summary::-webkit-details-marker {
+  display: none;
 }
 
 html {
@@ -193,7 +246,7 @@ html {
 }
 
 ::selection {
-  background: var(--color-primary-200);
+  background: var(--color-brand-100);
   color: var(--color-neutral-900);
 }
 

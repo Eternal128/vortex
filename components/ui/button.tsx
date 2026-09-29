@@ -1,50 +1,59 @@
 import type { ComponentPropsWithoutRef, ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
-export type ButtonVariant = "primary" | "secondary" | "tertiary" | "text";
-export type ButtonSize = "xl" | "lg" | "md";
+export type ButtonVariant = "primary" | "secondary" | "tertiary" | "text" | "pill";
+export type ButtonSize = "xl" | "lg" | "md" | "icon";
 
 const base =
   "inline-flex items-center justify-center gap-2 rounded-md font-sans font-medium whitespace-nowrap " +
   "transition-[color,background-color,border-color,box-shadow,transform] duration-200 ease-out-soft " +
-  "active:scale-[0.98] disabled:active:scale-100 " +
+  "active:translate-y-px disabled:active:translate-y-0 " +
   "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 " +
   "focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:cursor-not-allowed";
 
 const sizes: Record<ButtonSize, string> = {
   /** Hero call to action. */
-  xl: "h-16 gap-4 px-7 text-[17px]",
-  lg: "h-11 px-4 text-[16px]",
-  md: "h-11 px-3 text-[14px]",
+  xl: "h-13 gap-3 px-5 text-[17px] tracking-[-0.01em]",
+  lg: "h-11 px-4 text-[15px]",
+  md: "h-9 px-3 text-[14px]",
+  /** Round icon-only control, like the header search. */
+  icon: "size-9 rounded-full p-0",
 };
 
 const variants: Record<ButtonVariant, string> = {
-  primary: "bg-primary-500 text-white shadow-[0_2px_8px_-2px_rgba(234,90,11,0.45)]",
-  secondary: "border border-primary-500 bg-transparent text-primary-500",
-  tertiary: "border border-neutral-200 bg-surface text-neutral-900 shadow-sm",
-  text: "px-0 text-primary-500",
+  /** Charcoal key with a lit rim and a hard lip, as in the reference. */
+  primary: "bg-primary-500 text-on-primary shadow-press",
+  secondary: "border border-neutral-300 bg-transparent text-neutral-900",
+  /** White key: hairline border and a soft bottom edge ("Sign in"). */
+  tertiary: "border border-neutral-200 bg-surface text-neutral-900 shadow-press-soft",
+  text: "px-0 text-neutral-900 underline decoration-neutral-300 underline-offset-4",
+  /** Rounded outline capsule ("New in September →"). */
+  pill: "rounded-full border border-neutral-200 bg-surface text-neutral-900 shadow-sm",
 };
 
 const hoverVariants: Record<ButtonVariant, string> = {
-  primary: "hover:bg-primary-600 hover:shadow-[0_6px_16px_-4px_rgba(234,90,11,0.5)]",
-  secondary: "hover:bg-primary-100",
+  primary: "hover:bg-primary-400",
+  secondary: "hover:border-neutral-900",
   tertiary: "hover:bg-neutral-50",
-  text: "hover:text-primary-600",
+  text: "hover:decoration-neutral-900",
+  pill: "hover:border-neutral-300 hover:shadow-md",
 };
 
 /** Applied statically so the design system sheet can show the hover row. */
 const hoverStatic: Record<ButtonVariant, string> = {
-  primary: "bg-primary-600",
-  secondary: "bg-primary-100",
+  primary: "bg-primary-400",
+  secondary: "border-neutral-900",
   tertiary: "bg-neutral-50",
-  text: "text-primary-600",
+  text: "decoration-neutral-900",
+  pill: "border-neutral-300 shadow-md",
 };
 
 const disabledVariants: Record<ButtonVariant, string> = {
-  primary: "bg-primary-100 text-primary-300",
-  secondary: "border-primary-200 text-primary-300",
-  tertiary: "border-neutral-200 bg-neutral-50 text-neutral-300",
-  text: "text-primary-300",
+  primary: "bg-primary-100 text-primary-300 shadow-none",
+  secondary: "border-neutral-200 text-neutral-300",
+  tertiary: "border-neutral-200 bg-neutral-50 text-neutral-300 shadow-none",
+  text: "text-neutral-300",
+  pill: "text-neutral-300 shadow-none",
 };
 
 /**

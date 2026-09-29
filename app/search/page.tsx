@@ -3,6 +3,8 @@ import { PageFrame } from "@/components/layout/page-frame";
 import { SiteHeader } from "@/components/layout/site-header";
 import { SearchForm } from "@/components/search/search-form";
 import { SearchResults } from "@/components/search/search-results";
+import { container } from "@/lib/layout";
+import { cn } from "@/lib/utils";
 import { MAX_QUERY_LENGTH, SORTS, type SearchSort } from "@/lib/search/types";
 import { SEARCH_QUERY_PARAM, SEARCH_SORT_PARAM } from "@/lib/routes";
 
@@ -42,16 +44,15 @@ export default async function SearchPage({
     <PageFrame>
       <SiteHeader />
 
-      <main id="main" className="flex flex-1 flex-col px-6 pt-12 pb-16 sm:px-12 xl:px-18 xl:pb-20">
+      <main id="main" className={cn(container, "flex flex-1 flex-col pt-14 pb-20")}>
         <div className="flex flex-col items-center text-center">
-          <p className="rounded-sm border border-canvas-line bg-surface px-4 py-2 text-[11px] leading-4 font-semibold tracking-[0.16em] text-primary-500 uppercase">
-            Search results
-          </p>
+          <p className="eyebrow text-neutral-500">{query ? "Search results" : "Search"}</p>
 
-          <h1 className="mt-6 max-w-[22ch] font-display text-[32px] leading-[1.2] font-bold text-balance text-neutral-900 sm:text-[40px] lg:text-[44px]">
+          <h1 className="mt-4 max-w-[22ch] text-[34px] leading-[1.05] font-semibold tracking-[-0.045em] text-balance text-neutral-900 sm:text-[48px]">
             {query ? (
               <>
-                Results for <span className="text-primary-500">&ldquo;{query}&rdquo;</span>
+                Results for{" "}
+                <span className="font-pixel font-normal tracking-normal">&ldquo;{query}&rdquo;</span>
               </>
             ) : (
               <>Search your learning</>
@@ -59,7 +60,7 @@ export default async function SearchPage({
           </h1>
 
           {!query && (
-            <p className="mt-4 text-body-lg text-neutral-500">
+            <p className="mt-5 text-body-lg text-neutral-500">
               Ask in plain English and Vortex finds the exact lesson and moment.
             </p>
           )}

@@ -46,7 +46,7 @@ export function LessonResources({ resources, lessonSlug }: LessonResourcesProps)
     <section aria-labelledby="lesson-resources">
       <h2
         id="lesson-resources"
-        className="font-display text-[20px] leading-7 font-bold text-neutral-900"
+        className="font-display text-[20px] leading-7 font-semibold tracking-[-0.03em] text-neutral-900"
       >
         Resources
       </h2>

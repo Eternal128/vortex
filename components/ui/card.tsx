@@ -14,7 +14,7 @@ export function Card({ children, className }: CardProps) {
   return (
     <div
       className={cn(
-        "flex flex-col rounded-lg border border-neutral-200 bg-surface p-5",
+        "flex flex-col rounded-lg border border-canvas-line bg-surface p-5 shadow-sm",
         className,
       )}
     >

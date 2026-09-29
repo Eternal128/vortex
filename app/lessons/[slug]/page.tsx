@@ -81,7 +81,7 @@ export default async function LessonPage({ params, searchParams }: PageProps<"/l
   const resources = lesson.resources ?? [];
 
   return (
-    <PageFrame>
+    <PageFrame footer={false}>
       <SiteHeader activeHref={coursesHref} />
 
       <div className="flex flex-1 flex-col lg:flex-row">
@@ -160,7 +160,7 @@ export default async function LessonPage({ params, searchParams }: PageProps<"/l
                   <section aria-labelledby="lesson-overview">
                     <h2
                       id="lesson-overview"
-                      className="font-display text-[20px] leading-7 font-bold text-neutral-900"
+                      className="font-display text-[20px] leading-7 font-semibold tracking-[-0.03em] text-neutral-900"
                     >
                       Overview
                     </h2>

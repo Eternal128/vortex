@@ -33,8 +33,8 @@ export function Logo({ size = 28, showWordmark = true, className }: LogoProps) {
       <LogoMark size={size} />
       {showWordmark && (
         <span
-          className="font-sans font-bold tracking-tight text-neutral-900"
-          style={{ fontSize: size * 0.8, lineHeight: 1 }}
+          className="font-sans font-semibold tracking-[-0.04em] text-neutral-900"
+          style={{ fontSize: size * 0.86, lineHeight: 1 }}
         >
           Vortex
         </span>

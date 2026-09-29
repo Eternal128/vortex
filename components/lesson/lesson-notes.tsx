@@ -11,7 +11,7 @@ const components: PortableTextComponents = {
       <p className="text-[15px] leading-[28px] text-neutral-700">{children}</p>
     ),
     h2: ({ children }) => (
-      <h3 className="mt-8 font-display text-[20px] leading-7 font-bold text-neutral-900">
+      <h3 className="mt-8 font-display text-[20px] leading-7 font-semibold tracking-[-0.03em] text-neutral-900">
         {children}
       </h3>
     ),

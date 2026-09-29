@@ -110,7 +110,7 @@ export function LessonVideo({
               onClick={play}
               className="absolute inset-0 flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-inset"
             >
-              <span className="flex size-16 items-center justify-center rounded-full bg-primary-500 text-white shadow-lg transition-transform hover:scale-105">
+              <span className="flex size-16 items-center justify-center rounded-full bg-brand-500 text-white shadow-lg transition-transform hover:scale-105">
                 <Play className="size-7 translate-x-0.5 fill-current" strokeWidth={2} aria-hidden />
               </span>
               <span className="sr-only">

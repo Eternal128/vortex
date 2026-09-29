@@ -16,7 +16,7 @@ interface SearchInputProps extends Omit<ComponentPropsWithoutRef<"input">, "clas
 
 const fields: Record<SearchInputSize, string> = {
   md: "h-11 gap-3 px-4",
-  lg: "h-16 gap-4 px-6 sm:h-[88px] sm:gap-5 sm:px-10",
+  lg: "h-14 gap-3 px-5 sm:h-16 sm:gap-4 sm:px-6",
 };
 
 const icons: Record<SearchInputSize, string> = {
@@ -26,7 +26,7 @@ const icons: Record<SearchInputSize, string> = {
 
 const inputs: Record<SearchInputSize, string> = {
   md: "text-body",
-  lg: "text-body-lg sm:text-[18px]",
+  lg: "text-body-lg sm:text-[17px]",
 };
 
 export function SearchInput({
@@ -45,7 +45,7 @@ export function SearchInput({
       </label>
       <div
         className={cn(
-          "flex items-center rounded-md border border-neutral-200 bg-surface focus-within:border-primary-400",
+          "flex items-center rounded-lg border border-neutral-200 bg-surface shadow-press-soft transition-colors focus-within:border-neutral-500",
           fields[size],
         )}
       >
@@ -67,7 +67,7 @@ export function SearchInput({
         {shortcut && (
           <kbd
             className={cn(
-              "hidden shrink-0 rounded-xs border border-neutral-200 font-sans text-neutral-700 sm:block",
+              "hidden shrink-0 rounded-xs border border-neutral-200 font-mono text-neutral-500 sm:block",
               size === "lg" ? "px-3 py-2 text-[14px] leading-5" : "px-2 py-1 text-[12px] leading-4",
             )}
           >

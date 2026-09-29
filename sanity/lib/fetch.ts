@@ -10,6 +10,7 @@ export const CACHE_TAGS = {
   lesson: "lesson",
   instructor: "instructor",
   category: "category",
+  post: "post",
 } as const;
 
 const ONE_HOUR = 3600;

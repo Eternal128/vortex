@@ -19,7 +19,7 @@ import {readFileSync, writeFileSync, existsSync} from 'node:fs'
 import {dirname, join} from 'node:path'
 import {fileURLToPath} from 'node:url'
 
-import {categories, courses, instructors} from './content.mjs'
+import {categories, courseArt, courses, instructors, posts, teamIdeas} from './content.mjs'
 
 const HERE = dirname(fileURLToPath(import.meta.url))
 const CACHE_PATH = join(HERE, 'videos.json')
@@ -249,6 +249,7 @@ for (const course of courses) {
     price: course.price,
     popular: course.popular,
     studentCount: course.studentCount,
+    ...(courseArt[course.slug] ?? {}),
     learningOutcomes: course.outcomes.map((outcome, index) => {
       check(outcome.title.length <= 60, `course ${course.slug}: outcome title over 60 chars`)
       check(
@@ -258,6 +259,59 @@ for (const course of courses) {
       return {_type: 'learningOutcome', _key: keyOf(course.slug, 'outcome', String(index)), ...outcome}
     }),
     modules,
+  })
+}
+
+/* ------------------------------------------------------------ field notes */
+
+const courseSlugs = new Set(courses.map((c) => c.slug))
+
+for (const post of posts) {
+  check(categorySlugs.has(post.topic), `post ${post.slug}: unknown topic`)
+  check(instructorSlugs.has(post.author), `post ${post.slug}: unknown author`)
+  check(!post.course || courseSlugs.has(post.course), `post ${post.slug}: unknown course`)
+  check(post.title.length <= 110, `post ${post.slug}: title over 110 chars`)
+  check(post.excerpt.length <= 220, `post ${post.slug}: excerpt over 220 chars`)
+
+  documents.push({
+    _id: `post.${post.slug}`,
+    _type: 'post',
+    title: post.title,
+    slug: {_type: 'slug', current: post.slug},
+    excerpt: post.excerpt,
+    publishedAt: post.publishedAt,
+    author: {_type: 'reference', _ref: `instructor.${post.author}`},
+    topic: {_type: 'reference', _ref: `category.${post.topic}`},
+    ...(post.course
+      ? {relatedCourse: {_type: 'reference', _ref: `course.${post.course}`}}
+      : {}),
+    body: post.body.map(([style, text], index) => {
+      const keyBase = `${post.slug}-${index}`
+      if (style === 'li') return bullet(text, keyBase)
+      return block(text, style === 'h2' ? 'h2' : 'normal', keyBase)
+    }),
+  })
+}
+
+/* ------------------------------------------------------------ team ideas */
+
+for (const idea of teamIdeas) {
+  check(idea.title.length >= 8 && idea.title.length <= 90, `idea ${idea.slug}: title length`)
+  check(
+    idea.description.length >= 20 && idea.description.length <= 600,
+    `idea ${idea.slug}: description length`,
+  )
+  documents.push({
+    _id: `idea.team-${idea.slug}`,
+    _type: 'idea',
+    title: idea.title,
+    description: idea.description,
+    kind: idea.kind,
+    status: idea.status,
+    moderation: 'approved',
+    origin: 'team',
+    authorName: 'Vortex team',
+    createdAt: idea.createdAt,
   })
 }
 
@@ -284,5 +338,7 @@ console.log(
   `  categories: ${count('category')}\n` +
     `  instructors: ${count('instructor')}\n` +
     `  courses: ${count('course')}\n` +
-    `  lessons: ${count('lesson')}`,
+    `  lessons: ${count('lesson')}\n` +
+    `  field notes: ${count('post')}\n` +
+    `  team ideas: ${count('idea')}`,
 )

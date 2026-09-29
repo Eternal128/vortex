@@ -75,7 +75,7 @@ export function CourseCard({
   const fallbackLogo = (size: string) => (
     <span
       className={cn(
-        "flex shrink-0 items-center justify-center rounded-md bg-neutral-900 font-display leading-none font-bold text-white",
+        "flex shrink-0 items-center justify-center rounded-md bg-neutral-900 font-display leading-none font-semibold tracking-[-0.03em] text-canvas",
         size,
       )}
     >
@@ -95,7 +95,7 @@ export function CourseCard({
           {category ? (
             <p className="text-[12px] leading-4 font-medium text-neutral-500">{category}</p>
           ) : null}
-          <h3 className="mt-1.5 font-display text-[22px] leading-7 font-bold text-neutral-900">
+          <h3 className="mt-1.5 font-display text-[22px] leading-7 font-semibold tracking-[-0.03em] text-neutral-900">
             {title}
           </h3>
           <p className="mt-3 text-[15px] leading-6.25 text-neutral-500">{description}</p>

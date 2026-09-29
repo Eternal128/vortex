@@ -72,33 +72,34 @@ function Caption({ children }: { children: ReactNode }) {
 /* ------------------------------------------------------------------ data */
 
 const primaryColors = [
-  { name: "Primary 500", hex: "#F97316", className: "bg-primary-500" },
-  { name: "Primary 400", hex: "#FB923C", className: "bg-primary-400" },
-  { name: "Primary 300", hex: "#FDBA74", className: "bg-primary-300" },
-  { name: "Primary 200", hex: "#FED7AA", className: "bg-primary-200" },
-  { name: "Primary 100", hex: "#FFEEE5", className: "bg-primary-100" },
+  { name: "Ink 600", hex: "#0F0F0F", className: "bg-primary-600" },
+  { name: "Ink 500", hex: "#262626", className: "bg-primary-500" },
+  { name: "Ink 400", hex: "#3D3D3D", className: "bg-primary-400" },
+  { name: "Brand 500", hex: "#F97316", className: "bg-brand-500" },
+  { name: "Brand 100", hex: "#FFEEE5", className: "bg-brand-100" },
 ];
 
 const neutralColors = [
-  { name: "Neutral 900", hex: "#0F172A", className: "bg-neutral-900" },
-  { name: "Neutral 700", hex: "#334155", className: "bg-neutral-700" },
-  { name: "Neutral 500", hex: "#64748B", className: "bg-neutral-500" },
-  { name: "Neutral 300", hex: "#CBD5E1", className: "bg-neutral-300" },
-  { name: "Neutral 200", hex: "#E2E8F0", className: "bg-neutral-200" },
-  { name: "Neutral 100", hex: "#F1F5F9", className: "bg-neutral-100" },
-  { name: "Neutral 50", hex: "#FAFAFC", className: "bg-neutral-50 border border-neutral-200" },
+  { name: "Neutral 900", hex: "#1F1F1F", className: "bg-neutral-900" },
+  { name: "Neutral 700", hex: "#4A4A4A", className: "bg-neutral-700" },
+  { name: "Neutral 500", hex: "#6E6E6E", className: "bg-neutral-500" },
+  { name: "Neutral 300", hex: "#D4D4D4", className: "bg-neutral-300" },
+  { name: "Neutral 200", hex: "#E6E6E6", className: "bg-neutral-200" },
+  { name: "Neutral 100", hex: "#F0F0F0", className: "bg-neutral-100" },
+  { name: "Canvas", hex: "#F7F7F7", className: "bg-canvas border border-neutral-200" },
   { name: "White", hex: "#FFFFFF", className: "bg-surface border border-neutral-200" },
 ];
 
+
 const typeScale = [
-  { style: "Display 1", font: "Playfair Display", size: "48 / 56", weight: "Bold", use: "Page titles" },
-  { style: "Display 2", font: "Playfair Display", size: "36 / 44", weight: "Bold", use: "Section titles" },
-  { style: "Heading 1", font: "Inter", size: "28 / 36", weight: "Semi Bold", use: "Card titles" },
-  { style: "Heading 2", font: "Inter", size: "22 / 30", weight: "Semi Bold", use: "Sub section" },
-  { style: "Heading 3", font: "Inter", size: "18 / 26", weight: "Medium", use: "Small titles" },
-  { style: "Body Large", font: "Inter", size: "16 / 24", weight: "Regular", use: "Body copy" },
-  { style: "Body", font: "Inter", size: "14 / 20", weight: "Regular", use: "Supporting text" },
-  { style: "Small", font: "Inter", size: "12 / 16", weight: "Regular", use: "Captions, meta" },
+  { style: "Display 1", font: "Geist", size: "48 / 52", weight: "Semi Bold", use: "Page titles" },
+  { style: "Display 2", font: "Geist", size: "36 / 42", weight: "Semi Bold", use: "Section titles" },
+  { style: "Heading 1", font: "Geist", size: "28 / 34", weight: "Semi Bold", use: "Card titles" },
+  { style: "Heading 2", font: "Geist", size: "22 / 28", weight: "Semi Bold", use: "Sub section" },
+  { style: "Heading 3", font: "Geist", size: "18 / 26", weight: "Medium", use: "Small titles" },
+  { style: "Body Large", font: "Geist", size: "16 / 24", weight: "Regular", use: "Body copy" },
+  { style: "Body", font: "Geist", size: "14 / 20", weight: "Regular", use: "Supporting text" },
+  { style: "Small", font: "Geist", size: "12 / 16", weight: "Regular", use: "Captions, meta" },
 ];
 
 const spacingScale = [4, 8, 12, 16, 24, 32, 40, 48, 64];
@@ -174,7 +175,7 @@ export default function DesignSystemPage() {
         {/* 01 Colors */}
         <Panel className="lg:col-span-8">
           <PanelTitle number="01" title="Colors" />
-          <GroupLabel>Primary</GroupLabel>
+          <GroupLabel>Ink &amp; brand</GroupLabel>
           <ul className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
             {primaryColors.map((color) => (
               <li key={color.name}>
@@ -202,21 +203,21 @@ export default function DesignSystemPage() {
         <Panel className="lg:col-span-5">
           <PanelTitle number="02" title="Typography" />
           <div className="flex items-center gap-8">
-            <span className="font-display text-[64px] leading-none font-bold text-neutral-900">
+            <span className="font-display text-[64px] leading-none font-semibold tracking-[-0.03em] text-neutral-900">
               Ag
             </span>
             <div>
-              <p className="text-heading-2 text-neutral-900">Playfair Display</p>
-              <p className="mt-1 text-body text-neutral-500">Elegant • Readable • Timeless</p>
+              <p className="text-heading-2 text-neutral-900">Geist</p>
+              <p className="mt-1 text-body text-neutral-500">Tight • Precise • Every heading and body</p>
             </div>
           </div>
           <div className="mt-8 flex items-center gap-8">
-            <span className="font-sans text-[64px] leading-none font-semibold text-neutral-900">
+            <span className="font-pixel text-[64px] leading-none text-neutral-900">
               Ag
             </span>
             <div>
-              <p className="text-heading-2 text-neutral-900">Inter</p>
-              <p className="mt-1 text-body text-neutral-500">Clean • Modern • Highly legible</p>
+              <p className="text-heading-2 text-neutral-900">Geist Pixel &amp; Geist Mono</p>
+              <p className="mt-1 text-body text-neutral-500">Accents • Course titles • Mono labels</p>
             </div>
           </div>
         </Panel>
@@ -387,10 +388,10 @@ export default function DesignSystemPage() {
           <div className="mt-8">
             <GroupLabel>Button Specs</GroupLabel>
             <ul className="list-disc space-y-1 pl-5 text-body text-neutral-500">
-              <li>Height: 44px (default)</li>
+              <li>Height: 44px (lg), 36px (md), 52px (xl)</li>
               <li>Padding: 0 16px (lg), 0 12px (md)</li>
-              <li>Radius: 12px</li>
-              <li>Font: Inter Medium (14-16px)</li>
+              <li>Radius: 10px; pill and icon buttons are fully round</li>
+              <li>Font: Geist Medium (14-17px); primary has a pressed-key edge</li>
             </ul>
           </div>
         </Panel>
@@ -417,10 +418,10 @@ export default function DesignSystemPage() {
             <GroupLabel>Field Specs</GroupLabel>
             <ul className="list-disc space-y-1 pl-5 text-body text-neutral-500">
               <li>Height: 44px</li>
-              <li>Radius: 12px</li>
-              <li>Border: 1px solid #E2E8F0</li>
+              <li>Radius: 16px</li>
+              <li>Border: 1px solid #E6E6E6</li>
               <li>Padding: 0 16px</li>
-              <li>Focus: Border color #FB923C</li>
+              <li>Focus: Border color #6E6E6E</li>
             </ul>
           </div>
         </Panel>
@@ -474,7 +475,7 @@ export default function DesignSystemPage() {
                 duration="18h 24m"
                 modules="12 modules"
                 logo={
-                  <span className="flex size-12 shrink-0 items-center justify-center rounded-md bg-neutral-900 font-display text-[22px] leading-none font-bold text-white">
+                  <span className="flex size-12 shrink-0 items-center justify-center rounded-md bg-neutral-900 font-display text-[22px] leading-none font-semibold tracking-[-0.03em] text-white">
                     N
                   </span>
                 }

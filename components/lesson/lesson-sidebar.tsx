@@ -155,7 +155,7 @@ export function LessonSidebar({
                         className={cn(
                           "flex size-7.25 items-center justify-center rounded-full border text-[13px] leading-none",
                           isCurrent
-                            ? "border-primary-500 bg-primary-500 text-white"
+                            ? "border-primary-500 bg-primary-500 text-on-primary"
                             : "border-canvas-line bg-canvas text-neutral-700",
                         )}
                       >
@@ -230,7 +230,7 @@ export function LessonSidebar({
                             </span>
                             {lesson.isCurrent && (
                               <span
-                                className="flex size-7 shrink-0 items-center justify-center rounded-full bg-primary-500 text-white"
+                                className="flex size-7 shrink-0 items-center justify-center rounded-full bg-primary-500 text-on-primary"
                                 aria-hidden
                               >
                                 <Play className="size-3.5 fill-current" strokeWidth={2} />

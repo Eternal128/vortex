@@ -43,3 +43,26 @@ export function searchHref(query: string, sort?: string | null) {
   if (sort && sort !== "relevance") params.set(SEARCH_SORT_PARAM, sort);
   return `/search?${params.toString()}`;
 }
+
+export const searchPageHref = "/search";
+export const myLearningHref = "/my-learning";
+export const instructorsHref = "/instructors";
+
+export function instructorHref(slug: string) {
+  return `${instructorsHref}/${slug}`;
+}
+
+export const blogHref = "/blog";
+/** The blog index's topic filter, a category slug. */
+export const TOPIC_PARAM = "topic";
+
+export function blogIndexHref(topicSlug?: string | null) {
+  if (!topicSlug) return blogHref;
+  return `${blogHref}?${TOPIC_PARAM}=${encodeURIComponent(topicSlug)}`;
+}
+
+export function postHref(slug: string) {
+  return `${blogHref}/${slug}`;
+}
+
+export const ideasHref = "/ideas";

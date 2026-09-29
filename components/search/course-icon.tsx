@@ -19,7 +19,7 @@ export function CourseIcon({ iconRef, courseTitle, className }: CourseIconProps)
         aria-hidden
         className={cn(
           classes,
-          "flex items-center justify-center bg-neutral-900 font-display text-[13px] leading-none font-bold text-white",
+          "flex items-center justify-center bg-neutral-900 font-display text-[13px] leading-none font-semibold tracking-[-0.03em] text-canvas",
         )}
       >
         {courseTitle.charAt(0)}

@@ -39,20 +39,20 @@ export function CategoryFilter({ categories, active, total }: CategoryFilterProp
                 href={catalogHref(slug)}
                 aria-current={selected ? "page" : undefined}
                 className={cn(
-                  "inline-flex items-center gap-2 rounded-full border px-4 py-2 text-[14px] leading-5",
+                  "inline-flex items-center gap-2 rounded-full px-3.5 py-2 text-[14px] leading-5",
                   "transition-colors duration-200 ease-out-soft focus-visible:outline-none",
                   "focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2",
                   "focus-visible:ring-offset-background",
                   selected
-                    ? "border-primary-500 bg-primary-500 font-medium text-white"
-                    : "border-canvas-line bg-surface text-neutral-700 hover:border-primary-300 hover:text-neutral-900",
+                    ? "bg-neutral-200/70 font-medium text-neutral-900"
+                    : "text-neutral-500 hover:bg-neutral-100 hover:text-neutral-900",
                 )}
               >
                 {label}
                 <span
                   className={cn(
-                    "tabular text-[12px]",
-                    selected ? "text-primary-100" : "text-neutral-500",
+                    "tabular font-mono text-[12px]",
+                    selected ? "text-neutral-700" : "text-neutral-500",
                   )}
                 >
                   {count}

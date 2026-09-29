@@ -39,7 +39,7 @@ export function LessonHeader({
       {label && <Badge variant="video">Lesson {label}</Badge>}
 
       <div className="mt-5 flex items-start justify-between gap-6">
-        <h1 className="font-display text-[34px] leading-[42px] font-bold text-neutral-900 sm:text-[44px] sm:leading-[54px]">
+        <h1 className="font-display text-[34px] leading-[42px] font-semibold tracking-[-0.03em] text-neutral-900 sm:text-[44px] sm:leading-[54px]">
           {title}
         </h1>
         <LessonBookmarkButton lessonSlug={lessonSlug} />

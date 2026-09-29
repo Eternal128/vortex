@@ -39,7 +39,7 @@ export function LearningOutcomes({ outcomes }: LearningOutcomesProps) {
     >
       <h2
         id="what-youll-learn"
-        className="font-display text-[24px] leading-8 font-bold text-neutral-900"
+        className="font-display text-[24px] leading-8 font-semibold tracking-[-0.03em] text-neutral-900"
       >
         What you&rsquo;ll learn
       </h2>
