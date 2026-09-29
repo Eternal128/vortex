@@ -1,0 +1,4 @@
+# The Studio deploys on its own (sanity deploy); the web build never reads it.
+studio/
+# The course brief and seed file: anything in public/ is served, so keep it off the deployment.
+public/Assets.zip
