@@ -12,6 +12,10 @@ import {progress} from './documents/progress'
 import {quiz} from './documents/quiz'
 import {video} from './documents/video'
 import {blockContent} from './objects/blockContent'
+import {callout} from './objects/callout'
+import {diagram} from './objects/diagram'
+import {postContent} from './objects/postContent'
+import {reference} from './objects/reference'
 import {learningOutcome} from './objects/learningOutcome'
 import {courseModule} from './objects/module'
 import {resource} from './objects/resource'
@@ -37,6 +41,10 @@ export const schema: {types: SchemaTypeDefinition[]} = {
     learningOutcome,
     resource,
     blockContent,
+    postContent,
+    diagram,
+    callout,
+    reference,
     videoChapter,
     videoChunk,
   ],

@@ -227,6 +227,7 @@ export const POST_BY_SLUG_QUERY = defineQuery(`
   *[_type == "post" && slug.current == $slug && publishedAt <= now()][0]{
     ${POST_CARD_FIELDS},
     body,
+    references[]{_key, authors, year, title, venue, url},
     "related": *[
       _type == "post" && defined(slug.current) && publishedAt <= now()
       && topic._ref == ^.topic._ref && _id != ^._id

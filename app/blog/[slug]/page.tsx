@@ -6,6 +6,7 @@ import { ViewTracker } from "@/components/analytics/view-tracker";
 import { DividerLabel } from "@/components/blog/divider-label";
 import { PostBody } from "@/components/blog/post-body";
 import { PostCard } from "@/components/blog/post-card";
+import { References } from "@/components/blog/references";
 import { TableOfContents } from "@/components/blog/table-of-contents";
 import { PageFrame } from "@/components/layout/page-frame";
 import { SiteHeader } from "@/components/layout/site-header";
@@ -91,6 +92,7 @@ export default async function PostPage({ params }: PageProps<"/blog/[slug]">) {
         <div className="mt-16 grid gap-12 lg:grid-cols-[minmax(0,1fr)_16rem] lg:gap-16">
           <article className="min-w-0">
             {post.body ? <PostBody body={post.body} anchors={anchors} /> : null}
+            <References items={post.references ?? []} />
           </article>
           {outline.length > 1 ? (
             <aside className="hidden lg:block">

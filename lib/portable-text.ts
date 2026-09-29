@@ -1,4 +1,4 @@
-import type { BlockContent } from "@/sanity.types";
+import type { BlockContent, PostContent } from "@/sanity.types";
 
 type Block = BlockContent[number];
 
@@ -69,7 +69,7 @@ function slugify(text: string) {
  * The h2 outline of a Portable Text field, with stable, unique anchor ids. Keyed by block `_key`
  * so the renderer and the "On this page" list agree on every id.
  */
-export function headingOutline(blocks: BlockContent | null | undefined) {
+export function headingOutline(blocks: BlockContent | PostContent | null | undefined) {
   const seen = new Map<string, number>();
   const items: { key: string; id: string; text: string }[] = [];
 

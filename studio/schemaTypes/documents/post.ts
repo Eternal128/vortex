@@ -1,5 +1,5 @@
 import {DocumentTextIcon} from '@sanity/icons/DocumentText'
-import {defineField, defineType} from 'sanity'
+import {defineArrayMember, defineField, defineType} from 'sanity'
 
 /**
  * A field note: a short, team-authored article. Read-only on the site, like every other piece of
@@ -59,8 +59,14 @@ export const post = defineType({
     defineField({
       name: 'body',
       description: 'Use Heading 2 for sections: they build the "On this page" outline.',
-      type: 'blockContent',
+      type: 'postContent',
       validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'references',
+      description: 'Sources cited in the note, in the order they are cited.',
+      type: 'array',
+      of: [defineArrayMember({type: 'citation'})],
     }),
   ],
   orderings: [

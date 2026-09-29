@@ -1,6 +1,8 @@
 import { PortableText, type PortableTextComponents } from "@portabletext/react";
 import Image from "next/image";
-import type { BlockContent } from "@/sanity.types";
+import type { PostContent } from "@/sanity.types";
+import { Diagram } from "@/components/blog/diagrams";
+import { Callout } from "@/components/blog/callout";
 import { urlFor } from "@/sanity/lib/image";
 
 /** Article prose at the reference's reading size: 18px body, generous leading, tight headings. */
@@ -72,6 +74,8 @@ function components(anchors: Map<string, string>): PortableTextComponents {
       },
     },
     types: {
+      diagram: ({ value }) => <Diagram name={value?.name} caption={value?.caption} />,
+      callout: ({ value }) => <Callout tone={value?.tone} text={value?.text} />,
       image: ({ value }) => {
         if (!value?.asset) return null;
         return (
@@ -90,7 +94,7 @@ function components(anchors: Map<string, string>): PortableTextComponents {
   };
 }
 
-export function PostBody({ body, anchors }: { body: BlockContent; anchors: Map<string, string> }) {
+export function PostBody({ body, anchors }: { body: PostContent; anchors: Map<string, string> }) {
   return (
     <div className="flex flex-col gap-6">
       <PortableText value={body} components={components(anchors)} />
