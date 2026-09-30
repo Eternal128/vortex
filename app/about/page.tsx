@@ -40,28 +40,28 @@ const steps: Step[] = [
     title: "Find what to learn",
     body: "Browse courses by category, or ask search a question in plain English and get the lessons that teach it.",
     loop: "step-find",
-    alt: "Animation: a plain English question typed into search, and the lessons that teach it ranked below",
+    alt: "Animation: a purple sphere hops onto a floating search bar as a plain English question types in, then the top result, with its moment at 4:55, lifts above a group of spheres",
     span: "lg:col-span-7",
   },
   {
     title: "Watch, and pick up where you stopped",
     body: "Videos play here, in YouTube's own player. Your place saves to the second, and your course progress moves as you watch.",
     loop: "step-watch",
-    alt: "Animation: tapping Continue on an enrolled course, and the lesson resuming at 5:46",
+    alt: "Animation: an orange sphere watches a lesson on a laptop, wanders off, and bounces back as Resumed at 5:46 pops up",
     span: "lg:col-span-5",
   },
   {
     title: "Check you've got it",
     body: "When a video ends, a short quiz unlocks. Submit to see your grade and what you missed, then retake it until you pass.",
     loop: "step-quiz",
-    alt: "Animation: a quiz graded 33%, the missed answers shown, then a retake that passes",
+    alt: "Animation: a small yellow sphere deflates on a quiz graded 33%, then reinflates as the retake passes at 100% and the other spheres cheer",
     span: "lg:col-span-5",
   },
   {
     title: "Build a plan for anything else",
     body: "Describe a goal, like baking bread, and Vortex designs a syllabus and picks a YouTube video for every lesson.",
     loop: "step-plan",
-    alt: "Animation: a goal typed in, and a plan of modules with a video for each lesson",
+    alt: "Animation: a green sphere rolls a ball of dough up to a phone, where a sourdough goal is typed and a plan builds lesson by lesson",
     span: "lg:col-span-7",
     cta: { label: "Build your own plan", href: "/plans/new" },
   },
@@ -100,7 +100,7 @@ export default function AboutPage() {
             >
               <PlayCircle className="size-4.5 text-neutral-500" strokeWidth={1.75} aria-hidden />
               <span className="border-b border-neutral-300 pb-0.5 transition-colors group-hover:border-neutral-900">
-                Watch the one-minute tour
+                Watch the 90-second tour
               </span>
             </a>
           </div>
@@ -125,7 +125,7 @@ export default function AboutPage() {
               </div>
             </div>
             <figcaption className="mt-4 text-center font-mono text-[12px] tracking-[0.08em] text-neutral-500 uppercase">
-              Introducing Vortex · a one-minute film · captions on
+              Introducing Vortex · a 90-second film · captions on
             </figcaption>
           </figure>
         </section>
