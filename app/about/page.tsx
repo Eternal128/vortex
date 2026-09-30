@@ -47,7 +47,7 @@ const steps: Step[] = [
     title: "Watch, and pick up where you stopped",
     body: "Videos play here, in YouTube's own player. Your place saves to the second, and your course progress moves as you watch.",
     loop: "step-watch",
-    alt: "Animation: enrolling in a course, then the video saving its place at 5:46",
+    alt: "Animation: tapping Continue on an enrolled course, and the lesson resuming at 5:46",
     span: "lg:col-span-5",
   },
   {
@@ -125,7 +125,7 @@ export default function AboutPage() {
               </div>
             </div>
             <figcaption className="mt-4 text-center font-mono text-[12px] tracking-[0.08em] text-neutral-500 uppercase">
-              A one-minute tour · narrated · captions on
+              Introducing Vortex · a one-minute film · captions on
             </figcaption>
           </figure>
         </section>
