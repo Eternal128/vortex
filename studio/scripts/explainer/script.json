@@ -1,48 +1,312 @@
 {
-  "voice": "Higgsfield seed_audio, preset voice Sienna (41023a48-71ab-478a-bea7-c7b5a78f6b36)",
-  "note": "lead = seconds of picture before the voice starts; tail = seconds after it ends. Chapters dissolve into each other.",
-  "scenes": [
+  "voice": "Higgsfield seed_audio, preset voice Alexey (7c2133e5-68ab-511f-9aed-9a67664382b1), 48 kHz, one take per line",
+  "note": "The sphere film, from the doc 'Vortex film, Higgsfield production brief'. Times are seconds into the 90s film; `at` is when the line's first word is heard. 'Good luck.' moved from 10s to 11s so the line before it finishes.",
+  "seconds": 90,
+  "fps": 24,
+  "shots": [
     {
-      "name": "intro",
-      "lead": 1.6,
-      "tail": 1.2,
-      "narration": "YouTube has some of the best teachers in the world. Vortex gives you a way to learn from them."
+      "id": "s01",
+      "from": 0,
+      "to": 6,
+      "background": "#1B1446"
     },
     {
-      "name": "courses",
-      "lead": 1.4,
-      "tail": 1.2,
-      "narration": "Real courses, built from real lessons. Every video in the right order, and credited to the creator who made it."
+      "id": "s02",
+      "from": 6,
+      "to": 12,
+      "background": "#1B1446"
     },
     {
-      "name": "search",
-      "lead": 1.4,
-      "tail": 1.4,
-      "narration": "Just ask, in plain English. Vortex finds the lesson, and the moment it's taught."
+      "id": "s03",
+      "from": 12,
+      "to": 18,
+      "background": "#E9E9EC"
     },
     {
-      "name": "progress",
-      "lead": 1.4,
-      "tail": 1.8,
-      "narration": "Your place is saved to the second. So you can pick up right where you left off."
+      "id": "s04",
+      "from": 18,
+      "to": 26,
+      "background": "#E9E9EC"
     },
     {
-      "name": "quiz",
-      "lead": 1.4,
-      "tail": 1.6,
-      "narration": "When a video ends, a short quiz checks what stuck. Retake it until you pass."
+      "id": "s05",
+      "from": 26,
+      "to": 32,
+      "background": "#CFD9D2"
     },
     {
-      "name": "plan",
-      "lead": 1.4,
-      "tail": 1.8,
-      "narration": "And for anything else, just describe your goal. Vortex builds you a plan."
+      "id": "s06",
+      "from": 32,
+      "to": 39,
+      "background": "#CFD9D2"
     },
     {
-      "name": "close",
-      "lead": 1.0,
-      "tail": 3.0,
-      "narration": "Vortex. Learn anything, the way a course teaches it."
+      "id": "s07",
+      "from": 39,
+      "to": 45,
+      "background": "#D6E6F3"
+    },
+    {
+      "id": "s08",
+      "from": 45,
+      "to": 52,
+      "background": "#D6E6F3"
+    },
+    {
+      "id": "s09",
+      "from": 52,
+      "to": 58,
+      "background": "#16383A"
+    },
+    {
+      "id": "s10",
+      "from": 58,
+      "to": 65,
+      "background": "#16383A"
+    },
+    {
+      "id": "s11",
+      "from": 65,
+      "to": 78,
+      "background": "#F3EFE8"
+    },
+    {
+      "id": "s12",
+      "from": 78,
+      "to": 90,
+      "background": "#000000"
+    }
+  ],
+  "typing": {
+    "search": {
+      "from": 27.6,
+      "step": 0.05,
+      "text": "How does strict mode work in TypeScript?"
+    },
+    "plan": {
+      "from": 66.4,
+      "step": 0.05,
+      "text": "Bake sourdough bread"
+    }
+  },
+  "lines": [
+    {
+      "id": "V01",
+      "at": 1.0,
+      "text": "So you want to learn something."
+    },
+    {
+      "id": "V02",
+      "at": 6.0,
+      "text": "YouTube has the answer. Somewhere. In one of four million videos.",
+      "maxPause": 0.45
+    },
+    {
+      "id": "V03",
+      "at": 11.0,
+      "text": "Good luck."
+    },
+    {
+      "id": "V04",
+      "at": 13.0,
+      "text": "Vortex takes the best teaching on YouTube and puts it in order."
+    },
+    {
+      "id": "V05",
+      "at": 19.0,
+      "text": "Real courses, lesson by lesson, with every creator credited."
+    },
+    {
+      "id": "V06",
+      "at": 27.0,
+      "text": "Stuck on something? Just ask, in plain English."
+    },
+    {
+      "id": "V07",
+      "at": 33.0,
+      "text": "Vortex finds the lesson, and the exact moment it's explained."
+    },
+    {
+      "id": "V08",
+      "at": 40.0,
+      "text": "Life happens. Dinner's ready. The dog needs a walk."
+    },
+    {
+      "id": "V09",
+      "at": 46.0,
+      "text": "Come back whenever. Your place is saved to the second."
+    },
+    {
+      "id": "V10",
+      "at": 53.0,
+      "text": "When a video ends, a quick quiz checks what actually stuck."
+    },
+    {
+      "id": "V11",
+      "at": 59.0,
+      "text": "Missed a few? Retake it until you've got it."
+    },
+    {
+      "id": "V12",
+      "at": 66.0,
+      "text": "And for anything that isn't a course yet, describe your goal."
+    },
+    {
+      "id": "V13",
+      "at": 71.0,
+      "text": "Sourdough, say. Vortex builds you a plan, one video at a time."
+    },
+    {
+      "id": "V14",
+      "at": 80.0,
+      "text": "Vortex."
+    },
+    {
+      "id": "V15",
+      "at": 82.0,
+      "text": "Learn anything, the way a course teaches it."
+    }
+  ],
+  "sfx": [
+    {
+      "at": 1.5,
+      "kind": "bounce",
+      "pitch": 1.0
+    },
+    {
+      "at": 2.9,
+      "kind": "bounce",
+      "pitch": 1.1
+    },
+    {
+      "at": 3.6,
+      "kind": "bounce",
+      "pitch": 0.95
+    },
+    {
+      "at": 4.8,
+      "kind": "bounce",
+      "pitch": 1.35
+    },
+    {
+      "at": 5.3,
+      "kind": "bounce",
+      "pitch": 0.75
+    },
+    {
+      "at": 6.2,
+      "kind": "whoosh"
+    },
+    {
+      "at": 7.0,
+      "kind": "whoosh"
+    },
+    {
+      "at": 7.9,
+      "kind": "whoosh"
+    },
+    {
+      "at": 8.7,
+      "kind": "whoosh"
+    },
+    {
+      "at": 9.5,
+      "kind": "whoosh"
+    },
+    {
+      "at": 7.3,
+      "kind": "thud"
+    },
+    {
+      "at": 8.1,
+      "kind": "thud"
+    },
+    {
+      "at": 9.0,
+      "kind": "thud"
+    },
+    {
+      "at": 10.2,
+      "kind": "thud"
+    },
+    {
+      "at": 11.65,
+      "kind": "bonk"
+    },
+    {
+      "at": 16.6,
+      "kind": "chime"
+    },
+    {
+      "at": 19.8,
+      "kind": "tap"
+    },
+    {
+      "at": 21.2,
+      "kind": "tap"
+    },
+    {
+      "at": 22.6,
+      "kind": "tap"
+    },
+    {
+      "at": 24.0,
+      "kind": "tap"
+    },
+    {
+      "at": 34.0,
+      "kind": "shimmer"
+    },
+    {
+      "at": 43.3,
+      "kind": "boing"
+    },
+    {
+      "at": 48.0,
+      "kind": "pop"
+    },
+    {
+      "at": 55.4,
+      "kind": "blip"
+    },
+    {
+      "at": 56.0,
+      "kind": "blip"
+    },
+    {
+      "at": 56.6,
+      "kind": "sigh"
+    },
+    {
+      "at": 59.5,
+      "kind": "success"
+    },
+    {
+      "at": 60.2,
+      "kind": "cheer"
+    },
+    {
+      "at": 72.3,
+      "kind": "ding"
+    },
+    {
+      "at": 80.0,
+      "kind": "low"
+    },
+    {
+      "at": 27.2,
+      "kind": "bounce",
+      "pitch": 1.0
+    },
+    {
+      "at": 47.5,
+      "kind": "bounce",
+      "pitch": 1.05
+    },
+    {
+      "at": 53.0,
+      "kind": "bounce",
+      "pitch": 1.4
     }
   ]
 }
