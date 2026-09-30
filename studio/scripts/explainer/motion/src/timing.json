@@ -1,162 +1,152 @@
 [
   {
-    "name": "motive",
-    "narration": "YouTube holds some of the best teaching in the world. But it's scattered. No order, no checkpoints, and no way to know you've really got it.",
-    "seconds": 10.424,
+    "name": "intro",
+    "narration": "YouTube has some of the best teachers in the world. Vortex gives you a way to learn from them.",
+    "lead": 1.6,
+    "tail": 1.2,
+    "seconds": 5.723,
     "segments": [
       [
         0,
-        2.888
+        2.971
       ],
       [
-        3.614,
-        4.556
-      ],
-      [
-        5.602,
-        6.448
-      ],
-      [
-        6.708,
-        7.876
-      ],
-      [
-        8.132,
-        10.424
+        3.268,
+        5.723
       ]
     ]
   },
   {
-    "name": "what",
-    "narration": "Vortex turns those videos into real courses. Ordered lessons, progress that saves, and a quiz after every video. And the creators always stay credited.",
-    "seconds": 12.544,
+    "name": "courses",
+    "narration": "Real courses, built from real lessons. Every video in the right order, and credited to the creator who made it.",
+    "lead": 1.4,
+    "tail": 1.2,
+    "seconds": 9.543,
     "segments": [
       [
         0,
-        3.527
+        1.039
       ],
       [
-        4.096,
-        5.302
+        1.286,
+        1.645
       ],
       [
-        5.649,
-        7.128
+        1.832,
+        3.153
       ],
       [
-        7.542,
-        9.57
+        4.158,
+        6.189
       ],
       [
-        10.019,
-        12.544
+        6.989,
+        9.543
       ]
     ]
   },
   {
     "name": "search",
-    "narration": "Looking for something specific? Just ask in plain English. Vortex ranks the lessons that teach it, and takes you straight there.",
-    "seconds": 8.292,
+    "narration": "Just ask, in plain English. Vortex finds the lesson, and the moment it's taught.",
+    "lead": 1.4,
+    "tail": 1.4,
+    "seconds": 6.673,
     "segments": [
       [
         0,
-        1.736
+        0.919
       ],
       [
-        2.089,
-        4.051
+        1.327,
+        2.466
       ],
       [
-        4.307,
-        8.292
+        3.094,
+        4.871
+      ],
+      [
+        5.215,
+        6.673
       ]
     ]
   },
   {
-    "name": "enroll",
-    "narration": "Pick a course and enroll for free. Watch right on the page, and your place saves to the second, so you can pick up where you left off.",
-    "seconds": 7.471,
+    "name": "progress",
+    "narration": "Your place is saved to the second. So you can pick up right where you left off.",
+    "lead": 1.4,
+    "tail": 1.8,
+    "seconds": 5.013,
     "segments": [
       [
         0,
-        2.068
+        2.173
       ],
       [
-        2.331,
-        5.532
-      ],
-      [
-        5.725,
-        7.471
+        2.625,
+        5.013
       ]
     ]
   },
   {
     "name": "quiz",
-    "narration": "When a video ends, take a short quiz. Submit, see your grade and what you missed, then retake it until you pass.",
-    "seconds": 10.142,
+    "narration": "When a video ends, a short quiz checks what stuck. Retake it until you pass.",
+    "lead": 1.4,
+    "tail": 1.6,
+    "seconds": 6.338,
     "segments": [
       [
         0,
-        1.37
+        3.516
       ],
       [
-        1.81,
-        3.066
+        4.422,
+        5.065
       ],
       [
-        3.743,
-        4.42
-      ],
-      [
-        4.725,
-        5.771
-      ],
-      [
-        5.954,
-        7.058
-      ],
-      [
-        7.647,
-        10.142
+        5.3,
+        6.338
       ]
     ]
   },
   {
     "name": "plan",
-    "narration": "Want to learn something that isn't in the catalog yet? Describe your goal, and Vortex builds you a personal plan from videos that fit.",
-    "seconds": 8.847,
+    "narration": "And for anything else, just describe your goal. Vortex builds you a plan.",
+    "lead": 1.4,
+    "tail": 1.8,
+    "seconds": 6.113,
     "segments": [
       [
         0,
-        3.017
+        1.235
       ],
       [
-        3.7,
-        4.909
+        1.491,
+        3.044
       ],
       [
-        5.101,
-        8.847
+        4.094,
+        6.113
       ]
     ]
   },
   {
     "name": "close",
-    "narration": "Vortex. Learn anything from YouTube, the way a course teaches it.",
-    "seconds": 7.218,
+    "narration": "Vortex. Learn anything, the way a course teaches it.",
+    "lead": 1,
+    "tail": 3,
+    "seconds": 4.848,
     "segments": [
       [
         0,
-        1.057
+        0.883
       ],
       [
-        2.072,
-        4.25
+        1.738,
+        2.83
       ],
       [
-        5.309,
-        7.218
+        3.22,
+        4.848
       ]
     ]
   }

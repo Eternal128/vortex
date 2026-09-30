@@ -72,7 +72,7 @@ const timing = scenes.map((scene, index) => {
     ].join(','),
     '-ac', '1', '-c:a', 'libmp3lame', '-b:a', '192k', out,
   ])
-  return {name: scene.name, narration: scene.narration, seconds: Number(seconds(out).toFixed(3)), segments: speechSegments(out)}
+  return {name: scene.name, narration: scene.narration, lead: scene.lead, tail: scene.tail, seconds: Number(seconds(out).toFixed(3)), segments: speechSegments(out)}
 })
 
 writeFileSync(join(HERE, 'src', 'timing.json'), `${JSON.stringify(timing, null, 2)}\n`)
