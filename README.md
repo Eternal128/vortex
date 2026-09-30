@@ -92,6 +92,24 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000) in your browser.
 
+**Publishing content to the live site**
+
+Content queries are cached until Sanity says something changed, and on Vercel that cache survives
+redeploys. Add a webhook once so published and imported content shows straight away:
+
+1. Generate a secret (`openssl rand -hex 32`) and set it as `SANITY_REVALIDATE_SECRET` in Vercel
+   (Production), then redeploy.
+2. In [sanity.io/manage](https://sanity.io/manage) → your project → **API** → **Webhooks** → **Create
+   webhook**:
+   - URL: `https://<your-domain>/api/revalidate`, dataset `production`, HTTP method `POST`
+   - Trigger on: Create, Update, Delete
+   - Filter: `_type in ["post", "course", "lesson", "category"]`
+   - Projection: `{_type}`
+   - Secret: the same value as `SANITY_REVALIDATE_SECRET`
+
+Content that was cached before the webhook existed needs one purge: Vercel → **Settings** →
+**Caches** → purge the Data Cache.
+
 ---
 
 _Originally built by following a [JavaScript Mastery](https://www.youtube.com/@javascriptmastery) tutorial; adapted and maintained here as Vortex._
