@@ -18,6 +18,13 @@ const TAGS_BY_TYPE: Record<string, string[]> = {
   category: [CACHE_TAGS.category, CACHE_TAGS.course, CACHE_TAGS.post],
 };
 
+/**
+ * Verifies a Sanity webhook and expires cache tags for its document type.
+ *
+ * @param request - The signed webhook request containing the document's `_type`.
+ * @returns A JSON response listing expired tags, or an error for missing configuration,
+ * invalid input, or an invalid signature.
+ */
 export async function POST(request: NextRequest) {
   const secret = process.env.SANITY_REVALIDATE_SECRET;
   if (!secret) {
