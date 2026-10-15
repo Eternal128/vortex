@@ -206,6 +206,24 @@ PostHog's project key is public by design and is the only analytics key the brow
 
 The About film is rendered separately from `studio/scripts/explainer/motion`; see `render.mjs` there.
 
+**Publishing content to the live site**
+
+Content queries are cached until Sanity says something changed, and on Vercel that cache survives
+redeploys. Add a webhook once so published and imported content shows straight away:
+
+1. Generate a secret (`openssl rand -hex 32`) and set it as `SANITY_REVALIDATE_SECRET` in Vercel
+   (Production), then redeploy.
+2. In [sanity.io/manage](https://sanity.io/manage) → your project → **API** → **Webhooks** → **Create
+   webhook**:
+   - URL: `https://<your-domain>/api/revalidate`, dataset `production`, HTTP method `POST`
+   - Trigger on: Create, Update, Delete
+   - Filter: `_type in ["post", "course", "lesson", "category"]`
+   - Projection: `{_type}`
+   - Secret: the same value as `SANITY_REVALIDATE_SECRET`
+
+Content that was cached before the webhook existed needs one purge: Vercel → **Settings** →
+**Caches** → purge the Data Cache.
+
 ---
 
 _Originally started from a [JavaScript Mastery](https://www.youtube.com/@javascriptmastery) tutorial; rebuilt and maintained here as Vortex._
